@@ -1,0 +1,39 @@
+table {
+  width: 100%;
+}
+
+tr {
+  height: 1.414em;
+}
+
+td {
+  border: 1px solid #eee;
+  padding: 0 3px;
+  input {
+    border: none;
+    line-height: 1.414em;
+    width: 100%;
+    &[type=number] {
+      text-align: right;
+    }
+  }
+}
+
+td.title {
+  font-weight: bold;
+  text-align: center;
+}
+
+td.bg-judge {
+  background-color: $color-judge;
+  input::-webkit-input-placeholder {
+    color: lightgray;
+  }
+}
+
+td.bg-point {
+  background-color: $color-point;
+  input::-webkit-input-placeholder {
+    color: darkgray;
+  }
+}

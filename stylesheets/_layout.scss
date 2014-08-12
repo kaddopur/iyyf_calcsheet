@@ -1,0 +1,21 @@
+.container {
+  width: $container-width;
+  margin: 0 auto;
+}
+
+.row {
+  margin-left: -$gutter / 2;
+  &:after {
+    content: '';
+    clear: both;
+    display: table;
+  }
+}
+
+@for $i from 1 through 12 {
+  .col-#{$i} { 
+    width: $container-width / 12 * ($i - 1) + $column-width;
+    margin-right: $gutter;
+    float: left;
+  }
+}
