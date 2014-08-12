@@ -20,7 +20,7 @@ th, td {
   }
 }
 
-#tab-setup {
+#tab-set-up {
   table {
     th, td {
       &:first-child {
@@ -43,8 +43,8 @@ th, td {
 }
 
 #tab-player,
-#tab-tex,
-#tab-tevpev,
+#tab-raw-tex,
+#tab-raw-tevpev,
 #tab-result {
   th, td {
     &:first-child {
@@ -61,9 +61,12 @@ th, td {
   }
 }
 
-#tab-tevpev {
-  table {
-    width: 1800px;
+#tab-raw-tevpev {
+  tr:last-child th {
+    word-break: break-all;
+    line-height: 1em;
+    padding-top: 2px;
+    padding-bottom: 2px;
   }
 }
 

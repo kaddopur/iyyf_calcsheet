@@ -44,7 +44,8 @@
   margin: 0 auto; }
 
 .row {
-  margin-left: -7.5px; }
+  position: relative;
+  left: 7.5px; }
   .row:after {
     content: '';
     clear: both;
@@ -110,11 +111,30 @@
   margin-right: 15px;
   float: left; }
 
-#tab-setup,
-#tab-player,
-#tab-tex,
-#tab-tevpev {
-  display: none; }
+.navbar ul {
+  padding: 0; }
+.navbar li {
+  list-style: none;
+  display: inline-block;
+  margin-right: 4px; }
+  .navbar li.active a {
+    background-color: lightgray; }
+  .navbar li a {
+    display: block;
+    padding: 4px 12px;
+    text-decoration: none;
+    color: black;
+    font-style: italic;
+    border: 1px solid #ececec;
+    -webkit-transition: background .2s ease-in-out;
+    -moz-transition: background .2s ease-in-out;
+    -ms-transition: background .2s ease-in-out;
+    -o-transition: background .2s ease-in-out;
+    transition: background .2s ease-in-out; }
+    .navbar li a:hover {
+      background-color: #ececec; }
+    .navbar li a:active {
+      color: white; }
 
 table {
   width: 100%;
@@ -133,7 +153,7 @@ th, td {
     th input[type=number], td input[type=number] {
       text-align: right; }
 
-#tab-setup table th:first-child, #tab-setup table td:first-child {
+#tab-set-up table th:first-child, #tab-set-up table td:first-child {
   width: 100px; }
 
 #tab-player table {
@@ -143,31 +163,34 @@ th, td {
   text-align: right; }
 
 #tab-player th:first-child, #tab-player td:first-child,
-#tab-tex th:first-child,
-#tab-tex td:first-child,
-#tab-tevpev th:first-child,
-#tab-tevpev td:first-child,
+#tab-raw-tex th:first-child,
+#tab-raw-tex td:first-child,
+#tab-raw-tevpev th:first-child,
+#tab-raw-tevpev td:first-child,
 #tab-result th:first-child,
 #tab-result td:first-child {
   width: 12px;
   text-align: right; }
 #tab-player th:nth-child(2), #tab-player td:nth-child(2),
-#tab-tex th:nth-child(2),
-#tab-tex td:nth-child(2),
-#tab-tevpev th:nth-child(2),
-#tab-tevpev td:nth-child(2),
+#tab-raw-tex th:nth-child(2),
+#tab-raw-tex td:nth-child(2),
+#tab-raw-tevpev th:nth-child(2),
+#tab-raw-tevpev td:nth-child(2),
 #tab-result th:nth-child(2),
 #tab-result td:nth-child(2) {
   width: 160px;
   text-align: left; }
 #tab-player input,
-#tab-tex input,
-#tab-tevpev input,
+#tab-raw-tex input,
+#tab-raw-tevpev input,
 #tab-result input {
   text-align: right; }
 
-#tab-tevpev table {
-  width: 1800px; }
+#tab-raw-tevpev tr:last-child th {
+  word-break: break-all;
+  line-height: 1em;
+  padding-top: 2px;
+  padding-bottom: 2px; }
 
 #tab-result th {
   word-wrap: break-word; }
@@ -178,6 +201,11 @@ th, td {
 
 input {
   background-color: transparent; }
+
+.tab-pane {
+  display: none; }
+  .tab-pane.active {
+    display: inherit; }
 
 body {
   font-size: 13px;

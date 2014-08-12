@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html>
+<html ng-app="app">
   <head>
     <title>IYYF CalcSheet</title>
 
@@ -8,515 +8,537 @@
     <link rel="stylesheet" href="stylesheets/iyyf.css">
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
   </head>
-  <body>
+  <body ng-controller="TabCtrl as tabCtrl">
     <div class="container">
       <div id="topbar">
-        <nav>
-          <ul>
-            <li class="active"><a href="#">SET-UP</a></li>
-            <li><a href="#">PLAYER</a></li>
-            <li><a href="#">RAW-TEx</a></li>
-            <li><a href="#">RAW-TEvPEv</a></li>
-            <li><a href="#">Result</a></li>
-          </ul>
-        </nav>
-      </div>
-      <div id="main">
-        <div id="tab-setup" class="row">
-          <div class="col-6">
-            <table>
-              <thead>
-                <tr></tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Contest Name</td>
-                  <td class="bg-judge"><input type="text" placeholder="Your Contest Name"></td>
-                </tr>
-
-                <tr></tr>
-
-                <tr>
-                  <td>Division Name</td>
-                  <td class="bg-judge"><input type="text" placeholder="Your Division Name"></td>
-                  <td>Division</td>
-                </tr>
-
-                <tr></tr>
-
-                <tr>
-                  <th colspan="2">Clicker Judges</th>
-                </tr>
-
-                <tr>
-                  <td>J-A1</td>
-                  <td class="bg-judge"><input type="text" placeholder="Judge Name"></td>
-                </tr>
-
-                <tr>
-                  <td>J-A2</td>
-                  <td class="bg-judge"><input type="text"></td>
-                </tr>
-
-                <tr>
-                  <td>J-A3</td>
-                  <td class="bg-judge"><input type="text"></td>
-                </tr>
-
-                <tr>
-                  <td>J-A4</td>
-                  <td class="bg-judge"><input type="text"></td>
-                </tr>
-
-                <tr>
-                  <td>J-A5</td>
-                  <td class="bg-judge"><input type="text"></td>
-                </tr>
-
-                <tr>
-                  <td>J-A6</td>
-                  <td class="bg-judge"><input type="text"></td>
-                </tr>
-
-                <tr></tr>
-
-                <tr>
-                  <th colspan="2">Evaluation Judges</th>
-                </tr>
-
-                <tr>
-                  <td>J-B1</td>
-                  <td class="bg-judge"><input type="text" placeholder="Judge Name"></td>
-                </tr>
-
-                <tr>
-                  <td>J-B2</td>
-                  <td class="bg-judge"><input type="text"></td>
-                </tr>
-
-                <tr>
-                  <td>J-B3</td>
-                  <td class="bg-judge"><input type="text"></td>
-                </tr>
-
-                <tr>
-                  <td>J-B4</td>
-                  <td class="bg-judge"><input type="text"></td>
-                </tr>
-
-                <tr>
-                  <td>J-B5</td>
-                  <td class="bg-judge"><input type="text"></td>
-                </tr>
-
-                <tr>
-                  <td>J-B6</td>
-                  <td class="bg-judge"><input type="text"></td>
-                </tr>
-
-
-              </tbody>
-            </table>
+        <div class="row">
+          <div class="col-8">
+            <nav class="navbar">
+              <ul>
+                <li ng-repeat="tab in tabCtrl.tabs" ng-class="{active:tabCtrl.isActiveTab(tab.url)}" ng-click="tabCtrl.onClickTab(tab)">
+                  <a href="#">{{tab.title}}</a>
+                </li>
+              </ul>
+            </nav>
           </div>
 
-          <div class="col-6">
-            <table>
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>Full Name</th>
-                  <th>Name</th>
-                  <th>Points</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Clicker Value</td>
-                  <td class="bg-point"><input type="text"></td>
-                  <td class="bg-point"><input type="text" value="T.Ex"></td>
-                  <td class="bg-point"><input class="text-right" value="60"></td>
-                </tr>
-
-                <tr></tr>
-
-                <tr>
-                  <td>Given Value 1</td>
-                  <td class="bg-point"><input type="text" value="Cleanliness"></td>
-                  <td class="bg-point"><input type="text" value="CLN"></td>
-                  <td class="bg-point"><input class="text-right" value="5"></td>
-                </tr>
-
-                <tr>
-                  <td>Given Value 2</td>
-                  <td class="bg-point"><input type="text" value="Variation"></td>
-                  <td class="bg-point"><input type="text" value="VAR"></td>
-                  <td class="bg-point"><input class="text-right" value="5"></td>
-                </tr>
-
-                <tr>
-                  <td>Given Value 3</td>
-                  <td class="bg-point"><input type="text" value="Rareness"></td>
-                  <td class="bg-point"><input type="text" value="RAR"></td>
-                  <td class="bg-point"><input class="text-right" value="5"></td>
-                </tr>
-
-                <tr>
-                  <td>Given Value 4</td>
-                  <td class="bg-point"><input type="text" value="Execution"></td>
-                  <td class="bg-point"><input type="text" value="EXE"></td>
-                  <td class="bg-point"><input class="text-right" value="5"></td>
-                </tr>
-
-                <tr>
-                  <td>Given Value 5</td>
-                  <td class="bg-point"><input type="text" value="Music Use"></td>
-                  <td class="bg-point"><input type="text" value="MSC"></td>
-                  <td class="bg-point"><input class="text-right" value="5"></td>
-                </tr>
-
-                <tr>
-                  <td>Given Value 6</td>
-                  <td class="bg-point"><input type="text" value="Body Control"></td>
-                  <td class="bg-point"><input type="text" value="BDY"></td>
-                  <td class="bg-point"><input class="text-right" value="5"></td>
-                </tr>
-
-                <tr>
-                  <td>Given Value 7</td>
-                  <td class="bg-point"><input type="text" value="Space Use"></td>
-                  <td class="bg-point"><input type="text" value="SPC"></td>
-                  <td class="bg-point"><input class="text-right" value="5"></td>
-                </tr>
-
-                <tr>
-                  <td>Given Value 8</td>
-                  <td class="bg-point"><input type="text" value="Showmanship"></td>
-                  <td class="bg-point"><input type="text" value="SHW"></td>
-                  <td class="bg-point"><input class="text-right" value="5"></td>
-                </tr>
-
-                <tr>
-                  <td>Given Value 9</td>
-                  <td class="bg-point"><input type="text"></td>
-                  <td class="bg-point"><input type="text"></td>
-                  <td class="bg-point"><input class="text-right"></td>
-                </tr>
-
-                <tr>
-                  <td>Given Value 10</td>
-                  <td class="bg-point"><input type="text"></td>
-                  <td class="bg-point"><input type="text"></td>
-                  <td class="bg-point"><input class="text-right"></td>
-                </tr>
-
-                <tr></tr>
-
-                <tr>
-                  <td>Total</td>
-                  <td colspan="3"><input class="text-right" value="100"></td>
-                </tr>
-
-                <tr></tr>
-
-                <tr>
-                  <td>Deduction 1</td>
-                  <td class="bg-point" colspan="2"><input type="text" value="Stop"></td>
-                  <td class="bg-point"><input class="text-right" value="1"></td>
-                </tr>
-
-                <tr>
-                  <td>Deduction 1</td>
-                  <td class="bg-point" colspan="2"><input type="text" value="Discard"></td>
-                  <td class="bg-point"><input class="text-right" value="3"></td>
-                </tr>
-
-                <tr>
-                  <td>Deduction 1</td>
-                  <td class="bg-point" colspan="2"><input type="text" value="Cut"></td>
-                  <td class="bg-point"><input class="text-right" value="5"></td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="col-4">
+            {{tabCtrl.isActiveTab('set-up.html')}}
+            {{tabCtrl.currentTab}}
           </div>
         </div>
+      </div>
+
+      <div id="main">
+        <div ng-include="tabCtrl.currentTab"></div>
+        <script type="text/ng-template" id="set-up.html">
+          <div id="tab-set-up" class="row">
+            <div class="col-6">
+              <table>
+                <thead>
+                  <tr></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Contest Name</td>
+                    <td class="bg-judge"><input type="text" placeholder="Your Contest Name"></td>
+                  </tr>
+          
+                  <tr></tr>
+          
+                  <tr>
+                    <td>Division Name</td>
+                    <td class="bg-judge"><input type="text" placeholder="Your Division Name"></td>
+                    <td>Division</td>
+                  </tr>
+          
+                  <tr></tr>
+          
+                  <tr>
+                    <th colspan="2">Clicker Judges</th>
+                  </tr>
+          
+                  <tr>
+                    <td>J-A1</td>
+                    <td class="bg-judge"><input type="text" placeholder="Judge Name"></td>
+                  </tr>
+          
+                  <tr>
+                    <td>J-A2</td>
+                    <td class="bg-judge"><input type="text"></td>
+                  </tr>
+          
+                  <tr>
+                    <td>J-A3</td>
+                    <td class="bg-judge"><input type="text"></td>
+                  </tr>
+          
+                  <tr>
+                    <td>J-A4</td>
+                    <td class="bg-judge"><input type="text"></td>
+                  </tr>
+          
+                  <tr>
+                    <td>J-A5</td>
+                    <td class="bg-judge"><input type="text"></td>
+                  </tr>
+          
+                  <tr>
+                    <td>J-A6</td>
+                    <td class="bg-judge"><input type="text"></td>
+                  </tr>
+          
+                  <tr></tr>
+          
+                  <tr>
+                    <th colspan="2">Evaluation Judges</th>
+                  </tr>
+          
+                  <tr>
+                    <td>J-B1</td>
+                    <td class="bg-judge"><input type="text" placeholder="Judge Name"></td>
+                  </tr>
+          
+                  <tr>
+                    <td>J-B2</td>
+                    <td class="bg-judge"><input type="text"></td>
+                  </tr>
+          
+                  <tr>
+                    <td>J-B3</td>
+                    <td class="bg-judge"><input type="text"></td>
+                  </tr>
+          
+                  <tr>
+                    <td>J-B4</td>
+                    <td class="bg-judge"><input type="text"></td>
+                  </tr>
+          
+                  <tr>
+                    <td>J-B5</td>
+                    <td class="bg-judge"><input type="text"></td>
+                  </tr>
+          
+                  <tr>
+                    <td>J-B6</td>
+                    <td class="bg-judge"><input type="text"></td>
+                  </tr>
+          
+          
+                </tbody>
+              </table>
+            </div>
+          
+            <div class="col-6">
+              <table>
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Full Name</th>
+                    <th>Name</th>
+                    <th>Points</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Clicker Value</td>
+                    <td class="bg-point"><input type="text"></td>
+                    <td class="bg-point"><input type="text" value="T.Ex"></td>
+                    <td class="bg-point"><input class="text-right" value="60"></td>
+                  </tr>
+          
+                  <tr></tr>
+          
+                  <tr>
+                    <td>Given Value 1</td>
+                    <td class="bg-point"><input type="text" value="Cleanliness"></td>
+                    <td class="bg-point"><input type="text" value="CLN"></td>
+                    <td class="bg-point"><input class="text-right" value="5"></td>
+                  </tr>
+          
+                  <tr>
+                    <td>Given Value 2</td>
+                    <td class="bg-point"><input type="text" value="Variation"></td>
+                    <td class="bg-point"><input type="text" value="VAR"></td>
+                    <td class="bg-point"><input class="text-right" value="5"></td>
+                  </tr>
+          
+                  <tr>
+                    <td>Given Value 3</td>
+                    <td class="bg-point"><input type="text" value="Rareness"></td>
+                    <td class="bg-point"><input type="text" value="RAR"></td>
+                    <td class="bg-point"><input class="text-right" value="5"></td>
+                  </tr>
+          
+                  <tr>
+                    <td>Given Value 4</td>
+                    <td class="bg-point"><input type="text" value="Execution"></td>
+                    <td class="bg-point"><input type="text" value="EXE"></td>
+                    <td class="bg-point"><input class="text-right" value="5"></td>
+                  </tr>
+          
+                  <tr>
+                    <td>Given Value 5</td>
+                    <td class="bg-point"><input type="text" value="Music Use"></td>
+                    <td class="bg-point"><input type="text" value="MSC"></td>
+                    <td class="bg-point"><input class="text-right" value="5"></td>
+                  </tr>
+          
+                  <tr>
+                    <td>Given Value 6</td>
+                    <td class="bg-point"><input type="text" value="Body Control"></td>
+                    <td class="bg-point"><input type="text" value="BDY"></td>
+                    <td class="bg-point"><input class="text-right" value="5"></td>
+                  </tr>
+          
+                  <tr>
+                    <td>Given Value 7</td>
+                    <td class="bg-point"><input type="text" value="Space Use"></td>
+                    <td class="bg-point"><input type="text" value="SPC"></td>
+                    <td class="bg-point"><input class="text-right" value="5"></td>
+                  </tr>
+          
+                  <tr>
+                    <td>Given Value 8</td>
+                    <td class="bg-point"><input type="text" value="Showmanship"></td>
+                    <td class="bg-point"><input type="text" value="SHW"></td>
+                    <td class="bg-point"><input class="text-right" value="5"></td>
+                  </tr>
+          
+                  <tr>
+                    <td>Given Value 9</td>
+                    <td class="bg-point"><input type="text"></td>
+                    <td class="bg-point"><input type="text"></td>
+                    <td class="bg-point"><input class="text-right"></td>
+                  </tr>
+          
+                  <tr>
+                    <td>Given Value 10</td>
+                    <td class="bg-point"><input type="text"></td>
+                    <td class="bg-point"><input type="text"></td>
+                    <td class="bg-point"><input class="text-right"></td>
+                  </tr>
+          
+                  <tr></tr>
+          
+                  <tr>
+                    <td>Total</td>
+                    <td colspan="3"><input class="text-right" value="100"></td>
+                  </tr>
+          
+                  <tr></tr>
+          
+                  <tr>
+                    <td>Deduction 1</td>
+                    <td class="bg-point" colspan="2"><input type="text" value="Stop"></td>
+                    <td class="bg-point"><input class="text-right" value="1"></td>
+                  </tr>
+          
+                  <tr>
+                    <td>Deduction 1</td>
+                    <td class="bg-point" colspan="2"><input type="text" value="Discard"></td>
+                    <td class="bg-point"><input class="text-right" value="3"></td>
+                  </tr>
+          
+                  <tr>
+                    <td>Deduction 1</td>
+                    <td class="bg-point" colspan="2"><input type="text" value="Cut"></td>
+                    <td class="bg-point"><input class="text-right" value="5"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </script>
         
-        <div id="tab-player" class="row">
-          <div class="col-4">
+        <script type="text/ng-template" id="player.html">
+          <div id="tab-player" class="row">
+            <div class="col-4">
+              <table>
+                <thead>
+                  <tr>
+                    <th class="bg-header"></th>
+                    <th class="bg-header">Player Name</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td><input type="text"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </script>
+
+        <script type="text/ng-template" id="raw-tex.html">
+          <div id="tab-raw-tex" class="row">
             <table>
               <thead>
                 <tr>
-                  <th class="bg-header"></th>
-                  <th class="bg-header">Player Name</th>
+                  <th class="bg-byline"></th>
+                  <th class="bg-byline"></th>
+                  <th class="bg-byline">AD1</th>
+                  <th class="bg-byline">AD2</th>
+                  <th class="bg-byline">AD3</th>
+                  <th class="bg-byline" colspan="2">Judge-A1</th>
+                  <th class="bg-byline" colspan="2">Judge-A2</th>
+                  <th class="bg-byline" colspan="2">Judge-A3</th>
+                  <th class="bg-byline" colspan="2">Judge-A4</th>
+                  <th class="bg-byline" colspan="2">Judge-A5</th>
+                  <th class="bg-byline" colspan="2">Judge-A6</th>
+                </tr>
+                <tr>
+                  <th class="bg-byline"></th>
+                  <th class="bg-byline">Player Name</th>
+                  <th class="bg-header">Stop</th>
+                  <th class="bg-header">Discard</th>
+                  <th class="bg-header">Cut</th>
+                  <th class="bg-header">+</th>
+                  <th class="bg-header">-</th>
+                  <th class="bg-header">+</th>
+                  <th class="bg-header">-</th>
+                  <th class="bg-header">+</th>
+                  <th class="bg-header">-</th>
+                  <th class="bg-header">+</th>
+                  <th class="bg-header">-</th>
+                  <th class="bg-header">+</th>
+                  <th class="bg-header">-</th>
+                  <th class="bg-header">+</th>
+                  <th class="bg-header">-</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>1</td>
+                  <td class="bg-byline">1</td>
+                  <td class="bg-byline"></td>
+                  <td><input class="text-right"></td>
+                  <td><input class="text-right"></td>
+                  <td><input class="text-right"></td>
+                  <td><input class="text-right"></td>
+                  <td><input class="text-right"></td>
+                  <td><input class="text-right"></td>
+                  <td><input class="text-right"></td>
+                  <td><input class="text-right"></td>
+                  <td><input class="text-right"></td>
+                  <td><input class="text-right"></td>
+                  <td><input class="text-right"></td>
+                  <td><input class="text-right"></td>
+                  <td><input class="text-right"></td>
+                  <td><input class="text-right"></td>
+                  <td><input class="text-right"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </script>
+
+        <script type="text/ng-template" id="raw-tevpev.html">
+          <div id="tab-raw-tevpev" class="row">
+            <table>
+              <thead>
+                <tr>
+                  <th class="bg-byline"></th>
+                  <th class="bg-byline"></th>
+                  <th class="bg-byline" colspan="8">Judge-B1</th>
+                  <th class="bg-byline" colspan="8">Judge-B2</th>
+                  <th class="bg-byline" colspan="8">Judge-B3</th>
+                  <th class="bg-byline" colspan="8">Judge-B4</th>
+                  <th class="bg-byline" colspan="8">Judge-B5</th>
+                  <th class="bg-byline" colspan="8">Judge-B6</th>
+                </tr>
+                <tr>
+                  <th class="bg-byline"></th>
+                  <th class="bg-byline">Player Name</th>
+                  <th class="bg-header">CLN</th>
+                  <th class="bg-header">VAR</th>
+                  <th class="bg-header">RAR</th>
+                  <th class="bg-header">EXE</th>
+                  <th class="bg-header">MSC</th>
+                  <th class="bg-header">BDY</th>
+                  <th class="bg-header">SPC</th>
+                  <th class="bg-header">SHW</th>
+          
+                  <th class="bg-header">CLN</th>
+                  <th class="bg-header">VAR</th>
+                  <th class="bg-header">RAR</th>
+                  <th class="bg-header">EXE</th>
+                  <th class="bg-header">MSC</th>
+                  <th class="bg-header">BDY</th>
+                  <th class="bg-header">SPC</th>
+                  <th class="bg-header">SHW</th>
+          
+                  <th class="bg-header">CLN</th>
+                  <th class="bg-header">VAR</th>
+                  <th class="bg-header">RAR</th>
+                  <th class="bg-header">EXE</th>
+                  <th class="bg-header">MSC</th>
+                  <th class="bg-header">BDY</th>
+                  <th class="bg-header">SPC</th>
+                  <th class="bg-header">SHW</th>
+          
+                  <th class="bg-header">CLN</th>
+                  <th class="bg-header">VAR</th>
+                  <th class="bg-header">RAR</th>
+                  <th class="bg-header">EXE</th>
+                  <th class="bg-header">MSC</th>
+                  <th class="bg-header">BDY</th>
+                  <th class="bg-header">SPC</th>
+                  <th class="bg-header">SHW</th>
+          
+                  <th class="bg-header">CLN</th>
+                  <th class="bg-header">VAR</th>
+                  <th class="bg-header">RAR</th>
+                  <th class="bg-header">EXE</th>
+                  <th class="bg-header">MSC</th>
+                  <th class="bg-header">BDY</th>
+                  <th class="bg-header">SPC</th>
+                  <th class="bg-header">SHW</th>
+          
+                  <th class="bg-header">CLN</th>
+                  <th class="bg-header">VAR</th>
+                  <th class="bg-header">RAR</th>
+                  <th class="bg-header">EXE</th>
+                  <th class="bg-header">MSC</th>
+                  <th class="bg-header">BDY</th>
+                  <th class="bg-header">SPC</th>
+                  <th class="bg-header">SHW</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="bg-byline">1</td>
+                  <td class="bg-byline"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+          
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+          
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+          
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+          
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+          
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
+                  <td><input type="text"></td>
                   <td><input type="text"></td>
                 </tr>
               </tbody>
             </table>
           </div>
-        </div>
+        </script>
 
-        <div id="tab-tex" class="row">
-          <table>
-            <thead>
-              <tr>
-                <th class="bg-byline"></th>
-                <th class="bg-byline"></th>
-                <th class="bg-byline">AD1</th>
-                <th class="bg-byline">AD2</th>
-                <th class="bg-byline">AD3</th>
-                <th class="bg-byline" colspan="2">Judge-A1</th>
-                <th class="bg-byline" colspan="2">Judge-A2</th>
-                <th class="bg-byline" colspan="2">Judge-A3</th>
-                <th class="bg-byline" colspan="2">Judge-A4</th>
-                <th class="bg-byline" colspan="2">Judge-A5</th>
-                <th class="bg-byline" colspan="2">Judge-A6</th>
-              </tr>
-              <tr>
-                <th class="bg-byline"></th>
-                <th class="bg-byline">Player Name</th>
-                <th class="bg-header">Stop</th>
-                <th class="bg-header">Discard</th>
-                <th class="bg-header">Cut</th>
-                <th class="bg-header">+</th>
-                <th class="bg-header">-</th>
-                <th class="bg-header">+</th>
-                <th class="bg-header">-</th>
-                <th class="bg-header">+</th>
-                <th class="bg-header">-</th>
-                <th class="bg-header">+</th>
-                <th class="bg-header">-</th>
-                <th class="bg-header">+</th>
-                <th class="bg-header">-</th>
-                <th class="bg-header">+</th>
-                <th class="bg-header">-</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="bg-byline">1</td>
-                <td class="bg-byline"></td>
-                <td><input class="text-right"></td>
-                <td><input class="text-right"></td>
-                <td><input class="text-right"></td>
-                <td><input class="text-right"></td>
-                <td><input class="text-right"></td>
-                <td><input class="text-right"></td>
-                <td><input class="text-right"></td>
-                <td><input class="text-right"></td>
-                <td><input class="text-right"></td>
-                <td><input class="text-right"></td>
-                <td><input class="text-right"></td>
-                <td><input class="text-right"></td>
-                <td><input class="text-right"></td>
-                <td><input class="text-right"></td>
-                <td><input class="text-right"></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div id="tab-tevpev" class="row">
-          <table>
-            <thead>
-              <tr>
-                <th class="bg-byline"></th>
-                <th class="bg-byline"></th>
-                <th class="bg-byline" colspan="8">Judge-A1</th>
-                <th class="bg-byline" colspan="8">Judge-A2</th>
-                <th class="bg-byline" colspan="8">Judge-A3</th>
-                <th class="bg-byline" colspan="8">Judge-A4</th>
-                <th class="bg-byline" colspan="8">Judge-A5</th>
-                <th class="bg-byline" colspan="8">Judge-A6</th>
-              </tr>
-              <tr>
-                <th class="bg-byline"></th>
-                <th class="bg-byline">Player Name</th>
-                <th class="bg-header">CLN</th>
-                <th class="bg-header">VAR</th>
-                <th class="bg-header">RAR</th>
-                <th class="bg-header">EXE</th>
-                <th class="bg-header">MSC</th>
-                <th class="bg-header">BDY</th>
-                <th class="bg-header">SPC</th>
-                <th class="bg-header">SHW</th>
-
-                <th class="bg-header">CLN</th>
-                <th class="bg-header">VAR</th>
-                <th class="bg-header">RAR</th>
-                <th class="bg-header">EXE</th>
-                <th class="bg-header">MSC</th>
-                <th class="bg-header">BDY</th>
-                <th class="bg-header">SPC</th>
-                <th class="bg-header">SHW</th>
-
-                <th class="bg-header">CLN</th>
-                <th class="bg-header">VAR</th>
-                <th class="bg-header">RAR</th>
-                <th class="bg-header">EXE</th>
-                <th class="bg-header">MSC</th>
-                <th class="bg-header">BDY</th>
-                <th class="bg-header">SPC</th>
-                <th class="bg-header">SHW</th>
-
-                <th class="bg-header">CLN</th>
-                <th class="bg-header">VAR</th>
-                <th class="bg-header">RAR</th>
-                <th class="bg-header">EXE</th>
-                <th class="bg-header">MSC</th>
-                <th class="bg-header">BDY</th>
-                <th class="bg-header">SPC</th>
-                <th class="bg-header">SHW</th>
-
-                <th class="bg-header">CLN</th>
-                <th class="bg-header">VAR</th>
-                <th class="bg-header">RAR</th>
-                <th class="bg-header">EXE</th>
-                <th class="bg-header">MSC</th>
-                <th class="bg-header">BDY</th>
-                <th class="bg-header">SPC</th>
-                <th class="bg-header">SHW</th>
-
-                <th class="bg-header">CLN</th>
-                <th class="bg-header">VAR</th>
-                <th class="bg-header">RAR</th>
-                <th class="bg-header">EXE</th>
-                <th class="bg-header">MSC</th>
-                <th class="bg-header">BDY</th>
-                <th class="bg-header">SPC</th>
-                <th class="bg-header">SHW</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="bg-byline">1</td>
-                <td class="bg-byline"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div id="tab-result" class="row">
-          <div class="col-12">
-            <table>
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>Your Contest Name</th>
-                  <th class="bg-tex">T.Ex</th>
-                  <th class="bg-tev" colspan="5">T.Ev</th>
-                  <th class="bg-pev" colspan="5">P.Ev</th>
-                  <th class="bg-total"></th>
-                  <th class="bg-md" colspan="3">M. Deduction</th>
-                  <th class="bg-total"></th>
-                  <th></th>
-                </tr>
-
-                <tr>
-                  <th></th>
-                  <th>1a Division</th>
-                  <th class="bg-tex">total (/60)</th>
-                  <th class="bg-tev">Cleanliness</th>
-                  <th class="bg-tev">Variation</th>
-                  <th class="bg-tev">Rareness</th>
-                  <th class="bg-tev">Execution</th>
-                  <th class="bg-tev">total (/20)</th>
-                  <th class="bg-pev">Music Use</th>
-                  <th class="bg-pev">Body Control</th>
-                  <th class="bg-pev">Space use</th>
-                  <th class="bg-pev">Showmanship</th>
-                  <th class="bg-pev">total (/20)</th>
-                  <th class="bg-total">E.Total (/100)</th>
-                  <th class="bg-md">Stop</th>
-                  <th class="bg-md">Discard</th>
-                  <th class="bg-md">Cut</th>
-                  <th class="bg-total">FINAL SCORE</th>
-                  <th>Place</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-              </tbody>
-            </table>
+        <script type="text/ng-template" id="result.html">
+          <div id="tab-result" class="row">
+            <div class="col-12">
+              <table>
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Your Contest Name</th>
+                    <th class="bg-tex">T.Ex</th>
+                    <th class="bg-tev" colspan="5">T.Ev</th>
+                    <th class="bg-pev" colspan="5">P.Ev</th>
+                    <th class="bg-total"></th>
+                    <th class="bg-md" colspan="3">M. Deduction</th>
+                    <th class="bg-total"></th>
+                    <th></th>
+                  </tr>
+          
+                  <tr>
+                    <th></th>
+                    <th>1a Division</th>
+                    <th class="bg-tex">total (/60)</th>
+                    <th class="bg-tev">Cleanliness</th>
+                    <th class="bg-tev">Variation</th>
+                    <th class="bg-tev">Rareness</th>
+                    <th class="bg-tev">Execution</th>
+                    <th class="bg-tev">total (/20)</th>
+                    <th class="bg-pev">Music Use</th>
+                    <th class="bg-pev">Body Control</th>
+                    <th class="bg-pev">Space use</th>
+                    <th class="bg-pev">Showmanship</th>
+                    <th class="bg-pev">total (/20)</th>
+                    <th class="bg-total">E.Total (/100)</th>
+                    <th class="bg-md">Stop</th>
+                    <th class="bg-md">Discard</th>
+                    <th class="bg-md">Cut</th>
+                    <th class="bg-total">FINAL SCORE</th>
+                    <th>Place</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
+        </script>
       </div>
     </div>
+
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="javascripts/app.js"></script>
   </body>
 </html>

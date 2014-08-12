@@ -4,7 +4,8 @@
 }
 
 .row {
-  margin-left: -$gutter / 2;
+  position: relative;
+  left: $gutter / 2;
   &:after {
     content: '';
     clear: both;
@@ -18,13 +19,4 @@
     margin-right: $gutter;
     float: left;
   }
-}
-
-
-
-#tab-setup,
-#tab-player,
-#tab-tex,
-#tab-tevpev {
-  display: none;
 }
