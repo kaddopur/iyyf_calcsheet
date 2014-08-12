@@ -6,7 +6,7 @@ tr {
   height: 1.414em;
 }
 
-td {
+th, td {
   border: 1px solid #eee;
   padding: 0 3px;
   input {
@@ -24,16 +24,21 @@ td.title {
   text-align: center;
 }
 
-td.bg-judge {
+.bg-judge {
   background-color: $color-judge;
   input::-webkit-input-placeholder {
     color: lightgray;
   }
 }
 
-td.bg-point {
+.bg-point {
   background-color: $color-point;
   input::-webkit-input-placeholder {
     color: darkgray;
   }
+}
+
+.bg-header {
+  background-color: $color-header;
+  color: white;
 }
