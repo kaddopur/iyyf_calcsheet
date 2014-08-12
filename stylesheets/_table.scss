@@ -19,11 +19,6 @@ th, td {
   }
 }
 
-td.title {
-  font-weight: bold;
-  text-align: center;
-}
-
 .bg-judge {
   background-color: $color-judge;
   input::-webkit-input-placeholder {
@@ -41,4 +36,34 @@ td.title {
 .bg-header {
   background-color: $color-header;
   color: white;
+}
+
+.bg-byline {
+  background-color: $color-byline;
+  color: lightgray;
+}
+
+.text-right {
+  text-align: right;
+}
+
+#tab-player {
+  th, td {
+    &:first-child {
+      width: 12px;
+      text-align: right;
+    }
+  }
+}
+
+#tab-tex {
+  th, td {
+    &:first-child {
+      width: 12px;
+      text-align: right;
+    }
+    &:nth-child(2) {
+      width: 150px;
+    } 
+  }
 }

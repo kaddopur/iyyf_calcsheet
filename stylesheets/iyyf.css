@@ -69,7 +69,8 @@
   margin-right: 15px;
   float: left; }
 
-#tab-setup {
+#tab-setup,
+#tab-player {
   display: none; }
 
 table {
@@ -88,10 +89,6 @@ th, td {
     th input[type=number], td input[type=number] {
       text-align: right; }
 
-td.title {
-  font-weight: bold;
-  text-align: center; }
-
 .bg-judge {
   background-color: #00b0f4; }
   .bg-judge input::-webkit-input-placeholder {
@@ -105,6 +102,23 @@ td.title {
 .bg-header {
   background-color: black;
   color: white; }
+
+.bg-byline {
+  background-color: gray;
+  color: lightgray; }
+
+.text-right {
+  text-align: right; }
+
+#tab-player th:first-child, #tab-player td:first-child {
+  width: 12px;
+  text-align: right; }
+
+#tab-tex th:first-child, #tab-tex td:first-child {
+  width: 12px;
+  text-align: right; }
+#tab-tex th:nth-child(2), #tab-tex td:nth-child(2) {
+  width: 150px; }
 
 input {
   background-color: transparent; }
