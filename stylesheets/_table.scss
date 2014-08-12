@@ -1,5 +1,6 @@
 table {
   width: 100%;
+  table-layout: fixed;
 }
 
 tr {
@@ -19,7 +20,20 @@ th, td {
   }
 }
 
+#tab-setup {
+  table {
+    th, td {
+      &:first-child {
+        width: 100px;
+      }
+    }
+  }
+}
+
 #tab-player {
+  table {
+    width: auto;
+  }
   th, td {
     &:first-child {
       width: 12px;
@@ -28,15 +42,18 @@ th, td {
   }
 }
 
+#tab-player,
 #tab-tex,
-#tab-tevpev {
+#tab-tevpev,
+#tab-result {
   th, td {
     &:first-child {
       width: 12px;
       text-align: right;
     }
     &:nth-child(2) {
-      width: 150px;
+      width: 160px;
+      text-align: left;
     } 
   }
   input {
@@ -47,5 +64,17 @@ th, td {
 #tab-tevpev {
   table {
     width: 1800px;
+  }
+}
+
+#tab-result {
+  th {
+    word-wrap: break-word;
+  }
+  td {
+    text-align: right;
+    &:last-child {
+      text-align: center;
+    }
   }
 }

@@ -16,6 +16,26 @@
   background-color: gray;
   color: lightgray; }
 
+.bg-tex {
+  background-color: #cfc7ff;
+  color: black; }
+
+.bg-tev {
+  background-color: #ff86ca;
+  color: black; }
+
+.bg-pev {
+  background-color: #91cbff;
+  color: black; }
+
+.bg-total {
+  background-color: #ffce00;
+  color: black; }
+
+.bg-md {
+  background-color: #ff86ca;
+  color: black; }
+
 .text-right {
   text-align: right; }
 
@@ -92,11 +112,13 @@
 
 #tab-setup,
 #tab-player,
-#tab-tex {
+#tab-tex,
+#tab-tevpev {
   display: none; }
 
 table {
-  width: 100%; }
+  width: 100%;
+  table-layout: fixed; }
 
 tr {
   height: 1.414em; }
@@ -111,25 +133,48 @@ th, td {
     th input[type=number], td input[type=number] {
       text-align: right; }
 
+#tab-setup table th:first-child, #tab-setup table td:first-child {
+  width: 100px; }
+
+#tab-player table {
+  width: auto; }
 #tab-player th:first-child, #tab-player td:first-child {
   width: 12px;
   text-align: right; }
 
-#tab-tex th:first-child, #tab-tex td:first-child,
+#tab-player th:first-child, #tab-player td:first-child,
+#tab-tex th:first-child,
+#tab-tex td:first-child,
 #tab-tevpev th:first-child,
-#tab-tevpev td:first-child {
+#tab-tevpev td:first-child,
+#tab-result th:first-child,
+#tab-result td:first-child {
   width: 12px;
   text-align: right; }
-#tab-tex th:nth-child(2), #tab-tex td:nth-child(2),
+#tab-player th:nth-child(2), #tab-player td:nth-child(2),
+#tab-tex th:nth-child(2),
+#tab-tex td:nth-child(2),
 #tab-tevpev th:nth-child(2),
-#tab-tevpev td:nth-child(2) {
-  width: 150px; }
+#tab-tevpev td:nth-child(2),
+#tab-result th:nth-child(2),
+#tab-result td:nth-child(2) {
+  width: 160px;
+  text-align: left; }
+#tab-player input,
 #tab-tex input,
-#tab-tevpev input {
+#tab-tevpev input,
+#tab-result input {
   text-align: right; }
 
 #tab-tevpev table {
   width: 1800px; }
+
+#tab-result th {
+  word-wrap: break-word; }
+#tab-result td {
+  text-align: right; }
+  #tab-result td:last-child {
+    text-align: center; }
 
 input {
   background-color: transparent; }
