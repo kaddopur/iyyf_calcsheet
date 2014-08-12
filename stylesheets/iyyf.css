@@ -1,3 +1,24 @@
+.bg-judge {
+  background-color: #00b0f4; }
+  .bg-judge input::-webkit-input-placeholder {
+    color: lightgray; }
+
+.bg-point {
+  background-color: #ffdc5a; }
+  .bg-point input::-webkit-input-placeholder {
+    color: darkgray; }
+
+.bg-header {
+  background-color: black;
+  color: white; }
+
+.bg-byline {
+  background-color: gray;
+  color: lightgray; }
+
+.text-right {
+  text-align: right; }
+
 .container {
   width: 1140px;
   margin: 0 auto; }
@@ -70,7 +91,8 @@
   float: left; }
 
 #tab-setup,
-#tab-player {
+#tab-player,
+#tab-tex {
   display: none; }
 
 table {
@@ -89,36 +111,25 @@ th, td {
     th input[type=number], td input[type=number] {
       text-align: right; }
 
-.bg-judge {
-  background-color: #00b0f4; }
-  .bg-judge input::-webkit-input-placeholder {
-    color: lightgray; }
-
-.bg-point {
-  background-color: #ffdc5a; }
-  .bg-point input::-webkit-input-placeholder {
-    color: darkgray; }
-
-.bg-header {
-  background-color: black;
-  color: white; }
-
-.bg-byline {
-  background-color: gray;
-  color: lightgray; }
-
-.text-right {
-  text-align: right; }
-
 #tab-player th:first-child, #tab-player td:first-child {
   width: 12px;
   text-align: right; }
 
-#tab-tex th:first-child, #tab-tex td:first-child {
+#tab-tex th:first-child, #tab-tex td:first-child,
+#tab-tevpev th:first-child,
+#tab-tevpev td:first-child {
   width: 12px;
   text-align: right; }
-#tab-tex th:nth-child(2), #tab-tex td:nth-child(2) {
+#tab-tex th:nth-child(2), #tab-tex td:nth-child(2),
+#tab-tevpev th:nth-child(2),
+#tab-tevpev td:nth-child(2) {
   width: 150px; }
+#tab-tex input,
+#tab-tevpev input {
+  text-align: right; }
+
+#tab-tevpev table {
+  width: 1800px; }
 
 input {
   background-color: transparent; }

@@ -19,34 +19,6 @@ th, td {
   }
 }
 
-.bg-judge {
-  background-color: $color-judge;
-  input::-webkit-input-placeholder {
-    color: lightgray;
-  }
-}
-
-.bg-point {
-  background-color: $color-point;
-  input::-webkit-input-placeholder {
-    color: darkgray;
-  }
-}
-
-.bg-header {
-  background-color: $color-header;
-  color: white;
-}
-
-.bg-byline {
-  background-color: $color-byline;
-  color: lightgray;
-}
-
-.text-right {
-  text-align: right;
-}
-
 #tab-player {
   th, td {
     &:first-child {
@@ -56,7 +28,8 @@ th, td {
   }
 }
 
-#tab-tex {
+#tab-tex,
+#tab-tevpev {
   th, td {
     &:first-child {
       width: 12px;
@@ -65,5 +38,14 @@ th, td {
     &:nth-child(2) {
       width: 150px;
     } 
+  }
+  input {
+    text-align: right;
+  }
+}
+
+#tab-tevpev {
+  table {
+    width: 1800px;
   }
 }

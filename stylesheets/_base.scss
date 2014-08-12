@@ -1,0 +1,27 @@
+.bg-judge {
+  background-color: $color-judge;
+  input::-webkit-input-placeholder {
+    color: lightgray;
+  }
+}
+
+.bg-point {
+  background-color: $color-point;
+  input::-webkit-input-placeholder {
+    color: darkgray;
+  }
+}
+
+.bg-header {
+  background-color: $color-header;
+  color: white;
+}
+
+.bg-byline {
+  background-color: $color-byline;
+  color: lightgray;
+}
+
+.text-right {
+  text-align: right;
+}
