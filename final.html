@@ -250,23 +250,13 @@
                   <th class="bg-byline" colspan="2" ng-repeat="judge in texCtrl.contest.clickerJudges">{{judge.name}}</th>
                 </tr>
                 <tr>
-                  <th class="bg-byline"></th>
-                  <th class="bg-byline">Player Name</th>
+                  <th class="bg-header"></th>
+                  <th class="bg-header">Player Name</th>
                   <th class="bg-header">Stop</th>
                   <th class="bg-header">Discard</th>
                   <th class="bg-header">Cut</th>
-                  <th class="bg-header">+</th>
-                  <th class="bg-header">-</th>
-                  <th class="bg-header">+</th>
-                  <th class="bg-header">-</th>
-                  <th class="bg-header">+</th>
-                  <th class="bg-header">-</th>
-                  <th class="bg-header">+</th>
-                  <th class="bg-header">-</th>
-                  <th class="bg-header">+</th>
-                  <th class="bg-header">-</th>
-                  <th class="bg-header">+</th>
-                  <th class="bg-header">-</th>
+                  <th ng-repeat-start="i in [1, 2, 3, 4, 5, 6]" class="bg-header">+</th>
+                  <th ng-repeat-end class="bg-header">-</th>
                 </tr>
               </thead>
               <tbody>
@@ -276,18 +266,8 @@
                   <td><input class="text-right"></td>
                   <td><input class="text-right"></td>
                   <td><input class="text-right"></td>
-                  <td><input class="text-right"></td>
-                  <td><input class="text-right"></td>
-                  <td><input class="text-right"></td>
-                  <td><input class="text-right"></td>
-                  <td><input class="text-right"></td>
-                  <td><input class="text-right"></td>
-                  <td><input class="text-right"></td>
-                  <td><input class="text-right"></td>
-                  <td><input class="text-right"></td>
-                  <td><input class="text-right"></td>
-                  <td><input class="text-right"></td>
-                  <td><input class="text-right"></td>
+                  <td ng-repeat-start="judge in texCtrl.contest.clickerJudges"><input class="text-right"></td>
+                  <td ng-repeat-end><input class="text-right"></td>
                 </tr>
               </tbody>
             </table>
@@ -304,120 +284,31 @@
                   <th class="bg-byline" colspan="8" ng-repeat="judge in tevPevCtrl.contest.evaluationJudges">{{judge.name}}</th>
                 </tr>
                 <tr>
-                  <th class="bg-byline"></th>
-                  <th class="bg-byline">Player Name</th>
-                  <th class="bg-header">CLN</th>
+                  <th class="bg-header"></th>
+                  <th class="bg-header">Player Name</th>
+                  <th ng-repeat-start="i in [1, 2, 3, 4, 5, 6]" class="bg-header">CLN</th>
                   <th class="bg-header">VAR</th>
                   <th class="bg-header">RAR</th>
                   <th class="bg-header">EXE</th>
                   <th class="bg-header">MSC</th>
                   <th class="bg-header">BDY</th>
                   <th class="bg-header">SPC</th>
-                  <th class="bg-header">SHW</th>
-          
-                  <th class="bg-header">CLN</th>
-                  <th class="bg-header">VAR</th>
-                  <th class="bg-header">RAR</th>
-                  <th class="bg-header">EXE</th>
-                  <th class="bg-header">MSC</th>
-                  <th class="bg-header">BDY</th>
-                  <th class="bg-header">SPC</th>
-                  <th class="bg-header">SHW</th>
-          
-                  <th class="bg-header">CLN</th>
-                  <th class="bg-header">VAR</th>
-                  <th class="bg-header">RAR</th>
-                  <th class="bg-header">EXE</th>
-                  <th class="bg-header">MSC</th>
-                  <th class="bg-header">BDY</th>
-                  <th class="bg-header">SPC</th>
-                  <th class="bg-header">SHW</th>
-          
-                  <th class="bg-header">CLN</th>
-                  <th class="bg-header">VAR</th>
-                  <th class="bg-header">RAR</th>
-                  <th class="bg-header">EXE</th>
-                  <th class="bg-header">MSC</th>
-                  <th class="bg-header">BDY</th>
-                  <th class="bg-header">SPC</th>
-                  <th class="bg-header">SHW</th>
-          
-                  <th class="bg-header">CLN</th>
-                  <th class="bg-header">VAR</th>
-                  <th class="bg-header">RAR</th>
-                  <th class="bg-header">EXE</th>
-                  <th class="bg-header">MSC</th>
-                  <th class="bg-header">BDY</th>
-                  <th class="bg-header">SPC</th>
-                  <th class="bg-header">SHW</th>
-          
-                  <th class="bg-header">CLN</th>
-                  <th class="bg-header">VAR</th>
-                  <th class="bg-header">RAR</th>
-                  <th class="bg-header">EXE</th>
-                  <th class="bg-header">MSC</th>
-                  <th class="bg-header">BDY</th>
-                  <th class="bg-header">SPC</th>
-                  <th class="bg-header">SHW</th>
+                  <th ng-repeat-end class="bg-header">SHW</th>
                 </tr>
               </thead>
               <tbody>
                 <tr ng-repeat="player in tevPevCtrl.player.players">
                   <td class="bg-byline">{{$index + 1}}</td>
                   <td class="bg-byline">{{player.name}}</td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-          
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
 
+                  <td ng-repeat-start="judge in tevPevCtrl.contest.evaluationJudges"><input type="text" maxlength="2"></td>
                   <td><input type="text" maxlength="2"></td>
                   <td><input type="text" maxlength="2"></td>
                   <td><input type="text" maxlength="2"></td>
                   <td><input type="text" maxlength="2"></td>
                   <td><input type="text" maxlength="2"></td>
                   <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
+                  <td ng-repeat-end><input type="text" maxlength="2"></td>
                 </tr>
               </tbody>
             </table>
