@@ -171,13 +171,19 @@ th, td {
 #tab-result td:first-child {
   width: 12px;
   text-align: right; }
-#tab-player th:nth-child(2), #tab-player td:nth-child(2),
+#tab-player th:nth-child(2), #tab-player th:nth-child(2) input, #tab-player td:nth-child(2), #tab-player td:nth-child(2) input,
 #tab-raw-tex th:nth-child(2),
+#tab-raw-tex th:nth-child(2) input,
 #tab-raw-tex td:nth-child(2),
+#tab-raw-tex td:nth-child(2) input,
 #tab-raw-tevpev th:nth-child(2),
+#tab-raw-tevpev th:nth-child(2) input,
 #tab-raw-tevpev td:nth-child(2),
+#tab-raw-tevpev td:nth-child(2) input,
 #tab-result th:nth-child(2),
-#tab-result td:nth-child(2) {
+#tab-result th:nth-child(2) input,
+#tab-result td:nth-child(2),
+#tab-result td:nth-child(2) input {
   width: 160px;
   text-align: left; }
 #tab-player input,

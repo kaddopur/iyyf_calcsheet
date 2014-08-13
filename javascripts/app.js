@@ -1,5 +1,5 @@
 (function() {
-  var ContestFactory, MainCtrl, TabCtrl, TabFactory;
+  var ContestFactory, PlayerCtrl, PlayerFactory, RawTevPevCtrl, RawTexCtrl, ResultCtrl, SetUpCtrl, TabCtrl, TabFactory;
 
   TabFactory = function() {
     this.tabs = [
@@ -42,6 +42,69 @@
         name: 'Jason Huang'
       }
     ];
+    this.checkClickerJudges = function() {
+      var judge, newJudges, _i, _len, _ref;
+      newJudges = [];
+      _ref = this.clickerJudges;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        judge = _ref[_i];
+        if (judge.name) {
+          newJudges.push(judge);
+        }
+      }
+      if (this.newClickerJudge.name) {
+        newJudges.push(this.newClickerJudge);
+      }
+      this.newClickerJudge = {};
+      return this.clickerJudges = newJudges;
+    };
+    this.checkEvaluationJudges = function() {
+      var judge, newJudges, _i, _len, _ref;
+      newJudges = [];
+      _ref = this.evaluationJudges;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        judge = _ref[_i];
+        if (judge.name) {
+          newJudges.push(judge);
+        }
+      }
+      if (this.newEvaluationJudge.name) {
+        newJudges.push(this.newEvaluationJudge);
+      }
+      this.newEvaluationJudge = {};
+      return this.evaluationJudges = newJudges;
+    };
+    return this;
+  };
+
+  PlayerFactory = function() {
+    this.players = [
+      {
+        name: 'JIANG Shanzhen'
+      }, {
+        name: 'LIN Jiahe'
+      }, {
+        name: 'HE Haoxuan'
+      }, {
+        name: 'YU Zonglun'
+      }
+    ];
+    this.checkPlayers = function() {
+      var newPlayers, player, _i, _len, _ref;
+      newPlayers = [];
+      _ref = this.players;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        player = _ref[_i];
+        if (player.name) {
+          newPlayers.push(player);
+        }
+      }
+      if (this.newPlayer.name) {
+        newPlayers.push(this.newPlayer);
+      }
+      this.newPlayer = {};
+      return this.players = newPlayers;
+    };
     return this;
   };
 
@@ -57,43 +120,34 @@
     return this;
   };
 
-  MainCtrl = function(ContestFactory) {
+  SetUpCtrl = function(ContestFactory) {
     this.contest = ContestFactory;
-    this.checkClickerJudges = function() {
-      var judge, newJudges, _i, _len, _ref;
-      newJudges = [];
-      _ref = this.contest.clickerJudges;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        judge = _ref[_i];
-        if (judge.name) {
-          newJudges.push(judge);
-        }
-      }
-      if (this.contest.newClickerJudge.name) {
-        newJudges.push(this.contest.newClickerJudge);
-      }
-      this.contest.newClickerJudge = {};
-      return this.contest.clickerJudges = newJudges;
-    };
-    this.checkEvaluationJudges = function() {
-      var judge, newJudges, _i, _len, _ref;
-      newJudges = [];
-      _ref = this.contest.evaluationJudges;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        judge = _ref[_i];
-        if (judge.name) {
-          newJudges.push(judge);
-        }
-      }
-      if (this.contest.newEvaluationJudge.name) {
-        newJudges.push(this.contest.newEvaluationJudge);
-      }
-      this.contest.newEvaluationJudge = {};
-      return this.contest.evaluationJudges = newJudges;
-    };
     return this;
   };
 
-  angular.module('app', []).controller('TabCtrl', TabCtrl).controller('MainCtrl', MainCtrl).factory('TabFactory', TabFactory).service('ContestFactory', ContestFactory);
+  PlayerCtrl = function(PlayerFactory) {
+    this.player = PlayerFactory;
+    return this;
+  };
+
+  RawTexCtrl = function(ContestFactory, PlayerFactory) {
+    this.contest = ContestFactory;
+    this.player = PlayerFactory;
+    return this;
+  };
+
+  RawTevPevCtrl = function(ContestFactory, PlayerFactory) {
+    this.contest = ContestFactory;
+    this.player = PlayerFactory;
+    return this;
+  };
+
+  ResultCtrl = function(ContestFactory, PlayerFactory) {
+    this.contest = ContestFactory;
+    this.player = PlayerFactory;
+    return this;
+  };
+
+  angular.module('app', []).controller('TabCtrl', TabCtrl).controller('SetUpCtrl', SetUpCtrl).controller('PlayerCtrl', PlayerCtrl).controller('RawTexCtrl', RawTexCtrl).controller('RawTevPevCtrl', RawTevPevCtrl).controller('SetUpCtrl', SetUpCtrl).controller('ResultCtrl', ResultCtrl).factory('TabFactory', TabFactory).service('ContestFactory', ContestFactory).service('PlayerFactory', PlayerFactory);
 
 }).call(this);

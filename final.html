@@ -27,11 +27,11 @@
         </div>
       </div>
 
-      <div id="main" ng-controller="MainCtrl as main">
+      <div id="main">
         {{main.contest.newClickerJudge}}
         <div ng-include="tabCtrl.currentTab"></div>
         <script type="text/ng-template" id="set-up.html">
-          <div id="tab-set-up" class="row">
+          <div id="tab-set-up" class="row" ng-controller="SetUpCtrl as setUp">
             <div class="col-6">
               <table>
                 <thead>
@@ -40,14 +40,14 @@
                 <tbody>
                   <tr>
                     <td>Contest Name</td>
-                    <td class="bg-judge"><input type="text" placeholder="Your Contest Name" ng-model="main.contest.contestName"></td>
+                    <td class="bg-judge"><input type="text" placeholder="Your Contest Name" ng-model="setUp.contest.contestName"></td>
                   </tr>
           
                   <tr></tr>
           
                   <tr>
                     <td>Division Name</td>
-                    <td class="bg-judge"><input type="text" placeholder="Your Division Name" ng-model="main.contest.divisionName"></td>
+                    <td class="bg-judge"><input type="text" placeholder="Your Division Name" ng-model="setUp.contest.divisionName"></td>
                     <td>Division</td>
                   </tr>
           
@@ -57,14 +57,14 @@
                     <th colspan="2">Clicker Judges</th>
                   </tr>
           
-                  <tr ng-repeat="judge in main.contest.clickerJudges">
+                  <tr ng-repeat="judge in setUp.contest.clickerJudges">
                     <td>J-A{{$index + 1}}</td>
-                    <td class="bg-judge"><input type="text" placeholder="Judge Name" ng-model="judge.name" ng-blur="main.checkClickerJudges()"></td>
+                    <td class="bg-judge"><input type="text" placeholder="Judge Name" ng-model="judge.name" ng-blur="setUp.contest.checkClickerJudges()"></td>
                   </tr>
 
-                  <tr ng-show="main.contest.clickerJudges.length < 6">
-                    <td>J-A{{main.contest.clickerJudges.length + 1}}</td>
-                    <td class="bg-judge"><input type="text" placeholder="Judge Name" ng-model="main.contest.newClickerJudge.name" ng-blur="main.checkClickerJudges()"></td>
+                  <tr ng-show="setUp.contest.clickerJudges.length < 6">
+                    <td>J-A{{setUp.contest.clickerJudges.length + 1}}</td>
+                    <td class="bg-judge"><input type="text" placeholder="Judge Name" ng-model="setUp.contest.newClickerJudge.name" ng-blur="setUp.contest.checkClickerJudges()"></td>
                   </tr>
           
                   <tr></tr>
@@ -73,14 +73,14 @@
                     <th colspan="2">Evaluation Judges</th>
                   </tr>
           
-                  <tr ng-repeat="judge in main.contest.evaluationJudges">
+                  <tr ng-repeat="judge in setUp.contest.evaluationJudges">
                     <td>J-B{{$index + 1}}</td>
-                    <td class="bg-judge"><input type="text" placeholder="Judge Name" ng-model="judge.name" ng-blur="main.checkEvaluationJudges()"></td>
+                    <td class="bg-judge"><input type="text" placeholder="Judge Name" ng-model="judge.name" ng-blur="setUp.contest.checkEvaluationJudges()"></td>
                   </tr>
 
-                  <tr ng-show="main.contest.evaluationJudges.length < 6">
-                    <td>J-A{{main.contest.evaluationJudges.length + 1}}</td>
-                    <td class="bg-judge"><input type="text" placeholder="Judge Name" ng-model="main.contest.newEvaluationJudge.name" ng-blur="main.checkEvaluationJudges()"></td>
+                  <tr ng-show="setUp.contest.evaluationJudges.length < 6">
+                    <td>J-B{{setUp.contest.evaluationJudges.length + 1}}</td>
+                    <td class="bg-judge"><input type="text" placeholder="Judge Name" ng-model="setUp.contest.newEvaluationJudge.name" ng-blur="setUp.contest.checkEvaluationJudges()"></td>
                   </tr>
                 </tbody>
               </table>
@@ -209,7 +209,7 @@
         </script>
         
         <script type="text/ng-template" id="player.html">
-          <div id="tab-player" class="row">
+          <div id="tab-player" class="row" ng-controller="PlayerCtrl as playerCtrl">
             <div class="col-4">
               <table>
                 <thead>
@@ -219,9 +219,14 @@
                   </tr>
                 </thead>
                 <tbody>
+                  <tr ng-repeat="player in playerCtrl.player.players">
+                    <td>{{$index + 1}}</td>
+                    <td><input type="text" ng-model="player.name" ng-blur="playerCtrl.player.checkPlayers()"></td>
+                  </tr>
+
                   <tr>
-                    <td>1</td>
-                    <td><input type="text"></td>
+                    <td>{{playerCtrl.player.players.length + 1}}</td>
+                    <td><input type="text" placeholder="Player Name" ng-model="playerCtrl.player.newPlayer.name" ng-blur="playerCtrl.player.checkPlayers()"></td>
                   </tr>
                 </tbody>
               </table>
@@ -230,7 +235,7 @@
         </script>
 
         <script type="text/ng-template" id="raw-tex.html">
-          <div id="tab-raw-tex" class="row">
+          <div id="tab-raw-tex" class="row" ng-controller="RawTexCtrl as texCtrl">
             <table>
               <thead>
                 <tr>
@@ -239,7 +244,7 @@
                   <th class="bg-byline">AD1</th>
                   <th class="bg-byline">AD2</th>
                   <th class="bg-byline">AD3</th>
-                  <th class="bg-byline" colspan="2" ng-repeat="judge in main.contest.clickerJudges">{{judge.name}}</th>
+                  <th class="bg-byline" colspan="2" ng-repeat="judge in texCtrl.contest.clickerJudges">{{judge.name}}</th>
                 </tr>
                 <tr>
                   <th class="bg-byline"></th>
@@ -262,9 +267,9 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td class="bg-byline">1</td>
-                  <td class="bg-byline"></td>
+                <tr ng-repeat="player in texCtrl.player.players">
+                  <td class="bg-byline">{{$index + 1}}</td>
+                  <td class="bg-byline">{{player.name}}</td>
                   <td><input class="text-right"></td>
                   <td><input class="text-right"></td>
                   <td><input class="text-right"></td>
@@ -287,13 +292,13 @@
         </script>
 
         <script type="text/ng-template" id="raw-tevpev.html">
-          <div id="tab-raw-tevpev" class="row">
+          <div id="tab-raw-tevpev" class="row" ng-controller="RawTevPevCtrl as tevPevCtrl">
             <table>
               <thead>
                 <tr>
                   <th class="bg-byline"></th>
                   <th class="bg-byline"></th>
-                  <th class="bg-byline" colspan="8" ng-repeat="judge in main.contest.evaluationJudges">{{judge.name}}</th>
+                  <th class="bg-byline" colspan="8" ng-repeat="judge in tevPevCtrl.contest.evaluationJudges">{{judge.name}}</th>
                 </tr>
                 <tr>
                   <th class="bg-byline"></th>
@@ -354,62 +359,62 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td class="bg-byline">1</td>
-                  <td class="bg-byline"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
+                <tr ng-repeat="player in tevPevCtrl.player.players">
+                  <td class="bg-byline">{{$index + 1}}</td>
+                  <td class="bg-byline">{{player.name}}</td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
           
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-          
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-          
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-          
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-          
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
-                  <td><input type="text"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
+                  <td><input type="text" maxlength="2"></td>
                 </tr>
               </tbody>
             </table>
@@ -417,13 +422,13 @@
         </script>
 
         <script type="text/ng-template" id="result.html">
-          <div id="tab-result" class="row">
+          <div id="tab-result" class="row" ng-controller="ResultCtrl as resultCtrl">
             <div class="col-12">
               <table>
                 <thead>
                   <tr>
                     <th></th>
-                    <th>{{main.contest.contestName}}</th>
+                    <th>{{resultCtrl.contest.contestName}}</th>
                     <th class="bg-tex">T.Ex</th>
                     <th class="bg-tev" colspan="5">T.Ev</th>
                     <th class="bg-pev" colspan="5">P.Ev</th>
@@ -435,7 +440,7 @@
           
                   <tr>
                     <th></th>
-                    <th>{{main.contest.divisionName}} Division</th>
+                    <th>{{resultCtrl.contest.divisionName}} Division</th>
                     <th class="bg-tex">total (/60)</th>
                     <th class="bg-tev">Cleanliness</th>
                     <th class="bg-tev">Variation</th>
@@ -456,9 +461,9 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td></td>
+                  <tr ng-repeat="player in resultCtrl.player.players">
+                    <td>{{$index + 1}}</td>
+                    <td>{{player.name}}</td>
                     <td></td>
                     <td></td>
                     <td></td>

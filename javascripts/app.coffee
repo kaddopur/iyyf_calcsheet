@@ -37,6 +37,46 @@ ContestFactory = ->
     {name: 'Leo Huang'}
     {name: 'Jason Huang'}
   ]
+
+  this.checkClickerJudges = ->
+    newJudges = [] 
+    for judge in this.clickerJudges
+      newJudges.push(judge) if judge.name
+
+    newJudges.push(this.newClickerJudge) if this.newClickerJudge.name
+    this.newClickerJudge = {}
+    this.clickerJudges = newJudges
+
+
+  this.checkEvaluationJudges = ->
+    newJudges = [] 
+    for judge in this.evaluationJudges
+      newJudges.push(judge) if judge.name
+
+    newJudges.push(this.newEvaluationJudge) if this.newEvaluationJudge.name
+    this.newEvaluationJudge = {}
+    this.evaluationJudges = newJudges
+
+  this
+
+
+PlayerFactory = ->
+  this.players = [
+    {name: 'JIANG Shanzhen'}
+    {name: 'LIN Jiahe'}
+    {name: 'HE Haoxuan'}
+    {name: 'YU Zonglun'}
+  ]
+
+  this.checkPlayers = ->
+    newPlayers = [] 
+    for player in this.players
+      newPlayers.push(player) if player.name
+
+    newPlayers.push(this.newPlayer) if this.newPlayer.name
+    this.newPlayer = {}
+    this.players = newPlayers
+
   this
 
 
@@ -53,34 +93,43 @@ TabCtrl = (TabFactory) ->
   this
 
 
-MainCtrl = (ContestFactory) ->
+SetUpCtrl = (ContestFactory) ->
   this.contest = ContestFactory
-
-  this.checkClickerJudges = ->
-    newJudges = [] 
-    for judge in this.contest.clickerJudges
-      newJudges.push(judge) if judge.name
-
-    newJudges.push(this.contest.newClickerJudge) if this.contest.newClickerJudge.name
-    this.contest.newClickerJudge = {}
-    this.contest.clickerJudges = newJudges
+  this
 
 
-  this.checkEvaluationJudges = ->
-    newJudges = [] 
-    for judge in this.contest.evaluationJudges
-      newJudges.push(judge) if judge.name
+PlayerCtrl = (PlayerFactory) ->
+  this.player = PlayerFactory
+  this
 
-    newJudges.push(this.contest.newEvaluationJudge) if this.contest.newEvaluationJudge.name
-    this.contest.newEvaluationJudge = {}
-    this.contest.evaluationJudges = newJudges
 
+RawTexCtrl = (ContestFactory, PlayerFactory) ->
+  this.contest = ContestFactory
+  this.player = PlayerFactory
+  this
+
+
+RawTevPevCtrl = (ContestFactory, PlayerFactory) ->
+  this.contest = ContestFactory
+  this.player = PlayerFactory
+  this
+
+
+ResultCtrl = (ContestFactory, PlayerFactory) ->
+  this.contest = ContestFactory
+  this.player = PlayerFactory
   this
 
 
 angular
   .module('app', [])
   .controller('TabCtrl', TabCtrl)
-  .controller('MainCtrl', MainCtrl)
+  .controller('SetUpCtrl', SetUpCtrl)
+  .controller('PlayerCtrl', PlayerCtrl)
+  .controller('RawTexCtrl', RawTexCtrl)
+  .controller('RawTevPevCtrl', RawTevPevCtrl)
+  .controller('SetUpCtrl', SetUpCtrl)
+  .controller('ResultCtrl', ResultCtrl)
   .factory('TabFactory', TabFactory)
   .service('ContestFactory', ContestFactory)
+  .service('PlayerFactory', PlayerFactory)

@@ -51,7 +51,8 @@ th, td {
       width: 12px;
       text-align: right;
     }
-    &:nth-child(2) {
+    &:nth-child(2),
+    &:nth-child(2) input {
       width: 160px;
       text-align: left;
     } 
