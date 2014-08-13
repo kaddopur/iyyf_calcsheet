@@ -192,7 +192,6 @@
 
         <script type="text/ng-template" id="raw-tex.html">
           <div id="tab-raw-tex" class="row" ng-controller="RawTexCtrl as texCtrl">
-            {{texCtrl.player.players[0]}}
             <table>
               <thead>
                 <tr>
@@ -242,14 +241,11 @@
                 <tr>
                   <th class="bg-header"></th>
                   <th class="bg-header">Player Name</th>
-                  <th ng-repeat-start="i in [1, 2, 3, 4, 5, 6]" class="bg-header">CLN</th>
-                  <th class="bg-header">VAR</th>
-                  <th class="bg-header">RAR</th>
-                  <th class="bg-header">EXE</th>
-                  <th class="bg-header">MSC</th>
-                  <th class="bg-header">BDY</th>
-                  <th class="bg-header">SPC</th>
-                  <th ng-repeat-end class="bg-header">SHW</th>
+
+                  <th class="th-for" ng-repeat-start="i in [1, 2, 3, 4, 5, 6]"></th>
+                  <th class="bg-header" ng-repeat="value in tevPevCtrl.contest.givenTevValues">{{value.abbr}}</th>
+                  <th class="bg-header" ng-repeat="value in tevPevCtrl.contest.givenPevValues">{{value.abbr}}</th>
+                  <th class="th-end" ng-repeat-end></th>
                 </tr>
               </thead>
               <tbody>
@@ -257,14 +253,14 @@
                   <td class="bg-byline">{{$index + 1}}</td>
                   <td class="bg-byline">{{player.name}}</td>
 
-                  <td ng-repeat-start="judge in tevPevCtrl.contest.evaluationJudges"><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td><input type="text" maxlength="2"></td>
-                  <td ng-repeat-end><input type="text" maxlength="2"></td>
+                  <td class="td-for" ng-repeat-start="judge in tevPevCtrl.contest.evaluationJudges"></td>
+                  <td ng-repeat="value in tevPevCtrl.contest.givenTevValues">
+                    <input type="text" maxlength="2" ng-model="player.givens[judge.name][value.abbr]">
+                  </td>
+                  <td ng-repeat="value in tevPevCtrl.contest.givenPevValues">
+                    <input type="text" maxlength="2" ng-model="player.givens[judge.name][value.abbr]">
+                  </td>
+                  <td class="td-end" ng-repeat-end></td>
                 </tr>
               </tbody>
             </table>
@@ -273,6 +269,7 @@
 
         <script type="text/ng-template" id="result.html">
           <div id="tab-result" class="row" ng-controller="ResultCtrl as resultCtrl">
+            {{resultCtrl.player.players[0]}}
             <div class="col-12">
               <table>
                 <thead>

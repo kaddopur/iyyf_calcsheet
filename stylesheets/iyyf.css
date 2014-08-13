@@ -208,6 +208,12 @@ th, td {
   #tab-result td:last-child {
     text-align: center; }
 
+.th-for,
+.th-end,
+.td-for,
+.td-end {
+  display: none; }
+
 input {
   background-color: transparent; }
 

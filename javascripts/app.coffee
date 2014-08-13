@@ -210,7 +210,7 @@ TabCtrl = (TabFactory) ->
     tabUrl == this.currentTab
 
   this.tabs = TabFactory.tabs
-  this.currentTab = 'raw-tex.html'
+  this.currentTab = 'result.html'
 
   this
 
