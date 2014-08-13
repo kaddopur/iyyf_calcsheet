@@ -42,13 +42,16 @@
                     <td>Contest Name</td>
                     <td class="bg-judge"><input type="text" placeholder="Your Contest Name" ng-model="setUp.contest.contestName"></td>
                   </tr>
-          
-                  <tr></tr>
-          
+
                   <tr>
                     <td>Division Name</td>
                     <td class="bg-judge"><input type="text" placeholder="Your Division Name" ng-model="setUp.contest.divisionName"></td>
                     <td>Division</td>
+                  </tr>
+
+                  <tr>
+                    <td>Contest Date</td>
+                    <td class="bg-judge"><input type="date" placeholder="Your Contest Date" ng-model="setUp.contest.contestDate"></td>
                   </tr>
           
                   <tr></tr>
@@ -64,7 +67,7 @@
 
                   <tr ng-show="setUp.contest.clickerJudges.length < 6">
                     <td>J-A{{setUp.contest.clickerJudges.length + 1}}</td>
-                    <td class="bg-judge"><input type="text" placeholder="Judge Name" ng-model="setUp.contest.newClickerJudge.name" ng-blur="setUp.contest.checkClickerJudges()"></td>
+                    <td class="bg-judge"><input type="text" placeholder="Judge Name" ng-model="setUp.contest.newClickerJudge.name" ng-blur="setUp.contest.checkClickerJudges()" ng-keypress="setUp.contest.addNewClickerJudge($event)"></td>
                   </tr>
           
                   <tr></tr>
@@ -80,7 +83,7 @@
 
                   <tr ng-show="setUp.contest.evaluationJudges.length < 6">
                     <td>J-B{{setUp.contest.evaluationJudges.length + 1}}</td>
-                    <td class="bg-judge"><input type="text" placeholder="Judge Name" ng-model="setUp.contest.newEvaluationJudge.name" ng-blur="setUp.contest.checkEvaluationJudges()"></td>
+                    <td class="bg-judge"><input type="text" placeholder="Judge Name" ng-model="setUp.contest.newEvaluationJudge.name" ng-blur="setUp.contest.checkEvaluationJudges()" ng-keypress="setUp.contest.addNewEvaluationJudge($event)"></td>
                   </tr>
                 </tbody>
               </table>
@@ -226,7 +229,7 @@
 
                   <tr>
                     <td>{{playerCtrl.player.players.length + 1}}</td>
-                    <td><input type="text" placeholder="Player Name" ng-model="playerCtrl.player.newPlayer.name" ng-blur="playerCtrl.player.checkPlayers()"></td>
+                    <td><input type="text" placeholder="Player Name" ng-model="playerCtrl.player.newPlayer.name" ng-blur="playerCtrl.player.checkPlayers()" ng-keypress="playerCtrl.player.addNewPlayer($event)"></td>
                   </tr>
                 </tbody>
               </table>
@@ -428,7 +431,7 @@
                 <thead>
                   <tr>
                     <th></th>
-                    <th>{{resultCtrl.contest.contestName}}</th>
+                    <th>{{resultCtrl.contest.contestName}} ({{resultCtrl.contest.contestDate}})</th>
                     <th class="bg-tex">T.Ex</th>
                     <th class="bg-tev" colspan="5">T.Ev</th>
                     <th class="bg-pev" colspan="5">P.Ev</th>

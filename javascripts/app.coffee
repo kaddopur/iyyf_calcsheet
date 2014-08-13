@@ -27,16 +27,20 @@ TabFactory = ->
 
 ContestFactory = ->
   this.contestName = 'TYYC14'
+  this.contestDate = '2014-08-13'
   this.divisionName = '1A'
+  this.newClickerJudge = {}
   this.clickerJudges = [
     {name: 'Jason Kao'}
     {name: 'Bambino Qiu'}
   ]
+  this.newEvaluationJudge = {}
   this.evaluationJudges = [
     {name: 'Bruce Lan'}
     {name: 'Leo Huang'}
     {name: 'Jason Huang'}
   ]
+
 
   this.checkClickerJudges = ->
     newJudges = [] 
@@ -47,6 +51,8 @@ ContestFactory = ->
     this.newClickerJudge = {}
     this.clickerJudges = newJudges
 
+  this.addNewClickerJudge = (e) ->
+    this.checkClickerJudges() if e.keyCode == 13
 
   this.checkEvaluationJudges = ->
     newJudges = [] 
@@ -56,6 +62,9 @@ ContestFactory = ->
     newJudges.push(this.newEvaluationJudge) if this.newEvaluationJudge.name
     this.newEvaluationJudge = {}
     this.evaluationJudges = newJudges
+
+  this.addNewEvaluationJudge = (e) ->
+    this.checkEvaluationJudges() if e.keyCode == 13
 
   this
 
@@ -76,6 +85,9 @@ PlayerFactory = ->
     newPlayers.push(this.newPlayer) if this.newPlayer.name
     this.newPlayer = {}
     this.players = newPlayers
+
+  this.addNewPlayer = (e) ->
+    this.checkPlayers() if e.keyCode == 13
 
   this
 

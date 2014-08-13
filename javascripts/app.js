@@ -25,7 +25,9 @@
 
   ContestFactory = function() {
     this.contestName = 'TYYC14';
+    this.contestDate = '2014-08-13';
     this.divisionName = '1A';
+    this.newClickerJudge = {};
     this.clickerJudges = [
       {
         name: 'Jason Kao'
@@ -33,6 +35,7 @@
         name: 'Bambino Qiu'
       }
     ];
+    this.newEvaluationJudge = {};
     this.evaluationJudges = [
       {
         name: 'Bruce Lan'
@@ -58,6 +61,11 @@
       this.newClickerJudge = {};
       return this.clickerJudges = newJudges;
     };
+    this.addNewClickerJudge = function(e) {
+      if (e.keyCode === 13) {
+        return this.checkClickerJudges();
+      }
+    };
     this.checkEvaluationJudges = function() {
       var judge, newJudges, _i, _len, _ref;
       newJudges = [];
@@ -73,6 +81,11 @@
       }
       this.newEvaluationJudge = {};
       return this.evaluationJudges = newJudges;
+    };
+    this.addNewEvaluationJudge = function(e) {
+      if (e.keyCode === 13) {
+        return this.checkEvaluationJudges();
+      }
     };
     return this;
   };
@@ -104,6 +117,11 @@
       }
       this.newPlayer = {};
       return this.players = newPlayers;
+    };
+    this.addNewPlayer = function(e) {
+      if (e.keyCode === 13) {
+        return this.checkPlayers();
+      }
     };
     return this;
   };
