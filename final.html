@@ -23,13 +23,12 @@
           </div>
 
           <div class="col-4">
-            {{tabCtrl.isActiveTab('set-up.html')}}
-            {{tabCtrl.currentTab}}
           </div>
         </div>
       </div>
 
-      <div id="main">
+      <div id="main" ng-controller="MainCtrl as main">
+        {{main.contest.newClickerJudge}}
         <div ng-include="tabCtrl.currentTab"></div>
         <script type="text/ng-template" id="set-up.html">
           <div id="tab-set-up" class="row">
@@ -41,14 +40,14 @@
                 <tbody>
                   <tr>
                     <td>Contest Name</td>
-                    <td class="bg-judge"><input type="text" placeholder="Your Contest Name"></td>
+                    <td class="bg-judge"><input type="text" placeholder="Your Contest Name" ng-model="main.contest.contestName"></td>
                   </tr>
           
                   <tr></tr>
           
                   <tr>
                     <td>Division Name</td>
-                    <td class="bg-judge"><input type="text" placeholder="Your Division Name"></td>
+                    <td class="bg-judge"><input type="text" placeholder="Your Division Name" ng-model="main.contest.divisionName"></td>
                     <td>Division</td>
                   </tr>
           
@@ -58,34 +57,14 @@
                     <th colspan="2">Clicker Judges</th>
                   </tr>
           
-                  <tr>
-                    <td>J-A1</td>
-                    <td class="bg-judge"><input type="text" placeholder="Judge Name"></td>
+                  <tr ng-repeat="judge in main.contest.clickerJudges">
+                    <td>J-A{{$index + 1}}</td>
+                    <td class="bg-judge"><input type="text" placeholder="Judge Name" ng-model="judge.name" ng-blur="main.checkClickerJudges()"></td>
                   </tr>
-          
-                  <tr>
-                    <td>J-A2</td>
-                    <td class="bg-judge"><input type="text"></td>
-                  </tr>
-          
-                  <tr>
-                    <td>J-A3</td>
-                    <td class="bg-judge"><input type="text"></td>
-                  </tr>
-          
-                  <tr>
-                    <td>J-A4</td>
-                    <td class="bg-judge"><input type="text"></td>
-                  </tr>
-          
-                  <tr>
-                    <td>J-A5</td>
-                    <td class="bg-judge"><input type="text"></td>
-                  </tr>
-          
-                  <tr>
-                    <td>J-A6</td>
-                    <td class="bg-judge"><input type="text"></td>
+
+                  <tr ng-show="main.contest.clickerJudges.length < 6">
+                    <td>J-A{{main.contest.clickerJudges.length + 1}}</td>
+                    <td class="bg-judge"><input type="text" placeholder="Judge Name" ng-model="main.contest.newClickerJudge.name" ng-blur="main.checkClickerJudges()"></td>
                   </tr>
           
                   <tr></tr>
@@ -94,37 +73,15 @@
                     <th colspan="2">Evaluation Judges</th>
                   </tr>
           
-                  <tr>
-                    <td>J-B1</td>
-                    <td class="bg-judge"><input type="text" placeholder="Judge Name"></td>
+                  <tr ng-repeat="judge in main.contest.evaluationJudges">
+                    <td>J-B{{$index + 1}}</td>
+                    <td class="bg-judge"><input type="text" placeholder="Judge Name" ng-model="judge.name" ng-blur="main.checkEvaluationJudges()"></td>
                   </tr>
-          
-                  <tr>
-                    <td>J-B2</td>
-                    <td class="bg-judge"><input type="text"></td>
+
+                  <tr ng-show="main.contest.evaluationJudges.length < 6">
+                    <td>J-A{{main.contest.evaluationJudges.length + 1}}</td>
+                    <td class="bg-judge"><input type="text" placeholder="Judge Name" ng-model="main.contest.newEvaluationJudge.name" ng-blur="main.checkEvaluationJudges()"></td>
                   </tr>
-          
-                  <tr>
-                    <td>J-B3</td>
-                    <td class="bg-judge"><input type="text"></td>
-                  </tr>
-          
-                  <tr>
-                    <td>J-B4</td>
-                    <td class="bg-judge"><input type="text"></td>
-                  </tr>
-          
-                  <tr>
-                    <td>J-B5</td>
-                    <td class="bg-judge"><input type="text"></td>
-                  </tr>
-          
-                  <tr>
-                    <td>J-B6</td>
-                    <td class="bg-judge"><input type="text"></td>
-                  </tr>
-          
-          
                 </tbody>
               </table>
             </div>
@@ -235,13 +192,13 @@
                   </tr>
           
                   <tr>
-                    <td>Deduction 1</td>
+                    <td>Deduction 2</td>
                     <td class="bg-point" colspan="2"><input type="text" value="Discard"></td>
                     <td class="bg-point"><input class="text-right" value="3"></td>
                   </tr>
           
                   <tr>
-                    <td>Deduction 1</td>
+                    <td>Deduction 3</td>
                     <td class="bg-point" colspan="2"><input type="text" value="Cut"></td>
                     <td class="bg-point"><input class="text-right" value="5"></td>
                   </tr>
@@ -282,12 +239,7 @@
                   <th class="bg-byline">AD1</th>
                   <th class="bg-byline">AD2</th>
                   <th class="bg-byline">AD3</th>
-                  <th class="bg-byline" colspan="2">Judge-A1</th>
-                  <th class="bg-byline" colspan="2">Judge-A2</th>
-                  <th class="bg-byline" colspan="2">Judge-A3</th>
-                  <th class="bg-byline" colspan="2">Judge-A4</th>
-                  <th class="bg-byline" colspan="2">Judge-A5</th>
-                  <th class="bg-byline" colspan="2">Judge-A6</th>
+                  <th class="bg-byline" colspan="2" ng-repeat="judge in main.contest.clickerJudges">{{judge.name}}</th>
                 </tr>
                 <tr>
                   <th class="bg-byline"></th>
@@ -341,12 +293,7 @@
                 <tr>
                   <th class="bg-byline"></th>
                   <th class="bg-byline"></th>
-                  <th class="bg-byline" colspan="8">Judge-B1</th>
-                  <th class="bg-byline" colspan="8">Judge-B2</th>
-                  <th class="bg-byline" colspan="8">Judge-B3</th>
-                  <th class="bg-byline" colspan="8">Judge-B4</th>
-                  <th class="bg-byline" colspan="8">Judge-B5</th>
-                  <th class="bg-byline" colspan="8">Judge-B6</th>
+                  <th class="bg-byline" colspan="8" ng-repeat="judge in main.contest.evaluationJudges">{{judge.name}}</th>
                 </tr>
                 <tr>
                   <th class="bg-byline"></th>
@@ -476,7 +423,7 @@
                 <thead>
                   <tr>
                     <th></th>
-                    <th>Your Contest Name</th>
+                    <th>{{main.contest.contestName}}</th>
                     <th class="bg-tex">T.Ex</th>
                     <th class="bg-tev" colspan="5">T.Ev</th>
                     <th class="bg-pev" colspan="5">P.Ev</th>
@@ -488,7 +435,7 @@
           
                   <tr>
                     <th></th>
-                    <th>1a Division</th>
+                    <th>{{main.contest.divisionName}} Division</th>
                     <th class="bg-tex">total (/60)</th>
                     <th class="bg-tev">Cleanliness</th>
                     <th class="bg-tev">Variation</th>
