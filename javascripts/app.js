@@ -45,6 +45,58 @@
         name: 'Jason Huang'
       }
     ];
+    this.clickerValue = {
+      name: 'Technical Execution',
+      abbr: 'T.Ex',
+      point: 60
+    };
+    this.givenValues = [
+      {
+        name: 'Cleanliness',
+        abbr: 'CLN',
+        point: 5
+      }, {
+        name: 'Variation',
+        abbr: 'VAR',
+        point: 5
+      }, {
+        name: 'Rareness',
+        abbr: 'RAR',
+        point: 5
+      }, {
+        name: 'Execution',
+        abbr: 'EXE',
+        point: 5
+      }, {
+        name: 'Music Use',
+        abbr: 'MSC',
+        point: 5
+      }, {
+        name: 'Body Control',
+        abbr: 'BDY',
+        point: 5
+      }, {
+        name: 'Space Use',
+        abbr: 'SPC',
+        point: 5
+      }, {
+        name: 'Showmanship',
+        abbr: 'SHW',
+        point: 5
+      }
+    ];
+    this.deductionValues = [
+      {
+        name: 'Stop',
+        point: 1
+      }, {
+        name: 'Discard',
+        point: 3
+      }, {
+        name: 'Cut',
+        point: 5
+      }
+    ];
     this.checkClickerJudges = function() {
       var judge, newJudges, _i, _len, _ref;
       newJudges = [];
@@ -86,6 +138,33 @@
       if (e.keyCode === 13) {
         return this.checkEvaluationJudges();
       }
+    };
+    this.checkGivenValues = function() {
+      var newValues, value, _i, _len, _ref;
+      newValues = [];
+      _ref = this.givenValues;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        value = _ref[_i];
+        if (value.name || value.abbr || value.point) {
+          newValues.push(value);
+        }
+      }
+      if (this.newGivenValue.name || this.newGivenValue.abbr || this.newGivenValue.point) {
+        newValues.push(this.newGivenValue);
+      }
+      this.newGivenValue = {};
+      return this.givenValues = newValues;
+    };
+    this.pointSum = function() {
+      var sum, value, _i, _len, _ref;
+      sum = 0;
+      _ref = this.givenValues;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        value = _ref[_i];
+        sum += parseInt(value.point) || 0;
+      }
+      sum += parseInt(this.clickerValue.point) || 0;
+      return sum;
     };
     return this;
   };

@@ -102,108 +102,40 @@
                 <tbody>
                   <tr>
                     <td>Clicker Value</td>
-                    <td class="bg-point"><input type="text"></td>
-                    <td class="bg-point"><input type="text" value="T.Ex"></td>
-                    <td class="bg-point"><input class="text-right" value="60"></td>
+                    <td class="bg-point"><input type="text" ng-model="setUp.contest.clickerValue.name"></td>
+                    <td class="bg-point"><input type="text" ng-model="setUp.contest.clickerValue.abbr"></td>
+                    <td class="bg-point"><input class="text-right" ng-model="setUp.contest.clickerValue.point"></td>
                   </tr>
           
                   <tr></tr>
           
-                  <tr>
-                    <td>Given Value 1</td>
-                    <td class="bg-point"><input type="text" value="Cleanliness"></td>
-                    <td class="bg-point"><input type="text" value="CLN"></td>
-                    <td class="bg-point"><input class="text-right" value="5"></td>
+                  <tr ng-repeat="given in setUp.contest.givenValues">
+                    <td>Given Value {{$index + 1}}</td>
+                    <td class="bg-point"><input type="text" ng-model="given.name" ng-blur="setUp.contest.checkGivenValues()"></td>
+                    <td class="bg-point"><input type="text" ng-model="given.abbr" ng-blur="setUp.contest.checkGivenValues()"></td>
+                    <td class="bg-point"><input class="text-right" ng-model="given.point" ng-blur="setUp.contest.checkGivenValues()"></td>
                   </tr>
-          
-                  <tr>
-                    <td>Given Value 2</td>
-                    <td class="bg-point"><input type="text" value="Variation"></td>
-                    <td class="bg-point"><input type="text" value="VAR"></td>
-                    <td class="bg-point"><input class="text-right" value="5"></td>
-                  </tr>
-          
-                  <tr>
-                    <td>Given Value 3</td>
-                    <td class="bg-point"><input type="text" value="Rareness"></td>
-                    <td class="bg-point"><input type="text" value="RAR"></td>
-                    <td class="bg-point"><input class="text-right" value="5"></td>
-                  </tr>
-          
-                  <tr>
-                    <td>Given Value 4</td>
-                    <td class="bg-point"><input type="text" value="Execution"></td>
-                    <td class="bg-point"><input type="text" value="EXE"></td>
-                    <td class="bg-point"><input class="text-right" value="5"></td>
-                  </tr>
-          
-                  <tr>
-                    <td>Given Value 5</td>
-                    <td class="bg-point"><input type="text" value="Music Use"></td>
-                    <td class="bg-point"><input type="text" value="MSC"></td>
-                    <td class="bg-point"><input class="text-right" value="5"></td>
-                  </tr>
-          
-                  <tr>
-                    <td>Given Value 6</td>
-                    <td class="bg-point"><input type="text" value="Body Control"></td>
-                    <td class="bg-point"><input type="text" value="BDY"></td>
-                    <td class="bg-point"><input class="text-right" value="5"></td>
-                  </tr>
-          
-                  <tr>
-                    <td>Given Value 7</td>
-                    <td class="bg-point"><input type="text" value="Space Use"></td>
-                    <td class="bg-point"><input type="text" value="SPC"></td>
-                    <td class="bg-point"><input class="text-right" value="5"></td>
-                  </tr>
-          
-                  <tr>
-                    <td>Given Value 8</td>
-                    <td class="bg-point"><input type="text" value="Showmanship"></td>
-                    <td class="bg-point"><input type="text" value="SHW"></td>
-                    <td class="bg-point"><input class="text-right" value="5"></td>
-                  </tr>
-          
-                  <tr>
-                    <td>Given Value 9</td>
-                    <td class="bg-point"><input type="text"></td>
-                    <td class="bg-point"><input type="text"></td>
-                    <td class="bg-point"><input class="text-right"></td>
-                  </tr>
-          
-                  <tr>
-                    <td>Given Value 10</td>
-                    <td class="bg-point"><input type="text"></td>
-                    <td class="bg-point"><input type="text"></td>
-                    <td class="bg-point"><input class="text-right"></td>
+
+                  <tr ng-show="setUp.contest.givenValues.length < 10">
+                    <td>Given Value {{setUp.contest.givenValues.length + 1}}</td>
+                    <td class="bg-point"><input type="text" ng-model="setUp.contest.newGivenValue.name" ng-blur="setUp.contest.checkGivenValues()"></td>
+                    <td class="bg-point"><input type="text" ng-model="setUp.contest.newGivenValue.abbr" ng-blur="setUp.contest.checkGivenValues()"></td>
+                    <td class="bg-point"><input class="text-right" ng-model="setUp.contest.newGivenValue.point" ng-blur="setUp.contest.checkGivenValues()"></td>
                   </tr>
           
                   <tr></tr>
           
                   <tr>
                     <td>Total</td>
-                    <td colspan="3"><input class="text-right" value="100"></td>
+                    <td colspan="3"><input class="text-right" value="{{setUp.contest.pointSum()}}"></td>
                   </tr>
           
                   <tr></tr>
           
-                  <tr>
-                    <td>Deduction 1</td>
-                    <td class="bg-point" colspan="2"><input type="text" value="Stop"></td>
-                    <td class="bg-point"><input class="text-right" value="1"></td>
-                  </tr>
-          
-                  <tr>
-                    <td>Deduction 2</td>
-                    <td class="bg-point" colspan="2"><input type="text" value="Discard"></td>
-                    <td class="bg-point"><input class="text-right" value="3"></td>
-                  </tr>
-          
-                  <tr>
-                    <td>Deduction 3</td>
-                    <td class="bg-point" colspan="2"><input type="text" value="Cut"></td>
-                    <td class="bg-point"><input class="text-right" value="5"></td>
+                  <tr ng-repeat="deduction in setUp.contest.deductionValues">
+                    <td>Deduction {{$index + 1}}</td>
+                    <td class="bg-point" colspan="2"><input type="text" ng-model="deduction.name"></td>
+                    <td class="bg-point"><input class="text-right" ng-model="deduction.point"></td>
                   </tr>
                 </tbody>
               </table>

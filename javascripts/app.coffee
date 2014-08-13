@@ -40,7 +40,67 @@ ContestFactory = ->
     {name: 'Leo Huang'}
     {name: 'Jason Huang'}
   ]
-
+  this.clickerValue = {
+    name: 'Technical Execution'
+    abbr: 'T.Ex'
+    point: 60
+  }
+  this.givenValues = [
+    {
+      name: 'Cleanliness'
+      abbr: 'CLN'
+      point: 5
+    }
+    {
+      name: 'Variation'
+      abbr: 'VAR'
+      point: 5
+    }
+    {
+      name: 'Rareness'
+      abbr: 'RAR'
+      point: 5
+    }
+    {
+      name: 'Execution'
+      abbr: 'EXE'
+      point: 5
+    }
+    {
+      name: 'Music Use'
+      abbr: 'MSC'
+      point: 5
+    }
+    {
+      name: 'Body Control'
+      abbr: 'BDY'
+      point: 5
+    }
+    {
+      name: 'Space Use'
+      abbr: 'SPC'
+      point: 5
+    }
+    {
+      name: 'Showmanship'
+      abbr: 'SHW'
+      point: 5
+    }
+  ]
+  this.deductionValues = [
+    {
+      name: 'Stop'
+      point: 1
+    }
+    {
+      name: 'Discard'
+      point: 3
+    }
+    {
+      name: 'Cut'
+      point: 5
+    }
+  ]
 
   this.checkClickerJudges = ->
     newJudges = [] 
@@ -65,6 +125,22 @@ ContestFactory = ->
 
   this.addNewEvaluationJudge = (e) ->
     this.checkEvaluationJudges() if e.keyCode == 13
+
+  this.checkGivenValues = ->
+    newValues = [] 
+    for value in this.givenValues
+      newValues.push(value) if value.name || value.abbr || value.point
+
+    newValues.push(this.newGivenValue) if this.newGivenValue.name || this.newGivenValue.abbr || this.newGivenValue.point
+    this.newGivenValue = {}
+    this.givenValues = newValues
+
+  this.pointSum = ->
+    sum = 0
+    for value in this.givenValues
+      sum += (parseInt(value.point) || 0)
+    sum += (parseInt(this.clickerValue.point) || 0)
+    sum
 
   this
 
