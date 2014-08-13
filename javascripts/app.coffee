@@ -45,7 +45,7 @@ ContestFactory = ->
     abbr: 'T.Ex'
     point: 60
   }
-  this.givenValues = [
+  this.givenTevValues = [
     {
       name: 'Cleanliness'
       abbr: 'CLN'
@@ -66,6 +66,8 @@ ContestFactory = ->
       abbr: 'EXE'
       point: 5
     }
+  ]
+  this.givenPevValues = [
     {
       name: 'Music Use'
       abbr: 'MSC'
@@ -126,20 +128,45 @@ ContestFactory = ->
   this.addNewEvaluationJudge = (e) ->
     this.checkEvaluationJudges() if e.keyCode == 13
 
-  this.checkGivenValues = ->
+  this.checkGivenTevValues = ->
     newValues = [] 
-    for value in this.givenValues
+    for value in this.givenTevValues
       newValues.push(value) if value.name || value.abbr || value.point
 
-    newValues.push(this.newGivenValue) if this.newGivenValue.name || this.newGivenValue.abbr || this.newGivenValue.point
-    this.newGivenValue = {}
-    this.givenValues = newValues
+    newValues.push(this.newGivenTevValue) if this.newGivenTevValue.name || this.newGivenTevValue.abbr || this.newGivenTevValue.point
+    this.newGivenTevValue = {}
+    this.givenTevValues = newValues
+
+  this.checkGivenPevValues = ->
+    newValues = [] 
+    for value in this.givenPevValues
+      newValues.push(value) if value.name || value.abbr || value.point
+
+    newValues.push(this.newGivenPevValue) if this.newGivenPevValue.name || this.newGivenPevValue.abbr || this.newGivenPevValue.point
+    this.newGivenPevValue = {}
+    this.givenPevValues = newValues
 
   this.pointSum = ->
     sum = 0
-    for value in this.givenValues
+    for value in this.givenTevValues
       sum += (parseInt(value.point) || 0)
+
+    for value in this.givenPevValues
+      sum += (parseInt(value.point) || 0)
+
     sum += (parseInt(this.clickerValue.point) || 0)
+    sum
+
+  this.tevSum = ->
+    sum = 0
+    for value in this.givenTevValues
+      sum += (parseInt(value.point) || 0)
+    sum
+
+  this.pevSum = ->
+    sum = 0
+    for value in this.givenPevValues
+      sum += (parseInt(value.point) || 0)
     sum
 
   this
@@ -147,7 +174,14 @@ ContestFactory = ->
 
 PlayerFactory = ->
   this.players = [
-    {name: 'JIANG Shanzhen'}
+    {
+      name: 'JIANG Shanzhen'
+      deductions: {
+        Stop: "1", 
+        Discard: "2", 
+        Cut: "3"
+      }
+    }
     {name: 'LIN Jiahe'}
     {name: 'HE Haoxuan'}
     {name: 'YU Zonglun'}
@@ -176,7 +210,7 @@ TabCtrl = (TabFactory) ->
     tabUrl == this.currentTab
 
   this.tabs = TabFactory.tabs
-  this.currentTab = 'set-up.html'
+  this.currentTab = 'raw-tex.html'
 
   this
 

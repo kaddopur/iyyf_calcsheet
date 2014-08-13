@@ -50,7 +50,7 @@
       abbr: 'T.Ex',
       point: 60
     };
-    this.givenValues = [
+    this.givenTevValues = [
       {
         name: 'Cleanliness',
         abbr: 'CLN',
@@ -67,7 +67,10 @@
         name: 'Execution',
         abbr: 'EXE',
         point: 5
-      }, {
+      }
+    ];
+    this.givenPevValues = [
+      {
         name: 'Music Use',
         abbr: 'MSC',
         point: 5
@@ -139,31 +142,72 @@
         return this.checkEvaluationJudges();
       }
     };
-    this.checkGivenValues = function() {
+    this.checkGivenTevValues = function() {
       var newValues, value, _i, _len, _ref;
       newValues = [];
-      _ref = this.givenValues;
+      _ref = this.givenTevValues;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         value = _ref[_i];
         if (value.name || value.abbr || value.point) {
           newValues.push(value);
         }
       }
-      if (this.newGivenValue.name || this.newGivenValue.abbr || this.newGivenValue.point) {
-        newValues.push(this.newGivenValue);
+      if (this.newGivenTevValue.name || this.newGivenTevValue.abbr || this.newGivenTevValue.point) {
+        newValues.push(this.newGivenTevValue);
       }
-      this.newGivenValue = {};
-      return this.givenValues = newValues;
+      this.newGivenTevValue = {};
+      return this.givenTevValues = newValues;
+    };
+    this.checkGivenPevValues = function() {
+      var newValues, value, _i, _len, _ref;
+      newValues = [];
+      _ref = this.givenPevValues;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        value = _ref[_i];
+        if (value.name || value.abbr || value.point) {
+          newValues.push(value);
+        }
+      }
+      if (this.newGivenPevValue.name || this.newGivenPevValue.abbr || this.newGivenPevValue.point) {
+        newValues.push(this.newGivenPevValue);
+      }
+      this.newGivenPevValue = {};
+      return this.givenPevValues = newValues;
     };
     this.pointSum = function() {
-      var sum, value, _i, _len, _ref;
+      var sum, value, _i, _j, _len, _len1, _ref, _ref1;
       sum = 0;
-      _ref = this.givenValues;
+      _ref = this.givenTevValues;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         value = _ref[_i];
         sum += parseInt(value.point) || 0;
       }
+      _ref1 = this.givenPevValues;
+      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+        value = _ref1[_j];
+        sum += parseInt(value.point) || 0;
+      }
       sum += parseInt(this.clickerValue.point) || 0;
+      return sum;
+    };
+    this.tevSum = function() {
+      var sum, value, _i, _len, _ref;
+      sum = 0;
+      _ref = this.givenTevValues;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        value = _ref[_i];
+        sum += parseInt(value.point) || 0;
+      }
+      return sum;
+    };
+    this.pevSum = function() {
+      var sum, value, _i, _len, _ref;
+      sum = 0;
+      _ref = this.givenPevValues;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        value = _ref[_i];
+        sum += parseInt(value.point) || 0;
+      }
       return sum;
     };
     return this;
@@ -172,7 +216,12 @@
   PlayerFactory = function() {
     this.players = [
       {
-        name: 'JIANG Shanzhen'
+        name: 'JIANG Shanzhen',
+        deductions: {
+          Stop: "1",
+          Discard: "2",
+          Cut: "3"
+        }
       }, {
         name: 'LIN Jiahe'
       }, {
@@ -213,7 +262,7 @@
       return tabUrl === this.currentTab;
     };
     this.tabs = TabFactory.tabs;
-    this.currentTab = 'set-up.html';
+    this.currentTab = 'raw-tex.html';
     return this;
   };
 

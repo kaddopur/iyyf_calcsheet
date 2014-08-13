@@ -39,6 +39,9 @@
 .text-right {
   text-align: right; }
 
+.text-minus {
+  color: red; }
+
 .container {
   width: 1140px;
   margin: 0 auto; }
