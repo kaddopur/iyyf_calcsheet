@@ -4,7 +4,8 @@
 }
 
 .row {
-  margin-left: -$gutter / 2;
+  position: relative;
+  left: $gutter / 2;
   &:after {
     content: '';
     clear: both;

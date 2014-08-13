@@ -1,0 +1,52 @@
+.bg-judge {
+  background-color: $color-judge;
+  input::-webkit-input-placeholder {
+    color: lightgray;
+  }
+}
+
+.bg-point {
+  background-color: $color-point;
+  input::-webkit-input-placeholder {
+    color: darkgray;
+  }
+}
+
+.bg-header {
+  background-color: $color-header;
+  color: white;
+}
+
+.bg-byline {
+  background-color: $color-byline;
+  color: lightgray;
+}
+
+.bg-tex {
+  background-color: $color-tex;
+  color: black;
+}
+
+.bg-tev {
+  background-color: $color-tev;
+  color: black;
+}
+
+.bg-pev {
+  background-color: $color-pev;
+  color: black;
+}
+
+.bg-total {
+  background-color: $color-total;
+  color: black;
+}
+
+.bg-md {
+  background-color: $color-md;
+  color: black;
+}
+
+.text-right {
+  text-align: right;
+}

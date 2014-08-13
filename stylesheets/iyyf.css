@@ -1,0 +1,212 @@
+.bg-judge {
+  background-color: #00b0f4; }
+  .bg-judge input::-webkit-input-placeholder {
+    color: lightgray; }
+
+.bg-point {
+  background-color: #ffdc5a; }
+  .bg-point input::-webkit-input-placeholder {
+    color: darkgray; }
+
+.bg-header {
+  background-color: black;
+  color: white; }
+
+.bg-byline {
+  background-color: gray;
+  color: lightgray; }
+
+.bg-tex {
+  background-color: #cfc7ff;
+  color: black; }
+
+.bg-tev {
+  background-color: #ff86ca;
+  color: black; }
+
+.bg-pev {
+  background-color: #91cbff;
+  color: black; }
+
+.bg-total {
+  background-color: #ffce00;
+  color: black; }
+
+.bg-md {
+  background-color: #ff86ca;
+  color: black; }
+
+.text-right {
+  text-align: right; }
+
+.container {
+  width: 1140px;
+  margin: 0 auto; }
+
+.row {
+  position: relative;
+  left: 7.5px; }
+  .row:after {
+    content: '';
+    clear: both;
+    display: table; }
+
+.col-1 {
+  width: 80px;
+  margin-right: 15px;
+  float: left; }
+
+.col-2 {
+  width: 175px;
+  margin-right: 15px;
+  float: left; }
+
+.col-3 {
+  width: 270px;
+  margin-right: 15px;
+  float: left; }
+
+.col-4 {
+  width: 365px;
+  margin-right: 15px;
+  float: left; }
+
+.col-5 {
+  width: 460px;
+  margin-right: 15px;
+  float: left; }
+
+.col-6 {
+  width: 555px;
+  margin-right: 15px;
+  float: left; }
+
+.col-7 {
+  width: 650px;
+  margin-right: 15px;
+  float: left; }
+
+.col-8 {
+  width: 745px;
+  margin-right: 15px;
+  float: left; }
+
+.col-9 {
+  width: 840px;
+  margin-right: 15px;
+  float: left; }
+
+.col-10 {
+  width: 935px;
+  margin-right: 15px;
+  float: left; }
+
+.col-11 {
+  width: 1030px;
+  margin-right: 15px;
+  float: left; }
+
+.col-12 {
+  width: 1125px;
+  margin-right: 15px;
+  float: left; }
+
+.navbar ul {
+  padding: 0; }
+.navbar li {
+  list-style: none;
+  display: inline-block;
+  margin-right: 4px; }
+  .navbar li.active a {
+    background-color: lightgray; }
+  .navbar li a {
+    display: block;
+    padding: 4px 12px;
+    text-decoration: none;
+    color: black;
+    font-style: italic;
+    border: 1px solid #ececec;
+    -webkit-transition: background .2s ease-in-out;
+    -moz-transition: background .2s ease-in-out;
+    -ms-transition: background .2s ease-in-out;
+    -o-transition: background .2s ease-in-out;
+    transition: background .2s ease-in-out; }
+    .navbar li a:hover {
+      background-color: #ececec; }
+    .navbar li a:active {
+      color: white; }
+
+table {
+  width: 100%;
+  table-layout: fixed; }
+
+tr {
+  height: 1.414em; }
+
+th, td {
+  border: 1px solid #eee;
+  padding: 0 3px; }
+  th input, td input {
+    border: none;
+    line-height: 1.414em;
+    width: 100%; }
+    th input[type=number], td input[type=number] {
+      text-align: right; }
+
+#tab-set-up table th:first-child, #tab-set-up table td:first-child {
+  width: 100px; }
+
+#tab-player table {
+  width: auto; }
+#tab-player th:first-child, #tab-player td:first-child {
+  width: 12px;
+  text-align: right; }
+
+#tab-player th:first-child, #tab-player td:first-child,
+#tab-raw-tex th:first-child,
+#tab-raw-tex td:first-child,
+#tab-raw-tevpev th:first-child,
+#tab-raw-tevpev td:first-child,
+#tab-result th:first-child,
+#tab-result td:first-child {
+  width: 12px;
+  text-align: right; }
+#tab-player th:nth-child(2), #tab-player td:nth-child(2),
+#tab-raw-tex th:nth-child(2),
+#tab-raw-tex td:nth-child(2),
+#tab-raw-tevpev th:nth-child(2),
+#tab-raw-tevpev td:nth-child(2),
+#tab-result th:nth-child(2),
+#tab-result td:nth-child(2) {
+  width: 160px;
+  text-align: left; }
+#tab-player input,
+#tab-raw-tex input,
+#tab-raw-tevpev input,
+#tab-result input {
+  text-align: right; }
+
+#tab-raw-tevpev tr:last-child th {
+  word-break: break-all;
+  line-height: 1em;
+  padding-top: 2px;
+  padding-bottom: 2px; }
+
+#tab-result th {
+  word-wrap: break-word; }
+#tab-result td {
+  text-align: right; }
+  #tab-result td:last-child {
+    text-align: center; }
+
+input {
+  background-color: transparent; }
+
+.tab-pane {
+  display: none; }
+  .tab-pane.active {
+    display: inherit; }
+
+body {
+  font-size: 13px;
+  font-family: 'Source Sans Pro', sans-serif; }
