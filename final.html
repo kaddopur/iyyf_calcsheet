@@ -231,6 +231,7 @@
 
         <script type="text/ng-template" id="raw-tevpev.html">
           <div id="tab-raw-tevpev" class="row" ng-controller="RawTevPevCtrl as tevPevCtrl">
+            {{tevPevCtrl.player.players[0]}}
             <table>
               <thead>
                 <tr>
@@ -249,16 +250,16 @@
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="player in tevPevCtrl.player.players">
+                <tr ng-repeat="player in tevPevCtrl.player.players" ng-init="tevPevCtrl.calculateAvgGiven(player)">
                   <td class="bg-byline">{{$index + 1}}</td>
                   <td class="bg-byline">{{player.name}}</td>
 
                   <td class="td-for" ng-repeat-start="judge in tevPevCtrl.contest.evaluationJudges"></td>
                   <td ng-repeat="value in tevPevCtrl.contest.givenTevValues">
-                    <input type="text" maxlength="2" ng-model="player.givens[judge.name][value.abbr]">
+                    <input type="text" maxlength="2" ng-model="player.givens[judge.name][value.abbr]" ng-change="tevPevCtrl.calculateAvgGiven(player)">
                   </td>
                   <td ng-repeat="value in tevPevCtrl.contest.givenPevValues">
-                    <input type="text" maxlength="2" ng-model="player.givens[judge.name][value.abbr]">
+                    <input type="text" maxlength="2" ng-model="player.givens[judge.name][value.abbr]" ng-change="tevPevCtrl.calculateAvgGiven(player)">
                   </td>
                   <td class="td-end" ng-repeat-end></td>
                 </tr>
@@ -304,19 +305,13 @@
                     <td>{{$index + 1}}</td>
                     <td>{{player.name}}</td>
                     <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td ng-repeat="tev in resultCtrl.contest.givenTevValues">{{player.avgGivens[tev.abbr] | number:2}}</td>
+                    <td>{{resultCtrl.avgGivenTevSum(player) | number:2}}</td>
+                    <td ng-repeat="pev in resultCtrl.contest.givenPevValues">{{player.avgGivens[pev.abbr] | number:2}}</td>
+                    <td>{{resultCtrl.avgGivenPevSum(player) | number:2}}</td>
                     <td></td>
                     <td class="text-minus" ng-repeat="deduction in resultCtrl.contest.deductionValues">
-                      {{-1 * player.deductions[deduction.name] * deduction.point}}
+                      {{resultCtrl.deductionSum(player, deduction)}}
                     </td>
                     <td></td>
                     <td></td>

@@ -173,6 +173,7 @@ ContestFactory = ->
 
 
 PlayerFactory = ->
+  this.newPlayer = {}
   this.players = [
     {
       name: 'JIANG Shanzhen'
@@ -180,6 +181,38 @@ PlayerFactory = ->
         Stop: "1", 
         Discard: "2", 
         Cut: "3"
+      }
+      givens: { 
+        "Bruce Lan": {
+          CLN: "1"
+          VAR: "2"
+          RAR: "3"
+          EXE: "4"
+          MSC: "5"
+          BDY: "6"
+          SPC: "7"
+          SHW: "8"
+        }
+        "Leo Huang": {
+          CLN: "2"
+          VAR: "3"
+          RAR: "4"
+          EXE: "5"
+          MSC: "6"
+          BDY: "7"
+          SPC: "8"
+          SHW: "9"
+        }
+        "Jason Huang": {
+          CLN: "3"
+          VAR: "4"
+          RAR: "5"
+          EXE: "6"
+          MSC: "7"
+          BDY: "8"
+          SPC: "9"
+          SHW: "10"
+        }
       }
     }
     {name: 'LIN Jiahe'}
@@ -234,12 +267,56 @@ RawTexCtrl = (ContestFactory, PlayerFactory) ->
 RawTevPevCtrl = (ContestFactory, PlayerFactory) ->
   this.contest = ContestFactory
   this.player = PlayerFactory
+
+  this.calculateAvgGiven = (currentPlayer) ->
+    judges = (judge.name for judge in this.contest.evaluationJudges)
+    givens = (value.abbr for value in this.contest.givenTevValues).concat(value.abbr for value in this.contest.givenPevValues)
+    
+    # check for integrity
+    return unless (k for k, v of currentPlayer.givens).length is judges.length
+    for judge, given of currentPlayer.givens
+      return unless (k for k, v of given).length is givens.length
+
+    # calculate
+    avgGivens = {}
+    for judge, given of currentPlayer.givens
+      for k, v of given
+        if avgGivens[k]
+          avgGivens[k] += parseInt(v)
+        else
+          avgGivens[k] = parseInt(v)
+
+    for k, v of avgGivens
+      avgGivens[k] = v / 3 * 0.5
+
+    currentPlayer.avgGivens = avgGivens
   this
 
 
 ResultCtrl = (ContestFactory, PlayerFactory) ->
   this.contest = ContestFactory
   this.player = PlayerFactory
+
+  this.avgGivenTevSum = (currentPlayer) ->
+    tevSum = 0
+    tevAbbrs = (v.abbr for v in this.contest.givenTevValues)
+
+    for abbr, point of currentPlayer.avgGivens
+      tevSum += point if tevAbbrs.indexOf(abbr) > -1
+    tevSum
+
+  this.avgGivenPevSum = (currentPlayer) ->
+    pevSum = 0
+    pevAbbrs = (v.abbr for v in this.contest.givenPevValues)
+
+    for abbr, point of currentPlayer.avgGivens
+      pevSum += point if pevAbbrs.indexOf(abbr) > -1
+    pevSum
+
+  this.deductionSum = (player, deduction) ->
+    player.deductions = {} unless player.deductions
+    -1 * (parseInt(player.deductions[deduction.name]) || 0) * deduction.point
+
   this
 
 

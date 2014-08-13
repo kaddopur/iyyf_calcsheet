@@ -214,6 +214,7 @@
   };
 
   PlayerFactory = function() {
+    this.newPlayer = {};
     this.players = [
       {
         name: 'JIANG Shanzhen',
@@ -221,6 +222,38 @@
           Stop: "1",
           Discard: "2",
           Cut: "3"
+        },
+        givens: {
+          "Bruce Lan": {
+            CLN: "1",
+            VAR: "2",
+            RAR: "3",
+            EXE: "4",
+            MSC: "5",
+            BDY: "6",
+            SPC: "7",
+            SHW: "8"
+          },
+          "Leo Huang": {
+            CLN: "2",
+            VAR: "3",
+            RAR: "4",
+            EXE: "5",
+            MSC: "6",
+            BDY: "7",
+            SPC: "8",
+            SHW: "9"
+          },
+          "Jason Huang": {
+            CLN: "3",
+            VAR: "4",
+            RAR: "5",
+            EXE: "6",
+            MSC: "7",
+            BDY: "8",
+            SPC: "9",
+            SHW: "10"
+          }
         }
       }, {
         name: 'LIN Jiahe'
@@ -285,12 +318,139 @@
   RawTevPevCtrl = function(ContestFactory, PlayerFactory) {
     this.contest = ContestFactory;
     this.player = PlayerFactory;
+    this.calculateAvgGiven = function(currentPlayer) {
+      var avgGivens, given, givens, judge, judges, k, v, value, _ref, _ref1;
+      judges = (function() {
+        var _i, _len, _ref, _results;
+        _ref = this.contest.evaluationJudges;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          judge = _ref[_i];
+          _results.push(judge.name);
+        }
+        return _results;
+      }).call(this);
+      givens = ((function() {
+        var _i, _len, _ref, _results;
+        _ref = this.contest.givenTevValues;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          value = _ref[_i];
+          _results.push(value.abbr);
+        }
+        return _results;
+      }).call(this)).concat((function() {
+        var _i, _len, _ref, _results;
+        _ref = this.contest.givenPevValues;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          value = _ref[_i];
+          _results.push(value.abbr);
+        }
+        return _results;
+      }).call(this));
+      if (((function() {
+        var _ref, _results;
+        _ref = currentPlayer.givens;
+        _results = [];
+        for (k in _ref) {
+          v = _ref[k];
+          _results.push(k);
+        }
+        return _results;
+      })()).length !== judges.length) {
+        return;
+      }
+      _ref = currentPlayer.givens;
+      for (judge in _ref) {
+        given = _ref[judge];
+        if (((function() {
+          var _results;
+          _results = [];
+          for (k in given) {
+            v = given[k];
+            _results.push(k);
+          }
+          return _results;
+        })()).length !== givens.length) {
+          return;
+        }
+      }
+      avgGivens = {};
+      _ref1 = currentPlayer.givens;
+      for (judge in _ref1) {
+        given = _ref1[judge];
+        for (k in given) {
+          v = given[k];
+          if (avgGivens[k]) {
+            avgGivens[k] += parseInt(v);
+          } else {
+            avgGivens[k] = parseInt(v);
+          }
+        }
+      }
+      for (k in avgGivens) {
+        v = avgGivens[k];
+        avgGivens[k] = v / 3 * 0.5;
+      }
+      return currentPlayer.avgGivens = avgGivens;
+    };
     return this;
   };
 
   ResultCtrl = function(ContestFactory, PlayerFactory) {
     this.contest = ContestFactory;
     this.player = PlayerFactory;
+    this.avgGivenTevSum = function(currentPlayer) {
+      var abbr, point, tevAbbrs, tevSum, v, _ref;
+      tevSum = 0;
+      tevAbbrs = (function() {
+        var _i, _len, _ref, _results;
+        _ref = this.contest.givenTevValues;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          v = _ref[_i];
+          _results.push(v.abbr);
+        }
+        return _results;
+      }).call(this);
+      _ref = currentPlayer.avgGivens;
+      for (abbr in _ref) {
+        point = _ref[abbr];
+        if (tevAbbrs.indexOf(abbr) > -1) {
+          tevSum += point;
+        }
+      }
+      return tevSum;
+    };
+    this.avgGivenPevSum = function(currentPlayer) {
+      var abbr, pevAbbrs, pevSum, point, v, _ref;
+      pevSum = 0;
+      pevAbbrs = (function() {
+        var _i, _len, _ref, _results;
+        _ref = this.contest.givenPevValues;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          v = _ref[_i];
+          _results.push(v.abbr);
+        }
+        return _results;
+      }).call(this);
+      _ref = currentPlayer.avgGivens;
+      for (abbr in _ref) {
+        point = _ref[abbr];
+        if (pevAbbrs.indexOf(abbr) > -1) {
+          pevSum += point;
+        }
+      }
+      return pevSum;
+    };
+    this.deductionSum = function(player, deduction) {
+      if (!player.deductions) {
+        player.deductions = {};
+      }
+      return -1 * (parseInt(player.deductions[deduction.name]) || 0) * deduction.point;
+    };
     return this;
   };
 
