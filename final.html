@@ -192,6 +192,8 @@
 
         <script type="text/ng-template" id="raw-tex.html">
           <div id="tab-raw-tex" class="row" ng-controller="RawTexCtrl as texCtrl">
+            <p>{{texCtrl.player.players[0]}}</p>
+            <p>{{texCtrl.player.players[1]}}</p>
             <table>
               <thead>
                 <tr>
@@ -218,10 +220,10 @@
                     <input class="text-right" ng-model="player.deductions[deduction.name]">
                   </td>
                   <td ng-repeat-start="judge in texCtrl.contest.clickerJudges">
-                    <input class="text-right" ng-model="player.clicker[judge.name].plus">
+                    <input class="text-right" ng-model="player.clicker[judge.name].plus" ng-blur="texCtrl.player.getRawTexTotal(player, judge)">
                   </td>
                   <td ng-repeat-end>
-                    <input class="text-right" ng-model="player.clicker[judge.name].minus">
+                    <input class="text-right" ng-model="player.clicker[judge.name].minus" ng-blur="texCtrl.player.getRawTexTotal(player, judge)">
                   </td>
                 </tr>
               </tbody>
@@ -231,7 +233,8 @@
 
         <script type="text/ng-template" id="raw-tevpev.html">
           <div id="tab-raw-tevpev" class="row" ng-controller="RawTevPevCtrl as tevPevCtrl">
-            {{tevPevCtrl.player.players[0]}}
+            <p>{{tevPevCtrl.player.players[0]}}</p>
+            <p>{{tevPevCtrl.player.players[1]}}</p>
             <table>
               <thead>
                 <tr>

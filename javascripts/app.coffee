@@ -224,6 +224,16 @@ PlayerFactory = ->
           SHW: "10"
         }
       }
+      clicker: {
+        "Jason Kao": {
+          plus: "80"
+          minus: "2"
+        }
+        "Bambino Qiu": {
+          plus: "60"
+          minus: "2"
+        }
+      }
     }
     {name: 'LIN Jiahe'}
     {name: 'HE Haoxuan'}
@@ -236,12 +246,46 @@ PlayerFactory = ->
     for player in this.players
       playerList.push(player) if player.name
 
-    playerList.push(this.newPlayer) if this.newPlayer.name
+    playerList.push(this.initPlayer(this.newPlayer)) if this.newPlayer.name
+
     this.newPlayer = {}
     this.players = playerList
 
   player.addNewPlayer = (e) ->
     this.checkPlayers() if e.keyCode == 13
+
+  player.initPlayer = (player) ->
+    player.clicker ||= {}
+    player.deductions ||= {}
+    player.givens ||= {}
+    player
+
+  player.getRawTexTotal = (player, judge) ->
+    player.clicker[judge.name] ||= {}
+    player.clicker[judge.name].total = parseInt(player.clicker[judge.name].plus) - parseInt(player.clicker[judge.name].minus)
+    player.clicker[judge.name].total ||= 0
+    this.getAdjTexTotal(judge)
+
+  player.getAdjTexTotal = (judge) ->
+    totalMax = 0
+    for player in this.players
+      this.getRawTexTotal(player, judge) unless player.clicker[judge.name]
+      totalMax = player.clicker[judge.name].total if player.clicker[judge.name].total > totalMax
+    judge.texMax = totalMax
+
+    for player in this.players
+      player.clicker[judge.name].adjTotal = player.clicker[judge.name].total / totalMax * 100
+    this.getAvgTexTotal()
+
+  player.getAvgTexTotal = ->
+    for player in this.players
+      judgeCount = 0
+      texAvg = 0
+      for judge, score of player.clicker
+        texAvg += score.adjTotal
+        judgeCount += 1
+      texAvg /= judgeCount
+      player.tex = texAvg
 
   player
 
@@ -254,7 +298,7 @@ TabCtrl = (TabFactory) ->
     tabUrl == this.currentTab
 
   this.tabs = TabFactory
-  this.currentTab = 'player.html'
+  this.currentTab = 'raw-tex.html'
 
   this
 
@@ -273,6 +317,13 @@ PlayerCtrl = (PlayerFactory) ->
 RawTexCtrl = (ContestFactory, PlayerFactory) ->
   this.contest = ContestFactory
   this.player = PlayerFactory
+
+  for judge in this.contest.clickerJudges
+    for player in this.player.players
+      this.player.initPlayer(player)
+    for player in this.player.players
+      this.player.getRawTexTotal(player, judge)
+    this.player.getAdjTexTotal(judge)
   this
 
 

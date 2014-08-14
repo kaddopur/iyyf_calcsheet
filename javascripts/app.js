@@ -265,6 +265,16 @@
             SPC: "9",
             SHW: "10"
           }
+        },
+        clicker: {
+          "Jason Kao": {
+            plus: "80",
+            minus: "2"
+          },
+          "Bambino Qiu": {
+            plus: "60",
+            minus: "2"
+          }
         }
       }, {
         name: 'LIN Jiahe'
@@ -286,7 +296,7 @@
         }
       }
       if (this.newPlayer.name) {
-        playerList.push(this.newPlayer);
+        playerList.push(this.initPlayer(this.newPlayer));
       }
       this.newPlayer = {};
       return this.players = playerList;
@@ -295,6 +305,59 @@
       if (e.keyCode === 13) {
         return this.checkPlayers();
       }
+    };
+    player.initPlayer = function(player) {
+      player.clicker || (player.clicker = {});
+      player.deductions || (player.deductions = {});
+      player.givens || (player.givens = {});
+      return player;
+    };
+    player.getRawTexTotal = function(player, judge) {
+      var _base, _base1, _name;
+      (_base = player.clicker)[_name = judge.name] || (_base[_name] = {});
+      player.clicker[judge.name].total = parseInt(player.clicker[judge.name].plus) - parseInt(player.clicker[judge.name].minus);
+      (_base1 = player.clicker[judge.name]).total || (_base1.total = 0);
+      return this.getAdjTexTotal(judge);
+    };
+    player.getAdjTexTotal = function(judge) {
+      var totalMax, _i, _j, _len, _len1, _ref, _ref1;
+      totalMax = 0;
+      _ref = this.players;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        player = _ref[_i];
+        if (!player.clicker[judge.name]) {
+          this.getRawTexTotal(player, judge);
+        }
+        if (player.clicker[judge.name].total > totalMax) {
+          totalMax = player.clicker[judge.name].total;
+        }
+      }
+      judge.texMax = totalMax;
+      _ref1 = this.players;
+      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+        player = _ref1[_j];
+        player.clicker[judge.name].adjTotal = player.clicker[judge.name].total / totalMax * 100;
+      }
+      return this.getAvgTexTotal();
+    };
+    player.getAvgTexTotal = function() {
+      var judge, judgeCount, score, texAvg, _i, _len, _ref, _ref1, _results;
+      _ref = this.players;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        player = _ref[_i];
+        judgeCount = 0;
+        texAvg = 0;
+        _ref1 = player.clicker;
+        for (judge in _ref1) {
+          score = _ref1[judge];
+          texAvg += score.adjTotal;
+          judgeCount += 1;
+        }
+        texAvg /= judgeCount;
+        _results.push(player.tex = texAvg);
+      }
+      return _results;
     };
     return player;
   };
@@ -307,7 +370,7 @@
       return tabUrl === this.currentTab;
     };
     this.tabs = TabFactory;
-    this.currentTab = 'player.html';
+    this.currentTab = 'raw-tex.html';
     return this;
   };
 
@@ -323,8 +386,24 @@
   };
 
   RawTexCtrl = function(ContestFactory, PlayerFactory) {
+    var judge, player, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
     this.contest = ContestFactory;
     this.player = PlayerFactory;
+    _ref = this.contest.clickerJudges;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      judge = _ref[_i];
+      _ref1 = this.player.players;
+      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+        player = _ref1[_j];
+        this.player.initPlayer(player);
+      }
+      _ref2 = this.player.players;
+      for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
+        player = _ref2[_k];
+        this.player.getRawTexTotal(player, judge);
+      }
+      this.player.getAdjTexTotal(judge);
+    }
     return this;
   };
 
