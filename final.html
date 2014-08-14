@@ -27,9 +27,9 @@
         </div>
       </div>
 
-      <div id="main">
+      <div id="main" ng-controller="MainCtrl as main">
         <div ng-include="tabCtrl.currentTab"></div>
-        <script type="text/ng-template" id="set-up.html">
+        <script type="text/ng-template" id="set-up.html" src="set-up.html">
           <div id="tab-set-up" class="row" ng-controller="SetUpCtrl as setUp">
             <div class="col-6">
               <table>
@@ -39,7 +39,7 @@
                 <tbody>
                   <tr>
                     <td>Contest Name</td>
-                    <td class="bg-judge"><input type="text" placeholder="Your Contest Name" ng-model="setUp.contest.contestName"></td>
+                    <td class="bg-judge"><input type="text" placeholder="Your Contest Name" ng-model="setUp.contest.name"></td>
                   </tr>
 
                   <tr>
@@ -50,7 +50,7 @@
 
                   <tr>
                     <td>Contest Date</td>
-                    <td class="bg-judge"><input type="date" placeholder="Your Contest Date" ng-model="setUp.contest.contestDate"></td>
+                    <td class="bg-judge"><input type="date" placeholder="Your Contest Date" ng-model="setUp.contest.date"></td>
                   </tr>
           
                   <tr></tr>
@@ -101,9 +101,9 @@
                 <tbody>
                   <tr>
                     <td>Clicker Value</td>
-                    <td class="bg-point"><input type="text" ng-model="setUp.contest.clickerValue.name"></td>
-                    <td class="bg-point"><input type="text" ng-model="setUp.contest.clickerValue.abbr"></td>
-                    <td class="bg-point"><input class="text-right" ng-model="setUp.contest.clickerValue.point"></td>
+                    <td class="bg-point">{{setUp.contest.clickerValue.name}}</td>
+                    <td class="bg-point">{{setUp.contest.clickerValue.abbr}}</td>
+                    <td class="bg-point"><input class="text-right" ng-model="setUp.contest.clickerValue.point" ng-blur="setUp.contest.getPointHash()"></td>
                   </tr>
           
                   <tr></tr>
@@ -120,9 +120,9 @@
 
                   <tr ng-show="setUp.contest.givenTevValues.length < 5">
                     <td>Given Value {{setUp.contest.givenTevValues.length + 1}}</td>
-                    <td class="bg-point"><input type="text" ng-model="setUp.contest.newGivenTevValue.name" ng-blur="setUp.contest.checkGivenTevValues()"></td>
-                    <td class="bg-point"><input type="text" ng-model="setUp.contest.newGivenTevValue.abbr" ng-blur="setUp.contest.checkGivenTevValues()"></td>
-                    <td class="bg-point"><input class="text-right" ng-model="setUp.contest.newGivenTevValue.point" ng-blur="setUp.contest.checkGivenTevValues()"></td>
+                    <td class="bg-point"><input type="text" ng-model="setUp.contest.newGivenTevValue.name" ng-blur="setUp.contest.checkGivenTevValues()" ng-keypress="setUp.contest.addNewTevValue($event)"></td>
+                    <td class="bg-point"><input type="text" ng-model="setUp.contest.newGivenTevValue.abbr" ng-blur="setUp.contest.checkGivenTevValues()" ng-keypress="setUp.contest.addNewTevValue($event)"></td>
+                    <td class="bg-point"><input class="text-right" ng-model="setUp.contest.newGivenTevValue.point" ng-blur="setUp.contest.checkGivenTevValues()" ng-keypress="setUp.contest.addNewTevValue($event)"></td>
                   </tr>
 
                   <tr></tr>
@@ -139,16 +139,16 @@
 
                   <tr ng-show="setUp.contest.givenPevValues.length < 5">
                     <td>Given Value {{setUp.contest.givenPevValues.length + 1}}</td>
-                    <td class="bg-point"><input type="text" ng-model="setUp.contest.newGivenPevValue.name" ng-blur="setUp.contest.checkGivenPevValues()"></td>
-                    <td class="bg-point"><input type="text" ng-model="setUp.contest.newGivenPevValue.abbr" ng-blur="setUp.contest.checkGivenPevValues()"></td>
-                    <td class="bg-point"><input class="text-right" ng-model="setUp.contest.newGivenPevValue.point" ng-blur="setUp.contest.checkGivenPevValues()"></td>
+                    <td class="bg-point"><input type="text" ng-model="setUp.contest.newGivenPevValue.name" ng-blur="setUp.contest.checkGivenPevValues()" ng-keypress="setUp.contest.addNewPevValue($event)"></td>
+                    <td class="bg-point"><input type="text" ng-model="setUp.contest.newGivenPevValue.abbr" ng-blur="setUp.contest.checkGivenPevValues()" ng-keypress="setUp.contest.addNewPevValue($event)"></td>
+                    <td class="bg-point"><input class="text-right" ng-model="setUp.contest.newGivenPevValue.point" ng-blur="setUp.contest.checkGivenPevValues()" ng-keypress="setUp.contest.addNewPevValue($event)"></td>
                   </tr>
           
                   <tr></tr>
           
                   <tr>
                     <td>Total</td>
-                    <td colspan="3"><input class="text-right" value="{{setUp.contest.pointSum()}}"></td>
+                    <td colspan="3"><input class="text-right" value="{{setUp.contest.pointTotal}}"></td>
                   </tr>
           
                   <tr></tr>
@@ -218,10 +218,10 @@
                     <input class="text-right" ng-model="player.deductions[deduction.name]">
                   </td>
                   <td ng-repeat-start="judge in texCtrl.contest.clickerJudges">
-                    <input class="text-right" ng-model="player.clicker[judge.name].plus">
+                    <input class="text-right" ng-model="player.clicker[judge.name].plus" ng-blur="texCtrl.player.getRawTexTotal(player, judge)">
                   </td>
                   <td ng-repeat-end>
-                    <input class="text-right" ng-model="player.clicker[judge.name].minus">
+                    <input class="text-right" ng-model="player.clicker[judge.name].minus" ng-blur="texCtrl.player.getRawTexTotal(player, judge)">
                   </td>
                 </tr>
               </tbody>
@@ -231,7 +231,6 @@
 
         <script type="text/ng-template" id="raw-tevpev.html">
           <div id="tab-raw-tevpev" class="row" ng-controller="RawTevPevCtrl as tevPevCtrl">
-            {{tevPevCtrl.player.players[0]}}
             <table>
               <thead>
                 <tr>
@@ -244,22 +243,22 @@
                   <th class="bg-header">Player Name</th>
 
                   <th class="th-for" ng-repeat-start="i in [1, 2, 3, 4, 5, 6]"></th>
-                  <th class="bg-header" ng-repeat="value in tevPevCtrl.contest.givenTevValues">{{value.abbr}}</th>
-                  <th class="bg-header" ng-repeat="value in tevPevCtrl.contest.givenPevValues">{{value.abbr}}</th>
+                  <th class="bg-header" ng-repeat="tev in tevPevCtrl.contest.givenTevValues">{{tev.abbr}}</th>
+                  <th class="bg-header" ng-repeat="pev in tevPevCtrl.contest.givenPevValues">{{pev.abbr}}</th>
                   <th class="th-end" ng-repeat-end></th>
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="player in tevPevCtrl.player.players" ng-init="tevPevCtrl.calculateAvgGiven(player)">
+                <tr ng-repeat="player in tevPevCtrl.player.players">
                   <td class="bg-byline">{{$index + 1}}</td>
                   <td class="bg-byline">{{player.name}}</td>
 
                   <td class="td-for" ng-repeat-start="judge in tevPevCtrl.contest.evaluationJudges"></td>
-                  <td ng-repeat="value in tevPevCtrl.contest.givenTevValues">
-                    <input type="text" maxlength="2" ng-model="player.givens[judge.name][value.abbr]" ng-change="tevPevCtrl.calculateAvgGiven(player)">
+                  <td ng-repeat="tev in tevPevCtrl.contest.givenTevValues">
+                    <input type="text" maxlength="2" ng-model="player.givens[judge.name][tev.abbr]" ng-blur="tevPevCtrl.player.getAvgGiven(player, tev.abbr)">
                   </td>
-                  <td ng-repeat="value in tevPevCtrl.contest.givenPevValues">
-                    <input type="text" maxlength="2" ng-model="player.givens[judge.name][value.abbr]" ng-change="tevPevCtrl.calculateAvgGiven(player)">
+                  <td ng-repeat="pev in tevPevCtrl.contest.givenPevValues">
+                    <input type="text" maxlength="2" ng-model="player.givens[judge.name][pev.abbr]" ng-blur="tevPevCtrl.player.getAvgGiven(player, pev.abbr)">
                   </td>
                   <td class="td-end" ng-repeat-end></td>
                 </tr>
@@ -270,13 +269,12 @@
 
         <script type="text/ng-template" id="result.html">
           <div id="tab-result" class="row" ng-controller="ResultCtrl as resultCtrl">
-            {{resultCtrl.player.players[0]}}
             <div class="col-12">
               <table>
                 <thead>
                   <tr>
                     <th></th>
-                    <th>{{resultCtrl.contest.contestName}} ({{resultCtrl.contest.contestDate}})</th>
+                    <th>{{resultCtrl.contest.name}} ({{resultCtrl.contest.date}})</th>
                     <th class="bg-tex">{{resultCtrl.contest.clickerValue.abbr}}</th>
                     <th class="bg-tev" colspan="5">T.Ev</th>
                     <th class="bg-pev" colspan="5">P.Ev</th>
@@ -294,27 +292,27 @@
                     <th class="bg-tev">total (/{{resultCtrl.contest.tevSum()}})</th>
                     <th class="bg-pev" ng-repeat="given in resultCtrl.contest.givenPevValues">{{given.name}}</th>
                     <th class="bg-pev">total (/{{resultCtrl.contest.pevSum()}})</th>
-                    <th class="bg-total">E.Total (/{{resultCtrl.contest.pointSum()}})</th>
+                    <th class="bg-total">E.Total (/{{resultCtrl.contest.pointTotal}})</th>
                     <th class="bg-md" ng-repeat="deduction in resultCtrl.contest.deductionValues">{{deduction.name}}</th>
                     <th class="bg-total">FINAL SCORE</th>
                     <th>Place</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr ng-repeat="player in resultCtrl.player.players">
+                  <tr ng-repeat="player in resultCtrl.player.players | orderBy:'-finalScore'">
                     <td>{{$index + 1}}</td>
                     <td>{{player.name}}</td>
-                    <td></td>
-                    <td ng-repeat="tev in resultCtrl.contest.givenTevValues">{{player.avgGivens[tev.abbr] | number:2}}</td>
-                    <td>{{resultCtrl.avgGivenTevSum(player) | number:2}}</td>
-                    <td ng-repeat="pev in resultCtrl.contest.givenPevValues">{{player.avgGivens[pev.abbr] | number:2}}</td>
-                    <td>{{resultCtrl.avgGivenPevSum(player) | number:2}}</td>
-                    <td></td>
+                    <td>{{resultCtrl.weightedTex(player) | number:1}}</td>
+                    <td ng-repeat="tev in resultCtrl.contest.givenTevValues">{{resultCtrl.weightedGiven(player, tev) | number:1}}</td>
+                    <td>{{resultCtrl.weightedTev(player) | number:1}}</td>
+                    <td ng-repeat="pev in resultCtrl.contest.givenPevValues">{{resultCtrl.weightedGiven(player, pev) | number:1}}</td>
+                    <td>{{resultCtrl.weightedPev(player) | number:1}}</td>
+                    <td>{{resultCtrl.totalScore(player) | number:1}}</td>
                     <td class="text-minus" ng-repeat="deduction in resultCtrl.contest.deductionValues">
-                      {{resultCtrl.deductionSum(player, deduction)}}
+                      {{resultCtrl.deductionScore(player, deduction)}}
                     </td>
-                    <td></td>
-                    <td></td>
+                    <td>{{resultCtrl.finalScore(player) | number:1}}</td>
+                    <td>{{$index + 1}}</td>
                   </tr>
                 </tbody>
               </table>
