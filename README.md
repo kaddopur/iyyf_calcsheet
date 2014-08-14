@@ -15,8 +15,10 @@ This project is the HTML/JS mapping from the **IYYF-CalcSheet-Final.xls (ver. 2.
 - Support moving by `arrow keys`
 - Data saving/loading
 	- Save/Load scoresheets by different contests/divisions
-	- Save/Load scoresheets in Browser
+	- Save/Load scoresheets in Browser (localStorate)
 	- Export/Import scoresheets to/from JSON files
+- Quick data clear button (clear all, by judge, by player...)
+- Print to A4 format
 - Pack into **Chrome extension**
 
 ## Contributing
