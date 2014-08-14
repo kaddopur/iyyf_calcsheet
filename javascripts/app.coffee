@@ -131,6 +131,7 @@ ContestFactory = ->
     valueList.push(this.newGivenTevValue) unless this.isEmptyValue(this.newGivenTevValue)
     this.newGivenTevValue = {}
     this.givenTevValues = valueList
+    this.getGivenAbbrs()
     this.getPointHash()
 
   contest.checkGivenPevValues = ->
@@ -142,6 +143,7 @@ ContestFactory = ->
     valueList.push(this.newGivenPevValue) unless this.isEmptyValue(this.newGivenPevValue)
     this.newGivenPevValue = {}
     this.givenPevValues = valueList
+    this.getGivenAbbrs()
     this.getPointHash()
 
   contest.addNewClickerJudge = (e) ->
@@ -155,6 +157,9 @@ ContestFactory = ->
 
   contest.addNewPevValue = (e) ->
     this.checkGivenPevValues() if e.keyCode == 13
+
+  contest.getGivenAbbrs = ->
+    this.givenAbbrs = (tev.abbr for tev in this.givenTevValues).concat(pev.abbr for pev in this.givenPevValues)
 
   contest.getPointHash = ->
     pointHash = {}
@@ -258,11 +263,12 @@ PlayerFactory = ->
     player.clicker ||= {}
     player.deductions ||= {}
     player.givens ||= {}
+    player.avgGivens ||= {}
     player
 
   player.getRawTexTotal = (player, judge) ->
     player.clicker[judge.name] ||= {}
-    player.clicker[judge.name].total = parseInt(player.clicker[judge.name].plus) - parseInt(player.clicker[judge.name].minus)
+    player.clicker[judge.name].total = (parseInt(player.clicker[judge.name].plus) || 0 ) - (parseInt(player.clicker[judge.name].minus) || 0)
     player.clicker[judge.name].total ||= 0
     this.getAdjTexTotal(judge)
 
@@ -287,6 +293,18 @@ PlayerFactory = ->
       texAvg /= judgeCount
       player.tex = texAvg
 
+  player.getAvgGiven = (player, givenAbbr) ->
+    givenAvg = 0
+    judgeCount = 0
+    for judge, score of player.givens
+      givenAvg += parseInt(score[givenAbbr]) || 0
+      judgeCount += 1
+    givenAvg /= judgeCount
+    player.avgGivens[givenAbbr] = givenAvg
+
+  player.getAllAvgGiven = (player, givenAbbrs) ->
+    for givenAbbr in givenAbbrs
+      this.getAvgGiven(player, givenAbbr)
   player
 
 
@@ -298,14 +316,13 @@ TabCtrl = (TabFactory) ->
     tabUrl == this.currentTab
 
   this.tabs = TabFactory
-  this.currentTab = 'raw-tex.html'
+  this.currentTab = 'raw-tevpev.html'
 
   this
 
 
 SetUpCtrl = (ContestFactory) ->
   this.contest = ContestFactory
-  this.contest.getPointHash()
   this
 
 
@@ -317,42 +334,12 @@ PlayerCtrl = (PlayerFactory) ->
 RawTexCtrl = (ContestFactory, PlayerFactory) ->
   this.contest = ContestFactory
   this.player = PlayerFactory
-
-  for judge in this.contest.clickerJudges
-    for player in this.player.players
-      this.player.initPlayer(player)
-    for player in this.player.players
-      this.player.getRawTexTotal(player, judge)
-    this.player.getAdjTexTotal(judge)
   this
 
 
 RawTevPevCtrl = (ContestFactory, PlayerFactory) ->
   this.contest = ContestFactory
   this.player = PlayerFactory
-
-  this.calculateAvgGiven = (currentPlayer) ->
-    judges = (judge.name for judge in this.contest.evaluationJudges)
-    givens = (value.abbr for value in this.contest.givenTevValues).concat(value.abbr for value in this.contest.givenPevValues)
-    
-    # check for integrity
-    return unless (k for k, v of currentPlayer.givens).length is judges.length
-    for judge, given of currentPlayer.givens
-      return unless (k for k, v of given).length is givens.length
-
-    # calculate
-    avgGivens = {}
-    for judge, given of currentPlayer.givens
-      for k, v of given
-        if avgGivens[k]
-          avgGivens[k] += parseInt(v)
-        else
-          avgGivens[k] = parseInt(v)
-
-    for k, v of avgGivens
-      avgGivens[k] = v / 3 * 0.5
-
-    currentPlayer.avgGivens = avgGivens
   this
 
 
@@ -383,8 +370,32 @@ ResultCtrl = (ContestFactory, PlayerFactory) ->
   this
 
 
+MainCtrl = (ContestFactory, PlayerFactory) ->
+  this.contest = ContestFactory
+  this.player = PlayerFactory
+
+  this.contest.getGivenAbbrs()
+  this.contest.getPointHash()
+
+  # init for raw-tex
+  for judge in this.contest.clickerJudges
+    for player in this.player.players
+      this.player.initPlayer(player)
+    for player in this.player.players
+      this.player.getRawTexTotal(player, judge)
+    this.player.getAdjTexTotal(judge)
+
+  # init for raw-tevpev
+  for judge in this.contest.evaluationJudges
+    for player in this.player.players
+      player.givens[judge.name] ||= {}
+
+  for player in this.player.players
+    this.player.getAllAvgGiven(player, this.contest.givenAbbrs)
+
 angular
   .module('app', [])
+  .controller('MainCtrl', MainCtrl)
   .controller('TabCtrl', TabCtrl)
   .controller('SetUpCtrl', SetUpCtrl)
   .controller('PlayerCtrl', PlayerCtrl)

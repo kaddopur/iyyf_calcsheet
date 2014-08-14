@@ -1,5 +1,5 @@
 (function() {
-  var ContestFactory, PlayerCtrl, PlayerFactory, RawTevPevCtrl, RawTexCtrl, ResultCtrl, SetUpCtrl, TabCtrl, TabFactory;
+  var ContestFactory, MainCtrl, PlayerCtrl, PlayerFactory, RawTevPevCtrl, RawTexCtrl, ResultCtrl, SetUpCtrl, TabCtrl, TabFactory;
 
   TabFactory = function() {
     var tabs;
@@ -151,6 +151,7 @@
       }
       this.newGivenTevValue = {};
       this.givenTevValues = valueList;
+      this.getGivenAbbrs();
       return this.getPointHash();
     };
     contest.checkGivenPevValues = function() {
@@ -169,6 +170,7 @@
       }
       this.newGivenPevValue = {};
       this.givenPevValues = valueList;
+      this.getGivenAbbrs();
       return this.getPointHash();
     };
     contest.addNewClickerJudge = function(e) {
@@ -190,6 +192,28 @@
       if (e.keyCode === 13) {
         return this.checkGivenPevValues();
       }
+    };
+    contest.getGivenAbbrs = function() {
+      var pev, tev;
+      return this.givenAbbrs = ((function() {
+        var _i, _len, _ref, _results;
+        _ref = this.givenTevValues;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          tev = _ref[_i];
+          _results.push(tev.abbr);
+        }
+        return _results;
+      }).call(this)).concat((function() {
+        var _i, _len, _ref, _results;
+        _ref = this.givenPevValues;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          pev = _ref[_i];
+          _results.push(pev.abbr);
+        }
+        return _results;
+      }).call(this));
     };
     contest.getPointHash = function() {
       var deduct, pev, pointHash, pointTotal, tev, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
@@ -310,12 +334,13 @@
       player.clicker || (player.clicker = {});
       player.deductions || (player.deductions = {});
       player.givens || (player.givens = {});
+      player.avgGivens || (player.avgGivens = {});
       return player;
     };
     player.getRawTexTotal = function(player, judge) {
       var _base, _base1, _name;
       (_base = player.clicker)[_name = judge.name] || (_base[_name] = {});
-      player.clicker[judge.name].total = parseInt(player.clicker[judge.name].plus) - parseInt(player.clicker[judge.name].minus);
+      player.clicker[judge.name].total = (parseInt(player.clicker[judge.name].plus) || 0) - (parseInt(player.clicker[judge.name].minus) || 0);
       (_base1 = player.clicker[judge.name]).total || (_base1.total = 0);
       return this.getAdjTexTotal(judge);
     };
@@ -359,6 +384,28 @@
       }
       return _results;
     };
+    player.getAvgGiven = function(player, givenAbbr) {
+      var givenAvg, judge, judgeCount, score, _ref;
+      givenAvg = 0;
+      judgeCount = 0;
+      _ref = player.givens;
+      for (judge in _ref) {
+        score = _ref[judge];
+        givenAvg += parseInt(score[givenAbbr]) || 0;
+        judgeCount += 1;
+      }
+      givenAvg /= judgeCount;
+      return player.avgGivens[givenAbbr] = givenAvg;
+    };
+    player.getAllAvgGiven = function(player, givenAbbrs) {
+      var givenAbbr, _i, _len, _results;
+      _results = [];
+      for (_i = 0, _len = givenAbbrs.length; _i < _len; _i++) {
+        givenAbbr = givenAbbrs[_i];
+        _results.push(this.getAvgGiven(player, givenAbbr));
+      }
+      return _results;
+    };
     return player;
   };
 
@@ -370,13 +417,12 @@
       return tabUrl === this.currentTab;
     };
     this.tabs = TabFactory;
-    this.currentTab = 'raw-tex.html';
+    this.currentTab = 'raw-tevpev.html';
     return this;
   };
 
   SetUpCtrl = function(ContestFactory) {
     this.contest = ContestFactory;
-    this.contest.getPointHash();
     return this;
   };
 
@@ -386,107 +432,14 @@
   };
 
   RawTexCtrl = function(ContestFactory, PlayerFactory) {
-    var judge, player, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
     this.contest = ContestFactory;
     this.player = PlayerFactory;
-    _ref = this.contest.clickerJudges;
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      judge = _ref[_i];
-      _ref1 = this.player.players;
-      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-        player = _ref1[_j];
-        this.player.initPlayer(player);
-      }
-      _ref2 = this.player.players;
-      for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
-        player = _ref2[_k];
-        this.player.getRawTexTotal(player, judge);
-      }
-      this.player.getAdjTexTotal(judge);
-    }
     return this;
   };
 
   RawTevPevCtrl = function(ContestFactory, PlayerFactory) {
     this.contest = ContestFactory;
     this.player = PlayerFactory;
-    this.calculateAvgGiven = function(currentPlayer) {
-      var avgGivens, given, givens, judge, judges, k, v, value, _ref, _ref1;
-      judges = (function() {
-        var _i, _len, _ref, _results;
-        _ref = this.contest.evaluationJudges;
-        _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          judge = _ref[_i];
-          _results.push(judge.name);
-        }
-        return _results;
-      }).call(this);
-      givens = ((function() {
-        var _i, _len, _ref, _results;
-        _ref = this.contest.givenTevValues;
-        _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          value = _ref[_i];
-          _results.push(value.abbr);
-        }
-        return _results;
-      }).call(this)).concat((function() {
-        var _i, _len, _ref, _results;
-        _ref = this.contest.givenPevValues;
-        _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          value = _ref[_i];
-          _results.push(value.abbr);
-        }
-        return _results;
-      }).call(this));
-      if (((function() {
-        var _ref, _results;
-        _ref = currentPlayer.givens;
-        _results = [];
-        for (k in _ref) {
-          v = _ref[k];
-          _results.push(k);
-        }
-        return _results;
-      })()).length !== judges.length) {
-        return;
-      }
-      _ref = currentPlayer.givens;
-      for (judge in _ref) {
-        given = _ref[judge];
-        if (((function() {
-          var _results;
-          _results = [];
-          for (k in given) {
-            v = given[k];
-            _results.push(k);
-          }
-          return _results;
-        })()).length !== givens.length) {
-          return;
-        }
-      }
-      avgGivens = {};
-      _ref1 = currentPlayer.givens;
-      for (judge in _ref1) {
-        given = _ref1[judge];
-        for (k in given) {
-          v = given[k];
-          if (avgGivens[k]) {
-            avgGivens[k] += parseInt(v);
-          } else {
-            avgGivens[k] = parseInt(v);
-          }
-        }
-      }
-      for (k in avgGivens) {
-        v = avgGivens[k];
-        avgGivens[k] = v / 3 * 0.5;
-      }
-      return currentPlayer.avgGivens = avgGivens;
-    };
     return this;
   };
 
@@ -546,6 +499,45 @@
     return this;
   };
 
-  angular.module('app', []).controller('TabCtrl', TabCtrl).controller('SetUpCtrl', SetUpCtrl).controller('PlayerCtrl', PlayerCtrl).controller('RawTexCtrl', RawTexCtrl).controller('RawTevPevCtrl', RawTevPevCtrl).controller('SetUpCtrl', SetUpCtrl).controller('ResultCtrl', ResultCtrl).factory('TabFactory', TabFactory).service('ContestFactory', ContestFactory).service('PlayerFactory', PlayerFactory);
+  MainCtrl = function(ContestFactory, PlayerFactory) {
+    var judge, player, _base, _i, _j, _k, _l, _len, _len1, _len2, _len3, _len4, _len5, _m, _n, _name, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _results;
+    this.contest = ContestFactory;
+    this.player = PlayerFactory;
+    this.contest.getGivenAbbrs();
+    this.contest.getPointHash();
+    _ref = this.contest.clickerJudges;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      judge = _ref[_i];
+      _ref1 = this.player.players;
+      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+        player = _ref1[_j];
+        this.player.initPlayer(player);
+      }
+      _ref2 = this.player.players;
+      for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
+        player = _ref2[_k];
+        this.player.getRawTexTotal(player, judge);
+      }
+      this.player.getAdjTexTotal(judge);
+    }
+    _ref3 = this.contest.evaluationJudges;
+    for (_l = 0, _len3 = _ref3.length; _l < _len3; _l++) {
+      judge = _ref3[_l];
+      _ref4 = this.player.players;
+      for (_m = 0, _len4 = _ref4.length; _m < _len4; _m++) {
+        player = _ref4[_m];
+        (_base = player.givens)[_name = judge.name] || (_base[_name] = {});
+      }
+    }
+    _ref5 = this.player.players;
+    _results = [];
+    for (_n = 0, _len5 = _ref5.length; _n < _len5; _n++) {
+      player = _ref5[_n];
+      _results.push(this.player.getAllAvgGiven(player, this.contest.givenAbbrs));
+    }
+    return _results;
+  };
+
+  angular.module('app', []).controller('MainCtrl', MainCtrl).controller('TabCtrl', TabCtrl).controller('SetUpCtrl', SetUpCtrl).controller('PlayerCtrl', PlayerCtrl).controller('RawTexCtrl', RawTexCtrl).controller('RawTevPevCtrl', RawTevPevCtrl).controller('SetUpCtrl', SetUpCtrl).controller('ResultCtrl', ResultCtrl).factory('TabFactory', TabFactory).service('ContestFactory', ContestFactory).service('PlayerFactory', PlayerFactory);
 
 }).call(this);

@@ -27,7 +27,7 @@
         </div>
       </div>
 
-      <div id="main">
+      <div id="main" ng-controller="MainCtrl as main">
         <div ng-include="tabCtrl.currentTab"></div>
         <script type="text/ng-template" id="set-up.html" src="set-up.html">
           <div id="tab-set-up" class="row" ng-controller="SetUpCtrl as setUp">
@@ -192,8 +192,6 @@
 
         <script type="text/ng-template" id="raw-tex.html">
           <div id="tab-raw-tex" class="row" ng-controller="RawTexCtrl as texCtrl">
-            <p>{{texCtrl.player.players[0]}}</p>
-            <p>{{texCtrl.player.players[1]}}</p>
             <table>
               <thead>
                 <tr>
@@ -233,8 +231,6 @@
 
         <script type="text/ng-template" id="raw-tevpev.html">
           <div id="tab-raw-tevpev" class="row" ng-controller="RawTevPevCtrl as tevPevCtrl">
-            <p>{{tevPevCtrl.player.players[0]}}</p>
-            <p>{{tevPevCtrl.player.players[1]}}</p>
             <table>
               <thead>
                 <tr>
@@ -247,22 +243,22 @@
                   <th class="bg-header">Player Name</th>
 
                   <th class="th-for" ng-repeat-start="i in [1, 2, 3, 4, 5, 6]"></th>
-                  <th class="bg-header" ng-repeat="value in tevPevCtrl.contest.givenTevValues">{{value.abbr}}</th>
-                  <th class="bg-header" ng-repeat="value in tevPevCtrl.contest.givenPevValues">{{value.abbr}}</th>
+                  <th class="bg-header" ng-repeat="tev in tevPevCtrl.contest.givenTevValues">{{tev.abbr}}</th>
+                  <th class="bg-header" ng-repeat="pev in tevPevCtrl.contest.givenPevValues">{{pev.abbr}}</th>
                   <th class="th-end" ng-repeat-end></th>
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="player in tevPevCtrl.player.players" ng-init="tevPevCtrl.calculateAvgGiven(player)">
+                <tr ng-repeat="player in tevPevCtrl.player.players">
                   <td class="bg-byline">{{$index + 1}}</td>
                   <td class="bg-byline">{{player.name}}</td>
 
                   <td class="td-for" ng-repeat-start="judge in tevPevCtrl.contest.evaluationJudges"></td>
-                  <td ng-repeat="value in tevPevCtrl.contest.givenTevValues">
-                    <input type="text" maxlength="2" ng-model="player.givens[judge.name][value.abbr]" ng-change="tevPevCtrl.calculateAvgGiven(player)">
+                  <td ng-repeat="tev in tevPevCtrl.contest.givenTevValues">
+                    <input type="text" maxlength="2" ng-model="player.givens[judge.name][tev.abbr]" ng-blur="tevPevCtrl.player.getAvgGiven(player, tev.abbr)">
                   </td>
-                  <td ng-repeat="value in tevPevCtrl.contest.givenPevValues">
-                    <input type="text" maxlength="2" ng-model="player.givens[judge.name][value.abbr]" ng-change="tevPevCtrl.calculateAvgGiven(player)">
+                  <td ng-repeat="pev in tevPevCtrl.contest.givenPevValues">
+                    <input type="text" maxlength="2" ng-model="player.givens[judge.name][pev.abbr]" ng-blur="tevPevCtrl.player.getAvgGiven(player, pev.abbr)">
                   </td>
                   <td class="td-end" ng-repeat-end></td>
                 </tr>
