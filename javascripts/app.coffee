@@ -183,8 +183,8 @@ ContestFactory = ->
 
 
 PlayerFactory = ->
-  this.newPlayer = {}
-  this.players = [
+  player = {}
+  player.players = [
     {
       name: 'JIANG Shanzhen'
       deductions: {
@@ -230,19 +230,20 @@ PlayerFactory = ->
     {name: 'YU Zonglun'}
   ]
 
-  this.checkPlayers = ->
-    newPlayers = [] 
+  player.checkPlayers = ->
+    playerList = []
+    this.newPlayer ||= {}
     for player in this.players
-      newPlayers.push(player) if player.name
+      playerList.push(player) if player.name
 
-    newPlayers.push(this.newPlayer) if this.newPlayer.name
+    playerList.push(this.newPlayer) if this.newPlayer.name
     this.newPlayer = {}
-    this.players = newPlayers
+    this.players = playerList
 
-  this.addNewPlayer = (e) ->
+  player.addNewPlayer = (e) ->
     this.checkPlayers() if e.keyCode == 13
 
-  this
+  player
 
 
 TabCtrl = (TabFactory) ->

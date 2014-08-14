@@ -224,8 +224,9 @@
   };
 
   PlayerFactory = function() {
-    this.newPlayer = {};
-    this.players = [
+    var player;
+    player = {};
+    player.players = [
       {
         name: 'JIANG Shanzhen',
         deductions: {
@@ -273,28 +274,29 @@
         name: 'YU Zonglun'
       }
     ];
-    this.checkPlayers = function() {
-      var newPlayers, player, _i, _len, _ref;
-      newPlayers = [];
+    player.checkPlayers = function() {
+      var playerList, _i, _len, _ref;
+      playerList = [];
+      this.newPlayer || (this.newPlayer = {});
       _ref = this.players;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         player = _ref[_i];
         if (player.name) {
-          newPlayers.push(player);
+          playerList.push(player);
         }
       }
       if (this.newPlayer.name) {
-        newPlayers.push(this.newPlayer);
+        playerList.push(this.newPlayer);
       }
       this.newPlayer = {};
-      return this.players = newPlayers;
+      return this.players = playerList;
     };
-    this.addNewPlayer = function(e) {
+    player.addNewPlayer = function(e) {
       if (e.keyCode === 13) {
         return this.checkPlayers();
       }
     };
-    return this;
+    return player;
   };
 
   TabCtrl = function(TabFactory) {
