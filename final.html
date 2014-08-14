@@ -29,7 +29,7 @@
 
       <div id="main">
         <div ng-include="tabCtrl.currentTab"></div>
-        <script type="text/ng-template" id="set-up.html">
+        <script type="text/ng-template" id="set-up.html" src="set-up.html">
           <div id="tab-set-up" class="row" ng-controller="SetUpCtrl as setUp">
             <div class="col-6">
               <table>
@@ -39,7 +39,7 @@
                 <tbody>
                   <tr>
                     <td>Contest Name</td>
-                    <td class="bg-judge"><input type="text" placeholder="Your Contest Name" ng-model="setUp.contest.contestName"></td>
+                    <td class="bg-judge"><input type="text" placeholder="Your Contest Name" ng-model="setUp.contest.name"></td>
                   </tr>
 
                   <tr>
@@ -50,7 +50,7 @@
 
                   <tr>
                     <td>Contest Date</td>
-                    <td class="bg-judge"><input type="date" placeholder="Your Contest Date" ng-model="setUp.contest.contestDate"></td>
+                    <td class="bg-judge"><input type="date" placeholder="Your Contest Date" ng-model="setUp.contest.date"></td>
                   </tr>
           
                   <tr></tr>
@@ -120,9 +120,9 @@
 
                   <tr ng-show="setUp.contest.givenTevValues.length < 5">
                     <td>Given Value {{setUp.contest.givenTevValues.length + 1}}</td>
-                    <td class="bg-point"><input type="text" ng-model="setUp.contest.newGivenTevValue.name" ng-blur="setUp.contest.checkGivenTevValues()"></td>
-                    <td class="bg-point"><input type="text" ng-model="setUp.contest.newGivenTevValue.abbr" ng-blur="setUp.contest.checkGivenTevValues()"></td>
-                    <td class="bg-point"><input class="text-right" ng-model="setUp.contest.newGivenTevValue.point" ng-blur="setUp.contest.checkGivenTevValues()"></td>
+                    <td class="bg-point"><input type="text" ng-model="setUp.contest.newGivenTevValue.name" ng-blur="setUp.contest.checkGivenTevValues()" ng-keypress="setUp.contest.addNewTevValue($event)"></td>
+                    <td class="bg-point"><input type="text" ng-model="setUp.contest.newGivenTevValue.abbr" ng-blur="setUp.contest.checkGivenTevValues()" ng-keypress="setUp.contest.addNewTevValue($event)"></td>
+                    <td class="bg-point"><input class="text-right" ng-model="setUp.contest.newGivenTevValue.point" ng-blur="setUp.contest.checkGivenTevValues()" ng-keypress="setUp.contest.addNewTevValue($event)"></td>
                   </tr>
 
                   <tr></tr>
@@ -139,16 +139,16 @@
 
                   <tr ng-show="setUp.contest.givenPevValues.length < 5">
                     <td>Given Value {{setUp.contest.givenPevValues.length + 1}}</td>
-                    <td class="bg-point"><input type="text" ng-model="setUp.contest.newGivenPevValue.name" ng-blur="setUp.contest.checkGivenPevValues()"></td>
-                    <td class="bg-point"><input type="text" ng-model="setUp.contest.newGivenPevValue.abbr" ng-blur="setUp.contest.checkGivenPevValues()"></td>
-                    <td class="bg-point"><input class="text-right" ng-model="setUp.contest.newGivenPevValue.point" ng-blur="setUp.contest.checkGivenPevValues()"></td>
+                    <td class="bg-point"><input type="text" ng-model="setUp.contest.newGivenPevValue.name" ng-blur="setUp.contest.checkGivenPevValues()" ng-keypress="setUp.contest.addNewPevValue($event)"></td>
+                    <td class="bg-point"><input type="text" ng-model="setUp.contest.newGivenPevValue.abbr" ng-blur="setUp.contest.checkGivenPevValues()" ng-keypress="setUp.contest.addNewPevValue($event)"></td>
+                    <td class="bg-point"><input class="text-right" ng-model="setUp.contest.newGivenPevValue.point" ng-blur="setUp.contest.checkGivenPevValues()" ng-keypress="setUp.contest.addNewPevValue($event)"></td>
                   </tr>
           
                   <tr></tr>
           
                   <tr>
                     <td>Total</td>
-                    <td colspan="3"><input class="text-right" value="{{setUp.contest.pointSum()}}"></td>
+                    <td colspan="3"><input class="text-right" value="{{setUp.contest.pointTotal}}"></td>
                   </tr>
           
                   <tr></tr>

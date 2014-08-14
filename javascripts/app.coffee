@@ -1,5 +1,5 @@
 TabFactory = ->
-  this.tabs = [
+  tabs = [
     {
       title: 'SET-UP'
       url: 'set-up.html'
@@ -21,31 +21,29 @@ TabFactory = ->
       url: 'result.html'
     }
   ]
-
-  this
+  tabs
 
 
 ContestFactory = ->
-  this.contestName = 'TYYC14'
-  this.contestDate = '2014-08-13'
-  this.divisionName = '1A'
-  this.newClickerJudge = {}
-  this.clickerJudges = [
+  contest = {}
+  contest.name = 'TYYC14'
+  contest.date = '2014-08-13'
+  contest.divisionName = '1A'
+  contest.clickerJudges = [
     {name: 'Jason Kao'}
     {name: 'Bambino Qiu'}
   ]
-  this.newEvaluationJudge = {}
-  this.evaluationJudges = [
+  contest.evaluationJudges = [
     {name: 'Bruce Lan'}
     {name: 'Leo Huang'}
     {name: 'Jason Huang'}
   ]
-  this.clickerValue = {
+  contest.clickerValue = {
     name: 'Technical Execution'
     abbr: 'T.Ex'
     point: 60
   }
-  this.givenTevValues = [
+  contest.givenTevValues = [
     {
       name: 'Cleanliness'
       abbr: 'CLN'
@@ -67,7 +65,7 @@ ContestFactory = ->
       point: 5
     }
   ]
-  this.givenPevValues = [
+  contest.givenPevValues = [
     {
       name: 'Music Use'
       abbr: 'MSC'
@@ -89,7 +87,7 @@ ContestFactory = ->
       point: 5
     }
   ]
-  this.deductionValues = [
+  contest.deductionValues = [
     {
       name: 'Stop'
       point: 1
@@ -104,72 +102,84 @@ ContestFactory = ->
     }
   ]
 
-  this.checkClickerJudges = ->
-    newJudges = [] 
+  contest.checkClickerJudges = ->
+    judgeList = []
+    this.newClickerJudge ||= {}
     for judge in this.clickerJudges
-      newJudges.push(judge) if judge.name
+      judgeList.push(judge) if judge.name
 
-    newJudges.push(this.newClickerJudge) if this.newClickerJudge.name
+    judgeList.push(this.newClickerJudge) if this.newClickerJudge.name
     this.newClickerJudge = {}
-    this.clickerJudges = newJudges
+    this.clickerJudges = judgeList
 
-  this.addNewClickerJudge = (e) ->
+  contest.checkEvaluationJudges = ->
+    judgeList = []
+    this.newEvaluationJudge ||= {}
+    for judge in this.evaluationJudges
+      judgeList.push(judge) if judge.name
+
+    judgeList.push(this.newEvaluationJudge) if this.newEvaluationJudge.name
+    this.newEvaluationJudge = {}
+    this.evaluationJudges = judgeList
+
+  contest.checkGivenTevValues = ->
+    valueList = []
+    this.newGivenTevValue ||= {}
+    for tev in this.givenTevValues
+      valueList.push(tev) unless this.isEmptyValue(tev)
+
+    valueList.push(this.newGivenTevValue) unless this.isEmptyValue(this.newGivenTevValue)
+    this.newGivenTevValue = {}
+    this.givenTevValues = valueList
+    this.getPointHash()
+
+  contest.checkGivenPevValues = ->
+    valueList = []
+    this.newGivenPevValue ||= {}
+    for pev in this.givenPevValues
+      valueList.push(pev) unless this.isEmptyValue(pev)
+
+    valueList.push(this.newGivenPevValue) unless this.isEmptyValue(this.newGivenPevValue)
+    this.newGivenPevValue = {}
+    this.givenPevValues = valueList
+    this.getPointHash()
+
+  contest.addNewClickerJudge = (e) ->
     this.checkClickerJudges() if e.keyCode == 13
 
-  this.checkEvaluationJudges = ->
-    newJudges = [] 
-    for judge in this.evaluationJudges
-      newJudges.push(judge) if judge.name
-
-    newJudges.push(this.newEvaluationJudge) if this.newEvaluationJudge.name
-    this.newEvaluationJudge = {}
-    this.evaluationJudges = newJudges
-
-  this.addNewEvaluationJudge = (e) ->
+  contest.addNewEvaluationJudge = (e) ->
     this.checkEvaluationJudges() if e.keyCode == 13
 
-  this.checkGivenTevValues = ->
-    newValues = [] 
-    for value in this.givenTevValues
-      newValues.push(value) if value.name || value.abbr || value.point
+  contest.addNewTevValue = (e) ->
+    this.checkGivenTevValues() if e.keyCode == 13
 
-    newValues.push(this.newGivenTevValue) if this.newGivenTevValue.name || this.newGivenTevValue.abbr || this.newGivenTevValue.point
-    this.newGivenTevValue = {}
-    this.givenTevValues = newValues
+  contest.addNewPevValue = (e) ->
+    this.checkGivenPevValues() if e.keyCode == 13
 
-  this.checkGivenPevValues = ->
-    newValues = [] 
-    for value in this.givenPevValues
-      newValues.push(value) if value.name || value.abbr || value.point
+  contest.getPointHash = ->
+    pointHash = {}
+    pointTotal = 0
+    pointHash[this.clickerValue.abbr] = parseInt(this.clickerValue.point)
+    pointTotal += pointHash[this.clickerValue.abbr]
 
-    newValues.push(this.newGivenPevValue) if this.newGivenPevValue.name || this.newGivenPevValue.abbr || this.newGivenPevValue.point
-    this.newGivenPevValue = {}
-    this.givenPevValues = newValues
+    for tev in this.givenTevValues
+      pointHash[tev.abbr] = parseInt(tev.point)
+      pointTotal += pointHash[tev.abbr]
 
-  this.pointSum = ->
-    sum = 0
-    for value in this.givenTevValues
-      sum += (parseInt(value.point) || 0)
+    for pev in this.givenPevValues
+      pointHash[pev.abbr] = parseInt(pev.point)
+      pointTotal += pointHash[pev.abbr]
 
-    for value in this.givenPevValues
-      sum += (parseInt(value.point) || 0)
+    for deduct in this.deductionValues
+      pointHash[deduct.name] = parseInt(deduct.point)
 
-    sum += (parseInt(this.clickerValue.point) || 0)
-    sum
+    this.pointHash = pointHash
+    this.pointTotal = pointTotal
 
-  this.tevSum = ->
-    sum = 0
-    for value in this.givenTevValues
-      sum += (parseInt(value.point) || 0)
-    sum
+  contest.isEmptyValue = (value) ->
+    not (value.name || value.abbr || value.point)
 
-  this.pevSum = ->
-    sum = 0
-    for value in this.givenPevValues
-      sum += (parseInt(value.point) || 0)
-    sum
-
-  this
+  contest
 
 
 PlayerFactory = ->
@@ -242,14 +252,15 @@ TabCtrl = (TabFactory) ->
   this.isActiveTab = (tabUrl) ->
     tabUrl == this.currentTab
 
-  this.tabs = TabFactory.tabs
-  this.currentTab = 'result.html'
+  this.tabs = TabFactory
+  this.currentTab = 'player.html'
 
   this
 
 
 SetUpCtrl = (ContestFactory) ->
   this.contest = ContestFactory
+  this.contest.getPointHash()
   this
 
 

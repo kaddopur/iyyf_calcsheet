@@ -2,7 +2,8 @@
   var ContestFactory, PlayerCtrl, PlayerFactory, RawTevPevCtrl, RawTexCtrl, ResultCtrl, SetUpCtrl, TabCtrl, TabFactory;
 
   TabFactory = function() {
-    this.tabs = [
+    var tabs;
+    tabs = [
       {
         title: 'SET-UP',
         url: 'set-up.html'
@@ -20,23 +21,23 @@
         url: 'result.html'
       }
     ];
-    return this;
+    return tabs;
   };
 
   ContestFactory = function() {
-    this.contestName = 'TYYC14';
-    this.contestDate = '2014-08-13';
-    this.divisionName = '1A';
-    this.newClickerJudge = {};
-    this.clickerJudges = [
+    var contest;
+    contest = {};
+    contest.name = 'TYYC14';
+    contest.date = '2014-08-13';
+    contest.divisionName = '1A';
+    contest.clickerJudges = [
       {
         name: 'Jason Kao'
       }, {
         name: 'Bambino Qiu'
       }
     ];
-    this.newEvaluationJudge = {};
-    this.evaluationJudges = [
+    contest.evaluationJudges = [
       {
         name: 'Bruce Lan'
       }, {
@@ -45,12 +46,12 @@
         name: 'Jason Huang'
       }
     ];
-    this.clickerValue = {
+    contest.clickerValue = {
       name: 'Technical Execution',
       abbr: 'T.Ex',
       point: 60
     };
-    this.givenTevValues = [
+    contest.givenTevValues = [
       {
         name: 'Cleanliness',
         abbr: 'CLN',
@@ -69,7 +70,7 @@
         point: 5
       }
     ];
-    this.givenPevValues = [
+    contest.givenPevValues = [
       {
         name: 'Music Use',
         abbr: 'MSC',
@@ -88,7 +89,7 @@
         point: 5
       }
     ];
-    this.deductionValues = [
+    contest.deductionValues = [
       {
         name: 'Stop',
         point: 1
@@ -100,117 +101,126 @@
         point: 5
       }
     ];
-    this.checkClickerJudges = function() {
-      var judge, newJudges, _i, _len, _ref;
-      newJudges = [];
+    contest.checkClickerJudges = function() {
+      var judge, judgeList, _i, _len, _ref;
+      judgeList = [];
+      this.newClickerJudge || (this.newClickerJudge = {});
       _ref = this.clickerJudges;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         judge = _ref[_i];
         if (judge.name) {
-          newJudges.push(judge);
+          judgeList.push(judge);
         }
       }
       if (this.newClickerJudge.name) {
-        newJudges.push(this.newClickerJudge);
+        judgeList.push(this.newClickerJudge);
       }
       this.newClickerJudge = {};
-      return this.clickerJudges = newJudges;
+      return this.clickerJudges = judgeList;
     };
-    this.addNewClickerJudge = function(e) {
-      if (e.keyCode === 13) {
-        return this.checkClickerJudges();
-      }
-    };
-    this.checkEvaluationJudges = function() {
-      var judge, newJudges, _i, _len, _ref;
-      newJudges = [];
+    contest.checkEvaluationJudges = function() {
+      var judge, judgeList, _i, _len, _ref;
+      judgeList = [];
+      this.newEvaluationJudge || (this.newEvaluationJudge = {});
       _ref = this.evaluationJudges;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         judge = _ref[_i];
         if (judge.name) {
-          newJudges.push(judge);
+          judgeList.push(judge);
         }
       }
       if (this.newEvaluationJudge.name) {
-        newJudges.push(this.newEvaluationJudge);
+        judgeList.push(this.newEvaluationJudge);
       }
       this.newEvaluationJudge = {};
-      return this.evaluationJudges = newJudges;
+      return this.evaluationJudges = judgeList;
     };
-    this.addNewEvaluationJudge = function(e) {
+    contest.checkGivenTevValues = function() {
+      var tev, valueList, _i, _len, _ref;
+      valueList = [];
+      this.newGivenTevValue || (this.newGivenTevValue = {});
+      _ref = this.givenTevValues;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        tev = _ref[_i];
+        if (!this.isEmptyValue(tev)) {
+          valueList.push(tev);
+        }
+      }
+      if (!this.isEmptyValue(this.newGivenTevValue)) {
+        valueList.push(this.newGivenTevValue);
+      }
+      this.newGivenTevValue = {};
+      this.givenTevValues = valueList;
+      return this.getPointHash();
+    };
+    contest.checkGivenPevValues = function() {
+      var pev, valueList, _i, _len, _ref;
+      valueList = [];
+      this.newGivenPevValue || (this.newGivenPevValue = {});
+      _ref = this.givenPevValues;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        pev = _ref[_i];
+        if (!this.isEmptyValue(pev)) {
+          valueList.push(pev);
+        }
+      }
+      if (!this.isEmptyValue(this.newGivenPevValue)) {
+        valueList.push(this.newGivenPevValue);
+      }
+      this.newGivenPevValue = {};
+      this.givenPevValues = valueList;
+      return this.getPointHash();
+    };
+    contest.addNewClickerJudge = function(e) {
+      if (e.keyCode === 13) {
+        return this.checkClickerJudges();
+      }
+    };
+    contest.addNewEvaluationJudge = function(e) {
       if (e.keyCode === 13) {
         return this.checkEvaluationJudges();
       }
     };
-    this.checkGivenTevValues = function() {
-      var newValues, value, _i, _len, _ref;
-      newValues = [];
+    contest.addNewTevValue = function(e) {
+      if (e.keyCode === 13) {
+        return this.checkGivenTevValues();
+      }
+    };
+    contest.addNewPevValue = function(e) {
+      if (e.keyCode === 13) {
+        return this.checkGivenPevValues();
+      }
+    };
+    contest.getPointHash = function() {
+      var deduct, pev, pointHash, pointTotal, tev, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
+      pointHash = {};
+      pointTotal = 0;
+      pointHash[this.clickerValue.abbr] = parseInt(this.clickerValue.point);
+      pointTotal += pointHash[this.clickerValue.abbr];
       _ref = this.givenTevValues;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        value = _ref[_i];
-        if (value.name || value.abbr || value.point) {
-          newValues.push(value);
-        }
-      }
-      if (this.newGivenTevValue.name || this.newGivenTevValue.abbr || this.newGivenTevValue.point) {
-        newValues.push(this.newGivenTevValue);
-      }
-      this.newGivenTevValue = {};
-      return this.givenTevValues = newValues;
-    };
-    this.checkGivenPevValues = function() {
-      var newValues, value, _i, _len, _ref;
-      newValues = [];
-      _ref = this.givenPevValues;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        value = _ref[_i];
-        if (value.name || value.abbr || value.point) {
-          newValues.push(value);
-        }
-      }
-      if (this.newGivenPevValue.name || this.newGivenPevValue.abbr || this.newGivenPevValue.point) {
-        newValues.push(this.newGivenPevValue);
-      }
-      this.newGivenPevValue = {};
-      return this.givenPevValues = newValues;
-    };
-    this.pointSum = function() {
-      var sum, value, _i, _j, _len, _len1, _ref, _ref1;
-      sum = 0;
-      _ref = this.givenTevValues;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        value = _ref[_i];
-        sum += parseInt(value.point) || 0;
+        tev = _ref[_i];
+        pointHash[tev.abbr] = parseInt(tev.point);
+        pointTotal += pointHash[tev.abbr];
       }
       _ref1 = this.givenPevValues;
       for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-        value = _ref1[_j];
-        sum += parseInt(value.point) || 0;
+        pev = _ref1[_j];
+        pointHash[pev.abbr] = parseInt(pev.point);
+        pointTotal += pointHash[pev.abbr];
       }
-      sum += parseInt(this.clickerValue.point) || 0;
-      return sum;
-    };
-    this.tevSum = function() {
-      var sum, value, _i, _len, _ref;
-      sum = 0;
-      _ref = this.givenTevValues;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        value = _ref[_i];
-        sum += parseInt(value.point) || 0;
+      _ref2 = this.deductionValues;
+      for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
+        deduct = _ref2[_k];
+        pointHash[deduct.name] = parseInt(deduct.point);
       }
-      return sum;
+      this.pointHash = pointHash;
+      return this.pointTotal = pointTotal;
     };
-    this.pevSum = function() {
-      var sum, value, _i, _len, _ref;
-      sum = 0;
-      _ref = this.givenPevValues;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        value = _ref[_i];
-        sum += parseInt(value.point) || 0;
-      }
-      return sum;
+    contest.isEmptyValue = function(value) {
+      return !(value.name || value.abbr || value.point);
     };
-    return this;
+    return contest;
   };
 
   PlayerFactory = function() {
@@ -294,13 +304,14 @@
     this.isActiveTab = function(tabUrl) {
       return tabUrl === this.currentTab;
     };
-    this.tabs = TabFactory.tabs;
-    this.currentTab = 'result.html';
+    this.tabs = TabFactory;
+    this.currentTab = 'player.html';
     return this;
   };
 
   SetUpCtrl = function(ContestFactory) {
     this.contest = ContestFactory;
+    this.contest.getPointHash();
     return this;
   };
 
