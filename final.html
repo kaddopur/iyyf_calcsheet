@@ -101,9 +101,9 @@
                 <tbody>
                   <tr>
                     <td>Clicker Value</td>
-                    <td class="bg-point"><input type="text" ng-model="setUp.contest.clickerValue.name"></td>
-                    <td class="bg-point"><input type="text" ng-model="setUp.contest.clickerValue.abbr"></td>
-                    <td class="bg-point"><input class="text-right" ng-model="setUp.contest.clickerValue.point"></td>
+                    <td class="bg-point">{{setUp.contest.clickerValue.name}}</td>
+                    <td class="bg-point">{{setUp.contest.clickerValue.abbr}}</td>
+                    <td class="bg-point"><input class="text-right" ng-model="setUp.contest.clickerValue.point" ng-blur="setUp.contest.getPointHash()"></td>
                   </tr>
           
                   <tr></tr>
@@ -269,8 +269,6 @@
 
         <script type="text/ng-template" id="result.html">
           <div id="tab-result" class="row" ng-controller="ResultCtrl as resultCtrl">
-            <p>{{resultCtrl.contest}}</p>
-            <p>{{resultCtrl.player.players[0]}}</p>
             <div class="col-12">
               <table>
                 <thead>

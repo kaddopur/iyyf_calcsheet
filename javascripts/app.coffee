@@ -24,19 +24,11 @@ TabFactory = ->
   tabs
 
 
-ContestFactory = ->
+ContestFactory = (PlayerFactory) ->
   contest = {}
-  contest.name = 'TYYC14'
-  contest.date = '2014-08-13'
-  contest.divisionName = '1A'
   contest.clickerJudges = [
-    {name: 'Jason Kao'}
-    {name: 'Bambino Qiu'}
   ]
   contest.evaluationJudges = [
-    {name: 'Bruce Lan'}
-    {name: 'Leo Huang'}
-    {name: 'Jason Huang'}
   ]
   contest.clickerValue = {
     name: 'Technical Execution'
@@ -111,6 +103,7 @@ ContestFactory = ->
     judgeList.push(this.newClickerJudge) if this.newClickerJudge.name
     this.newClickerJudge = {}
     this.clickerJudges = judgeList
+    this.cleanUpPlayerJudges()
 
   contest.checkEvaluationJudges = ->
     judgeList = []
@@ -121,6 +114,16 @@ ContestFactory = ->
     judgeList.push(this.newEvaluationJudge) if this.newEvaluationJudge.name
     this.newEvaluationJudge = {}
     this.evaluationJudges = judgeList
+    this.cleanUpPlayerJudges()
+
+  contest.cleanUpPlayerJudges = ->
+    clickerJudgeName = (judge.name for judge in this.clickerJudges)
+    evaluationJudgeName = (judge.name for judge in this.evaluationJudges)
+    for player in PlayerFactory.players
+      for judge, score of player.clicker
+        delete player.clicker[judge] if clickerJudgeName.indexOf(judge) == -1
+      for judge, score of player.givens
+        delete player.givens[judge] if evaluationJudgeName.indexOf(judge) == -1
 
   contest.checkGivenTevValues = ->
     valueList = []
@@ -132,6 +135,7 @@ ContestFactory = ->
     this.newGivenTevValue = {}
     this.givenTevValues = valueList
     this.getGivenAbbrs()
+    this.cleanUpPlayerGiven()
     this.getPointHash()
 
   contest.checkGivenPevValues = ->
@@ -144,7 +148,17 @@ ContestFactory = ->
     this.newGivenPevValue = {}
     this.givenPevValues = valueList
     this.getGivenAbbrs()
+    this.cleanUpPlayerGiven()
     this.getPointHash()
+
+  contest.cleanUpPlayerGiven = ->
+    for player in PlayerFactory.players
+      for judge, score of player.givens
+        for k, v of score
+          delete player.givens[judge][k] if this.givenAbbrs.indexOf(k) == -1
+
+      for k, v of player.avgGivens
+        delete player.avgGivens[k] if this.givenAbbrs.indexOf(k) == -1
 
   contest.addNewClickerJudge = (e) ->
     this.checkClickerJudges() if e.keyCode == 13
@@ -201,61 +215,7 @@ ContestFactory = ->
 
 PlayerFactory = ->
   player = {}
-  player.players = [
-    {
-      name: 'JIANG Shanzhen'
-      deductions: {
-        Stop: "4", 
-        Discard: "1", 
-        Cut: "0"
-      }
-      givens: { 
-        "Bruce Lan": {
-          CLN: "1"
-          VAR: "2"
-          RAR: "3"
-          EXE: "4"
-          MSC: "5"
-          BDY: "6"
-          SPC: "7"
-          SHW: "8"
-        }
-        "Leo Huang": {
-          CLN: "2"
-          VAR: "3"
-          RAR: "4"
-          EXE: "5"
-          MSC: "6"
-          BDY: "7"
-          SPC: "8"
-          SHW: "9"
-        }
-        "Jason Huang": {
-          CLN: "3"
-          VAR: "4"
-          RAR: "5"
-          EXE: "6"
-          MSC: "7"
-          BDY: "8"
-          SPC: "9"
-          SHW: "10"
-        }
-      }
-      clicker: {
-        "Jason Kao": {
-          plus: "80"
-          minus: "2"
-        }
-        "Bambino Qiu": {
-          plus: "60"
-          minus: "2"
-        }
-      }
-    }
-    {name: 'LIN Jiahe'}
-    {name: 'HE Haoxuan'}
-    {name: 'YU Zonglun'}
-  ]
+  player.players = []
 
   player.checkPlayers = ->
     playerList = []
@@ -285,14 +245,14 @@ PlayerFactory = ->
     this.getAdjTexTotal(judge)
 
   player.getAdjTexTotal = (judge) ->
-    totalMax = 0
+    totalMax = -999
     for player in this.players
       this.getRawTexTotal(player, judge) unless player.clicker[judge.name]
       totalMax = player.clicker[judge.name].total if player.clicker[judge.name].total > totalMax
     judge.texMax = totalMax
 
     for player in this.players
-      player.clicker[judge.name].adjTotal = player.clicker[judge.name].total / totalMax * 100
+      player.clicker[judge.name].adjTotal = (player.clicker[judge.name].total / totalMax * 100) || 0
     this.getAvgTexTotal()
 
   player.getAvgTexTotal = ->
@@ -365,7 +325,7 @@ RawTexCtrl = (ContestFactory, PlayerFactory) ->
 
   for player in this.player.players
     this.player.getAllAvgGiven(player, this.contest.givenAbbrs)
-    
+
   this
 
 

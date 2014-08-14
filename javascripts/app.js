@@ -24,28 +24,11 @@
     return tabs;
   };
 
-  ContestFactory = function() {
+  ContestFactory = function(PlayerFactory) {
     var contest;
     contest = {};
-    contest.name = 'TYYC14';
-    contest.date = '2014-08-13';
-    contest.divisionName = '1A';
-    contest.clickerJudges = [
-      {
-        name: 'Jason Kao'
-      }, {
-        name: 'Bambino Qiu'
-      }
-    ];
-    contest.evaluationJudges = [
-      {
-        name: 'Bruce Lan'
-      }, {
-        name: 'Leo Huang'
-      }, {
-        name: 'Jason Huang'
-      }
-    ];
+    contest.clickerJudges = [];
+    contest.evaluationJudges = [];
     contest.clickerValue = {
       name: 'Technical Execution',
       abbr: 'T.Ex',
@@ -116,7 +99,8 @@
         judgeList.push(this.newClickerJudge);
       }
       this.newClickerJudge = {};
-      return this.clickerJudges = judgeList;
+      this.clickerJudges = judgeList;
+      return this.cleanUpPlayerJudges();
     };
     contest.checkEvaluationJudges = function() {
       var judge, judgeList, _i, _len, _ref;
@@ -133,7 +117,58 @@
         judgeList.push(this.newEvaluationJudge);
       }
       this.newEvaluationJudge = {};
-      return this.evaluationJudges = judgeList;
+      this.evaluationJudges = judgeList;
+      return this.cleanUpPlayerJudges();
+    };
+    contest.cleanUpPlayerJudges = function() {
+      var clickerJudgeName, evaluationJudgeName, judge, player, score, _i, _len, _ref, _ref1, _results;
+      clickerJudgeName = (function() {
+        var _i, _len, _ref, _results;
+        _ref = this.clickerJudges;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          judge = _ref[_i];
+          _results.push(judge.name);
+        }
+        return _results;
+      }).call(this);
+      evaluationJudgeName = (function() {
+        var _i, _len, _ref, _results;
+        _ref = this.evaluationJudges;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          judge = _ref[_i];
+          _results.push(judge.name);
+        }
+        return _results;
+      }).call(this);
+      _ref = PlayerFactory.players;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        player = _ref[_i];
+        _ref1 = player.clicker;
+        for (judge in _ref1) {
+          score = _ref1[judge];
+          if (clickerJudgeName.indexOf(judge) === -1) {
+            delete player.clicker[judge];
+          }
+        }
+        _results.push((function() {
+          var _ref2, _results1;
+          _ref2 = player.givens;
+          _results1 = [];
+          for (judge in _ref2) {
+            score = _ref2[judge];
+            if (evaluationJudgeName.indexOf(judge) === -1) {
+              _results1.push(delete player.givens[judge]);
+            } else {
+              _results1.push(void 0);
+            }
+          }
+          return _results1;
+        })());
+      }
+      return _results;
     };
     contest.checkGivenTevValues = function() {
       var tev, valueList, _i, _len, _ref;
@@ -152,6 +187,7 @@
       this.newGivenTevValue = {};
       this.givenTevValues = valueList;
       this.getGivenAbbrs();
+      this.cleanUpPlayerGiven();
       return this.getPointHash();
     };
     contest.checkGivenPevValues = function() {
@@ -171,7 +207,41 @@
       this.newGivenPevValue = {};
       this.givenPevValues = valueList;
       this.getGivenAbbrs();
+      this.cleanUpPlayerGiven();
       return this.getPointHash();
+    };
+    contest.cleanUpPlayerGiven = function() {
+      var judge, k, player, score, v, _i, _len, _ref, _ref1, _results;
+      _ref = PlayerFactory.players;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        player = _ref[_i];
+        _ref1 = player.givens;
+        for (judge in _ref1) {
+          score = _ref1[judge];
+          for (k in score) {
+            v = score[k];
+            if (this.givenAbbrs.indexOf(k) === -1) {
+              delete player.givens[judge][k];
+            }
+          }
+        }
+        _results.push((function() {
+          var _ref2, _results1;
+          _ref2 = player.avgGivens;
+          _results1 = [];
+          for (k in _ref2) {
+            v = _ref2[k];
+            if (this.givenAbbrs.indexOf(k) === -1) {
+              _results1.push(delete player.avgGivens[k]);
+            } else {
+              _results1.push(void 0);
+            }
+          }
+          return _results1;
+        }).call(this));
+      }
+      return _results;
     };
     contest.addNewClickerJudge = function(e) {
       if (e.keyCode === 13) {
@@ -270,64 +340,7 @@
   PlayerFactory = function() {
     var player;
     player = {};
-    player.players = [
-      {
-        name: 'JIANG Shanzhen',
-        deductions: {
-          Stop: "4",
-          Discard: "1",
-          Cut: "0"
-        },
-        givens: {
-          "Bruce Lan": {
-            CLN: "1",
-            VAR: "2",
-            RAR: "3",
-            EXE: "4",
-            MSC: "5",
-            BDY: "6",
-            SPC: "7",
-            SHW: "8"
-          },
-          "Leo Huang": {
-            CLN: "2",
-            VAR: "3",
-            RAR: "4",
-            EXE: "5",
-            MSC: "6",
-            BDY: "7",
-            SPC: "8",
-            SHW: "9"
-          },
-          "Jason Huang": {
-            CLN: "3",
-            VAR: "4",
-            RAR: "5",
-            EXE: "6",
-            MSC: "7",
-            BDY: "8",
-            SPC: "9",
-            SHW: "10"
-          }
-        },
-        clicker: {
-          "Jason Kao": {
-            plus: "80",
-            minus: "2"
-          },
-          "Bambino Qiu": {
-            plus: "60",
-            minus: "2"
-          }
-        }
-      }, {
-        name: 'LIN Jiahe'
-      }, {
-        name: 'HE Haoxuan'
-      }, {
-        name: 'YU Zonglun'
-      }
-    ];
+    player.players = [];
     player.checkPlayers = function() {
       var playerList, _i, _len, _ref;
       playerList = [];
@@ -366,7 +379,7 @@
     };
     player.getAdjTexTotal = function(judge) {
       var totalMax, _i, _j, _len, _len1, _ref, _ref1;
-      totalMax = 0;
+      totalMax = -999;
       _ref = this.players;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         player = _ref[_i];
@@ -381,7 +394,7 @@
       _ref1 = this.players;
       for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
         player = _ref1[_j];
-        player.clicker[judge.name].adjTotal = player.clicker[judge.name].total / totalMax * 100;
+        player.clicker[judge.name].adjTotal = (player.clicker[judge.name].total / totalMax * 100) || 0;
       }
       return this.getAvgTexTotal();
     };
