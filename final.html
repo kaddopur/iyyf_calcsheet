@@ -236,7 +236,7 @@
                 <tr>
                   <th class="bg-byline"></th>
                   <th class="bg-byline"></th>
-                  <th class="bg-byline" colspan="8" ng-repeat="judge in tevPevCtrl.contest.evaluationJudges">{{judge.name}}</th>
+                  <th class="bg-byline" colspan="{{tevPevCtrl.contest.givenAbbrs.length}}" ng-repeat="judge in tevPevCtrl.contest.evaluationJudges">{{judge.name}}</th>
                 </tr>
                 <tr>
                   <th class="bg-header"></th>
@@ -276,8 +276,8 @@
                     <th></th>
                     <th>{{resultCtrl.contest.name}} ({{resultCtrl.contest.date}})</th>
                     <th class="bg-tex">{{resultCtrl.contest.clickerValue.abbr}}</th>
-                    <th class="bg-tev" colspan="5">T.Ev</th>
-                    <th class="bg-pev" colspan="5">P.Ev</th>
+                    <th class="bg-tev" colspan="{{resultCtrl.contest.givenTevValues.length + 1}}">T.Ev</th>
+                    <th class="bg-pev" colspan="{{resultCtrl.contest.givenPevValues.length + 1}}">P.Ev</th>
                     <th class="bg-total"></th>
                     <th class="bg-md" colspan="3">M. Deduction</th>
                     <th class="bg-total"></th>
