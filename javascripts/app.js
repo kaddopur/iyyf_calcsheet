@@ -241,6 +241,26 @@
       this.pointHash = pointHash;
       return this.pointTotal = pointTotal;
     };
+    contest.tevSum = function() {
+      var sum, tev, _i, _len, _ref;
+      sum = 0;
+      _ref = this.givenTevValues;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        tev = _ref[_i];
+        sum += parseInt(tev.point);
+      }
+      return sum;
+    };
+    contest.pevSum = function() {
+      var pev, sum, _i, _len, _ref;
+      sum = 0;
+      _ref = this.givenPevValues;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        pev = _ref[_i];
+        sum += parseInt(pev.point);
+      }
+      return sum;
+    };
     contest.isEmptyValue = function(value) {
       return !(value.name || value.abbr || value.point);
     };
@@ -254,9 +274,9 @@
       {
         name: 'JIANG Shanzhen',
         deductions: {
-          Stop: "1",
-          Discard: "2",
-          Cut: "3"
+          Stop: "4",
+          Discard: "1",
+          Cut: "0"
         },
         givens: {
           "Bruce Lan": {
@@ -417,7 +437,7 @@
       return tabUrl === this.currentTab;
     };
     this.tabs = TabFactory;
-    this.currentTab = 'raw-tevpev.html';
+    this.currentTab = 'result.html';
     return this;
   };
 
@@ -432,69 +452,160 @@
   };
 
   RawTexCtrl = function(ContestFactory, PlayerFactory) {
+    var judge, player, _base, _i, _j, _k, _l, _len, _len1, _len2, _len3, _len4, _len5, _m, _n, _name, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
     this.contest = ContestFactory;
     this.player = PlayerFactory;
+    this.contest.getGivenAbbrs();
+    this.contest.getPointHash();
+    _ref = this.contest.clickerJudges;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      judge = _ref[_i];
+      _ref1 = this.player.players;
+      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+        player = _ref1[_j];
+        this.player.initPlayer(player);
+      }
+      _ref2 = this.player.players;
+      for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
+        player = _ref2[_k];
+        this.player.getRawTexTotal(player, judge);
+      }
+      this.player.getAdjTexTotal(judge);
+    }
+    _ref3 = this.contest.evaluationJudges;
+    for (_l = 0, _len3 = _ref3.length; _l < _len3; _l++) {
+      judge = _ref3[_l];
+      _ref4 = this.player.players;
+      for (_m = 0, _len4 = _ref4.length; _m < _len4; _m++) {
+        player = _ref4[_m];
+        (_base = player.givens)[_name = judge.name] || (_base[_name] = {});
+      }
+    }
+    _ref5 = this.player.players;
+    for (_n = 0, _len5 = _ref5.length; _n < _len5; _n++) {
+      player = _ref5[_n];
+      this.player.getAllAvgGiven(player, this.contest.givenAbbrs);
+    }
     return this;
   };
 
   RawTevPevCtrl = function(ContestFactory, PlayerFactory) {
+    var judge, player, _base, _i, _j, _k, _l, _len, _len1, _len2, _len3, _len4, _len5, _m, _n, _name, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
     this.contest = ContestFactory;
     this.player = PlayerFactory;
+    this.contest.getGivenAbbrs();
+    this.contest.getPointHash();
+    _ref = this.contest.clickerJudges;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      judge = _ref[_i];
+      _ref1 = this.player.players;
+      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+        player = _ref1[_j];
+        this.player.initPlayer(player);
+      }
+      _ref2 = this.player.players;
+      for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
+        player = _ref2[_k];
+        this.player.getRawTexTotal(player, judge);
+      }
+      this.player.getAdjTexTotal(judge);
+    }
+    _ref3 = this.contest.evaluationJudges;
+    for (_l = 0, _len3 = _ref3.length; _l < _len3; _l++) {
+      judge = _ref3[_l];
+      _ref4 = this.player.players;
+      for (_m = 0, _len4 = _ref4.length; _m < _len4; _m++) {
+        player = _ref4[_m];
+        (_base = player.givens)[_name = judge.name] || (_base[_name] = {});
+      }
+    }
+    _ref5 = this.player.players;
+    for (_n = 0, _len5 = _ref5.length; _n < _len5; _n++) {
+      player = _ref5[_n];
+      this.player.getAllAvgGiven(player, this.contest.givenAbbrs);
+    }
     return this;
   };
 
   ResultCtrl = function(ContestFactory, PlayerFactory) {
+    var judge, player, _base, _i, _j, _k, _l, _len, _len1, _len2, _len3, _len4, _len5, _m, _n, _name, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
     this.contest = ContestFactory;
     this.player = PlayerFactory;
-    this.avgGivenTevSum = function(currentPlayer) {
-      var abbr, point, tevAbbrs, tevSum, v, _ref;
-      tevSum = 0;
-      tevAbbrs = (function() {
-        var _i, _len, _ref, _results;
-        _ref = this.contest.givenTevValues;
-        _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          v = _ref[_i];
-          _results.push(v.abbr);
-        }
-        return _results;
-      }).call(this);
-      _ref = currentPlayer.avgGivens;
-      for (abbr in _ref) {
-        point = _ref[abbr];
-        if (tevAbbrs.indexOf(abbr) > -1) {
-          tevSum += point;
-        }
+    this.contest.getGivenAbbrs();
+    this.contest.getPointHash();
+    _ref = this.contest.clickerJudges;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      judge = _ref[_i];
+      _ref1 = this.player.players;
+      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+        player = _ref1[_j];
+        this.player.initPlayer(player);
       }
-      return tevSum;
+      _ref2 = this.player.players;
+      for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
+        player = _ref2[_k];
+        this.player.getRawTexTotal(player, judge);
+      }
+      this.player.getAdjTexTotal(judge);
+    }
+    _ref3 = this.contest.evaluationJudges;
+    for (_l = 0, _len3 = _ref3.length; _l < _len3; _l++) {
+      judge = _ref3[_l];
+      _ref4 = this.player.players;
+      for (_m = 0, _len4 = _ref4.length; _m < _len4; _m++) {
+        player = _ref4[_m];
+        (_base = player.givens)[_name = judge.name] || (_base[_name] = {});
+      }
+    }
+    _ref5 = this.player.players;
+    for (_n = 0, _len5 = _ref5.length; _n < _len5; _n++) {
+      player = _ref5[_n];
+      this.player.getAllAvgGiven(player, this.contest.givenAbbrs);
+    }
+    this.weightedTex = function(player) {
+      return player.weightedTex = player.tex * this.contest.clickerValue.point / this.contest.pointTotal;
     };
-    this.avgGivenPevSum = function(currentPlayer) {
-      var abbr, pevAbbrs, pevSum, point, v, _ref;
-      pevSum = 0;
-      pevAbbrs = (function() {
-        var _i, _len, _ref, _results;
-        _ref = this.contest.givenPevValues;
-        _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          v = _ref[_i];
-          _results.push(v.abbr);
-        }
-        return _results;
-      }).call(this);
-      _ref = currentPlayer.avgGivens;
-      for (abbr in _ref) {
-        point = _ref[abbr];
-        if (pevAbbrs.indexOf(abbr) > -1) {
-          pevSum += point;
-        }
-      }
-      return pevSum;
+    this.weightedGiven = function(player, given) {
+      return player.avgGivens[given.abbr] * this.contest.pointHash[given.abbr] / 10;
     };
-    this.deductionSum = function(player, deduction) {
-      if (!player.deductions) {
-        player.deductions = {};
+    this.weightedTev = function(player) {
+      var sum, tev, _len6, _o, _ref6;
+      sum = 0;
+      _ref6 = this.contest.givenTevValues;
+      for (_o = 0, _len6 = _ref6.length; _o < _len6; _o++) {
+        tev = _ref6[_o];
+        sum += this.weightedGiven(player, tev);
       }
-      return -1 * (parseInt(player.deductions[deduction.name]) || 0) * deduction.point;
+      return player.weightedTev = sum;
+    };
+    this.weightedPev = function(player) {
+      var pev, sum, _len6, _o, _ref6;
+      sum = 0;
+      _ref6 = this.contest.givenPevValues;
+      for (_o = 0, _len6 = _ref6.length; _o < _len6; _o++) {
+        pev = _ref6[_o];
+        sum += this.weightedGiven(player, pev);
+      }
+      return player.weightedPev = sum;
+    };
+    this.totalScore = function(player) {
+      return player.totalScore = this.weightedTex(player) + this.weightedTev(player) + this.weightedPev(player);
+    };
+    this.deductionScore = function(player, deduction) {
+      return -1 * parseInt(player.deductions[deduction.name] || 0) * parseInt(deduction.point);
+    };
+    this.totalDeduction = function(player) {
+      var deduct, sum, totalDeduction, _len6, _o, _ref6;
+      sum = 0;
+      _ref6 = this.contest.deductionValues;
+      for (_o = 0, _len6 = _ref6.length; _o < _len6; _o++) {
+        deduct = _ref6[_o];
+        sum += this.deductionScore(player, deduct);
+      }
+      return totalDeduction = sum;
+    };
+    this.finalScore = function(player) {
+      return player.finalScore = this.totalScore(player) + this.totalDeduction(player);
     };
     return this;
   };

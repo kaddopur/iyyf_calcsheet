@@ -181,6 +181,18 @@ ContestFactory = ->
     this.pointHash = pointHash
     this.pointTotal = pointTotal
 
+  contest.tevSum = ->
+    sum = 0
+    for tev in this.givenTevValues
+      sum += parseInt(tev.point)
+    sum
+
+  contest.pevSum = ->
+    sum = 0
+    for pev in this.givenPevValues
+      sum += parseInt(pev.point)
+    sum
+
   contest.isEmptyValue = (value) ->
     not (value.name || value.abbr || value.point)
 
@@ -193,9 +205,9 @@ PlayerFactory = ->
     {
       name: 'JIANG Shanzhen'
       deductions: {
-        Stop: "1", 
-        Discard: "2", 
-        Cut: "3"
+        Stop: "4", 
+        Discard: "1", 
+        Cut: "0"
       }
       givens: { 
         "Bruce Lan": {
@@ -316,7 +328,7 @@ TabCtrl = (TabFactory) ->
     tabUrl == this.currentTab
 
   this.tabs = TabFactory
-  this.currentTab = 'raw-tevpev.html'
+  this.currentTab = 'result.html'
 
   this
 
@@ -334,12 +346,52 @@ PlayerCtrl = (PlayerFactory) ->
 RawTexCtrl = (ContestFactory, PlayerFactory) ->
   this.contest = ContestFactory
   this.player = PlayerFactory
+
+  this.contest.getGivenAbbrs()
+  this.contest.getPointHash()
+
+  # init for raw-tex
+  for judge in this.contest.clickerJudges
+    for player in this.player.players
+      this.player.initPlayer(player)
+    for player in this.player.players
+      this.player.getRawTexTotal(player, judge)
+    this.player.getAdjTexTotal(judge)
+
+  # init for raw-tevpev
+  for judge in this.contest.evaluationJudges
+    for player in this.player.players
+      player.givens[judge.name] ||= {}
+
+  for player in this.player.players
+    this.player.getAllAvgGiven(player, this.contest.givenAbbrs)
+    
   this
 
 
 RawTevPevCtrl = (ContestFactory, PlayerFactory) ->
   this.contest = ContestFactory
   this.player = PlayerFactory
+
+  this.contest.getGivenAbbrs()
+  this.contest.getPointHash()
+
+  # init for raw-tex
+  for judge in this.contest.clickerJudges
+    for player in this.player.players
+      this.player.initPlayer(player)
+    for player in this.player.players
+      this.player.getRawTexTotal(player, judge)
+    this.player.getAdjTexTotal(judge)
+
+  # init for raw-tevpev
+  for judge in this.contest.evaluationJudges
+    for player in this.player.players
+      player.givens[judge.name] ||= {}
+
+  for player in this.player.players
+    this.player.getAllAvgGiven(player, this.contest.givenAbbrs)
+
   this
 
 
@@ -347,25 +399,57 @@ ResultCtrl = (ContestFactory, PlayerFactory) ->
   this.contest = ContestFactory
   this.player = PlayerFactory
 
-  this.avgGivenTevSum = (currentPlayer) ->
-    tevSum = 0
-    tevAbbrs = (v.abbr for v in this.contest.givenTevValues)
+  this.contest.getGivenAbbrs()
+  this.contest.getPointHash()
 
-    for abbr, point of currentPlayer.avgGivens
-      tevSum += point if tevAbbrs.indexOf(abbr) > -1
-    tevSum
+  # init for raw-tex
+  for judge in this.contest.clickerJudges
+    for player in this.player.players
+      this.player.initPlayer(player)
+    for player in this.player.players
+      this.player.getRawTexTotal(player, judge)
+    this.player.getAdjTexTotal(judge)
 
-  this.avgGivenPevSum = (currentPlayer) ->
-    pevSum = 0
-    pevAbbrs = (v.abbr for v in this.contest.givenPevValues)
+  # init for raw-tevpev
+  for judge in this.contest.evaluationJudges
+    for player in this.player.players
+      player.givens[judge.name] ||= {}
 
-    for abbr, point of currentPlayer.avgGivens
-      pevSum += point if pevAbbrs.indexOf(abbr) > -1
-    pevSum
+  for player in this.player.players
+    this.player.getAllAvgGiven(player, this.contest.givenAbbrs)
 
-  this.deductionSum = (player, deduction) ->
-    player.deductions = {} unless player.deductions
-    -1 * (parseInt(player.deductions[deduction.name]) || 0) * deduction.point
+  this.weightedTex = (player) ->
+    player.weightedTex = player.tex * this.contest.clickerValue.point / this.contest.pointTotal
+
+  this.weightedGiven = (player, given) ->
+    player.avgGivens[given.abbr] * this.contest.pointHash[given.abbr] / 10
+
+  this.weightedTev = (player) ->
+    sum = 0
+    for tev in this.contest.givenTevValues
+      sum += this.weightedGiven(player, tev)
+    player.weightedTev = sum
+
+  this.weightedPev = (player) ->
+    sum = 0
+    for pev in this.contest.givenPevValues
+      sum += this.weightedGiven(player, pev)
+    player.weightedPev = sum
+
+  this.totalScore = (player) ->
+    player.totalScore = this.weightedTex(player) + this.weightedTev(player) + this.weightedPev(player)
+
+  this.deductionScore = (player, deduction) ->
+    -1 * parseInt(player.deductions[deduction.name] || 0) * parseInt(deduction.point)
+
+  this.totalDeduction = (player) ->
+    sum = 0
+    for deduct in this.contest.deductionValues
+      sum += this.deductionScore(player, deduct)
+    totalDeduction = sum
+
+  this.finalScore = (player) ->
+    player.finalScore = this.totalScore(player) + this.totalDeduction(player)
 
   this
 

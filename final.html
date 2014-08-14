@@ -269,13 +269,14 @@
 
         <script type="text/ng-template" id="result.html">
           <div id="tab-result" class="row" ng-controller="ResultCtrl as resultCtrl">
-            {{resultCtrl.player.players[0]}}
+            <p>{{resultCtrl.contest}}</p>
+            <p>{{resultCtrl.player.players[0]}}</p>
             <div class="col-12">
               <table>
                 <thead>
                   <tr>
                     <th></th>
-                    <th>{{resultCtrl.contest.contestName}} ({{resultCtrl.contest.contestDate}})</th>
+                    <th>{{resultCtrl.contest.name}} ({{resultCtrl.contest.date}})</th>
                     <th class="bg-tex">{{resultCtrl.contest.clickerValue.abbr}}</th>
                     <th class="bg-tev" colspan="5">T.Ev</th>
                     <th class="bg-pev" colspan="5">P.Ev</th>
@@ -293,27 +294,27 @@
                     <th class="bg-tev">total (/{{resultCtrl.contest.tevSum()}})</th>
                     <th class="bg-pev" ng-repeat="given in resultCtrl.contest.givenPevValues">{{given.name}}</th>
                     <th class="bg-pev">total (/{{resultCtrl.contest.pevSum()}})</th>
-                    <th class="bg-total">E.Total (/{{resultCtrl.contest.pointSum()}})</th>
+                    <th class="bg-total">E.Total (/{{resultCtrl.contest.pointTotal}})</th>
                     <th class="bg-md" ng-repeat="deduction in resultCtrl.contest.deductionValues">{{deduction.name}}</th>
                     <th class="bg-total">FINAL SCORE</th>
                     <th>Place</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr ng-repeat="player in resultCtrl.player.players">
+                  <tr ng-repeat="player in resultCtrl.player.players | orderBy:'-finalScore'">
                     <td>{{$index + 1}}</td>
                     <td>{{player.name}}</td>
-                    <td></td>
-                    <td ng-repeat="tev in resultCtrl.contest.givenTevValues">{{player.avgGivens[tev.abbr] | number:2}}</td>
-                    <td>{{resultCtrl.avgGivenTevSum(player) | number:2}}</td>
-                    <td ng-repeat="pev in resultCtrl.contest.givenPevValues">{{player.avgGivens[pev.abbr] | number:2}}</td>
-                    <td>{{resultCtrl.avgGivenPevSum(player) | number:2}}</td>
-                    <td></td>
+                    <td>{{resultCtrl.weightedTex(player) | number:1}}</td>
+                    <td ng-repeat="tev in resultCtrl.contest.givenTevValues">{{resultCtrl.weightedGiven(player, tev) | number:1}}</td>
+                    <td>{{resultCtrl.weightedTev(player) | number:1}}</td>
+                    <td ng-repeat="pev in resultCtrl.contest.givenPevValues">{{resultCtrl.weightedGiven(player, pev) | number:1}}</td>
+                    <td>{{resultCtrl.weightedPev(player) | number:1}}</td>
+                    <td>{{resultCtrl.totalScore(player) | number:1}}</td>
                     <td class="text-minus" ng-repeat="deduction in resultCtrl.contest.deductionValues">
-                      {{resultCtrl.deductionSum(player, deduction)}}
+                      {{resultCtrl.deductionScore(player, deduction)}}
                     </td>
-                    <td></td>
-                    <td></td>
+                    <td>{{resultCtrl.finalScore(player) | number:1}}</td>
+                    <td>{{$index + 1}}</td>
                   </tr>
                 </tbody>
               </table>
