@@ -450,7 +450,7 @@
       return tabUrl === this.currentTab;
     };
     this.tabs = TabFactory;
-    this.currentTab = 'result.html';
+    this.currentTab = 'set-up.html';
     return this;
   };
 
